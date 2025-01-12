@@ -1,0 +1,162 @@
+import { ActiveClassroom, ApplicationEventName, AuthenticationEvent, Classroom, ClassroomRoleEvent, isNil, PuEdition, PuEnvironment } from '@pickup/shared'
+import { AppSystemProp, logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
+import swagger from '@fastify/swagger'
+import { FastifyInstance, FastifyRequest, HTTPMethods } from 'fastify'
+import fastifySocketIO from 'fastify-socket.io'
+import { Socket } from 'socket.io'
+import { accessTokenManager } from './authentication/lib/access-token-manager'
+import { securityHandlerChain } from './core/security/security-handler-chain'
+import { websocketService } from './websockets/websockets.service'
+import { openapiModule } from './helper/openapi/openapi.module'
+import { validateEnvPropsOnStartup } from './helper/system-validator'
+import { eventsHooks } from './helper/application-events'
+
+export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
+
+    await app.register(swagger, {
+        hideUntagged: true,
+        openapi: {
+            servers: [
+                {
+                    url: 'https://cloud.activepieces.com/api',
+                    description: 'Production Server',
+                },
+            ],
+            components: {
+                securitySchemes: {
+                    apiKey: {
+                        type: 'http',
+                        description: 'Use your api key generated from the admin console',
+                        scheme: 'bearer',
+                    },
+                },
+                schemas: {
+                    [ApplicationEventName.USER_SIGNED_IN]: AuthenticationEvent,
+                    [ApplicationEventName.USER_PASSWORD_RESET]: AuthenticationEvent,
+                    [ApplicationEventName.USER_EMAIL_VERIFIED]: AuthenticationEvent,
+                    [ApplicationEventName.CLASSROOM_ROLE_CREATED]: ClassroomRoleEvent,
+                    [ApplicationEventName.CLASSROOM_ROLE_DELETED]: ClassroomRoleEvent,
+                    [ApplicationEventName.CLASSROOM_ROLE_UPDATED]: ClassroomRoleEvent,
+                },
+            },
+            info: {
+                title: 'Activepieces Documentation',
+                version: '0.0.0',
+            },
+            externalDocs: {
+                url: 'https://www.activepieces.com/docs',
+                description: 'Find more info here',
+            },
+        },
+    })
+
+    await app.register(fastifySocketIO, {
+        cors: {
+            origin: '*',
+        },
+        transports: ['websocket'],
+    })
+
+    app.io.use((socket: Socket, next: (err?: Error) => void) => {
+        accessTokenManager
+            .verifyPrincipal(socket.handshake.auth.token)
+            .then(() => {
+                next()
+            })
+            .catch(() => {
+                next(new Error('Authentication error'))
+            })
+    })
+
+    app.io.on('connection', (socket: Socket) => {
+        rejectedPromiseHandler(websocketService.init(socket))
+    })
+
+    app.addHook('onRequest', async (request, reply) => {
+        const route = app.hasRoute({
+            method: request.method as HTTPMethods,
+            url: request.url,
+        })
+        if (!route) {
+            return reply.code(404).send({
+                statusCode: 404,
+                error: 'Not Found',
+                message: 'Route not found',
+            })
+        }
+    })
+
+    app.addHook('preHandler', securityHandlerChain)
+    await app.register(openapiModule)
+
+    app.get(
+        '/redirect',
+        async (
+            request: FastifyRequest<{ Querystring: { code: string } }>,
+            reply,
+        ) => {
+            const params = {
+                code: request.query.code,
+            }
+            if (!params.code) {
+                return reply.send('The code is missing in url')
+            }
+            else {
+                return reply
+                    .type('text/html')
+                    .send(
+                        `<script>if(window.opener){window.opener.postMessage({ 'code': '${encodeURIComponent(
+                            params.code,
+                        )}' },'*')}</script> <html>Redirect succuesfully, this window should close now</html>`,
+                    )
+            }
+        },
+    )
+
+    await validateEnvPropsOnStartup()
+
+    const edition = system.getEdition()
+    logger.info({
+        edition,
+    }, 'Activepieces Edition')
+    switch (edition) {
+        case PuEdition.COMMUNITY:
+            break
+        case PuEdition.ENTERPRISE:
+            break
+    }
+
+    app.addHook('onClose', async () => {
+        logger.info('Shutting down')
+    })
+
+    return app
+}
+
+
+export async function appPostBoot(): Promise<void> {
+    logger.info(`
+
+    ░█▀█░▀█▀░█▀▀░█░█░█░█░█▀█
+    ░█▀▀░░█░░█░░░█▀▄░█░█░█▀▀
+    ░▀░░░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀░░
+
+    ==========================================
+    The application started on ${system.get(SharedSystemProp.FRONTEND_URL)}
+    ==========================================`)
+
+    const environment = system.get(SharedSystemProp.ENVIRONMENT)
+    if (environment === PuEnvironment.DEVELOPMENT) {
+        logger.warn(
+            `[WARNING]: The application is running in ${environment} mode.`,
+        )
+    }
+    // const oldestPlatform = await platformService.getOldestPlatform()
+    // const key = system.get<string>(AppSystemProp.LICENSE_KEY)
+    // if (!isNil(oldestPlatform) && !isNil(key)) {
+    //     await platformService.update({
+    //         id: oldestPlatform.id,
+    //         licenseKey: key,
+    //     })
+    // }
+}

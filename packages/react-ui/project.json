@@ -1,0 +1,15 @@
+{
+  "name": "react-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/react-ui/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "vite-typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/react-ui/tsconfig.app.json"
+      }
+    }
+  }
+}
