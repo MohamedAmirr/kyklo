@@ -1,0 +1,11 @@
+{
+  "name": "react-ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nx serve react-ui",
+    "build": "nx build react-ui",
+    "lint": "nx lint react-ui"
+  }
+}
