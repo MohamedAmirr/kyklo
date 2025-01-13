@@ -1,4 +1,4 @@
-import { assertNotNullOrUndefined, ErrorCode, PickUpError, PlatformId, Principal, PrincipalType } from '@pickup/shared'
+import { assertNotNullOrUndefined, ErrorCode, PickUpError, SchoolId, Principal, PrincipalType } from '@pickup/shared'
 import dayjs from 'dayjs'
 import { jwtUtils } from '../../helper/jwt-utils'
 

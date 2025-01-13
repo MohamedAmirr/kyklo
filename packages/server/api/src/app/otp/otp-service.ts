@@ -2,7 +2,7 @@ import {
     OtpModel,
     OtpState,
     OtpType,
-    PlatformId,
+    SchoolId,
     puId,
     User,
     UserId,
@@ -18,12 +18,12 @@ const repo = repoFactory(OtpEntity)
 
 export const otpService = {
     async createAndSend({
-        platformId,
+        schoolId,
         email,
         type,
     }: CreateParams): Promise<void> {
         const user = await getUser({
-            platformId,
+            schoolId,
             email,
         })
         if (!user) {
@@ -74,7 +74,7 @@ export const otpService = {
 }
 
 const getUser = async ({
-    platformId,
+    schoolId,
     email,
 }: GetUserOrThrowParams): Promise<User | null> => {
     // TODO: get user from db
@@ -84,7 +84,7 @@ const getUser = async ({
 }
 
 type CreateParams = {
-    platformId: PlatformId
+    schoolId: SchoolId
     email: string
     type: OtpType
 }
@@ -96,6 +96,6 @@ type ConfirmParams = {
 }
 
 type GetUserOrThrowParams = {
-    platformId: PlatformId | null
+    schoolId: SchoolId | null
     email: string
 }

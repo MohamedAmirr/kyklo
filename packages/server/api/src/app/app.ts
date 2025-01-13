@@ -9,7 +9,7 @@ import { securityHandlerChain } from './core/security/security-handler-chain'
 import { websocketService } from './websockets/websockets.service'
 import { openapiModule } from './helper/openapi/openapi.module'
 import { validateEnvPropsOnStartup } from './helper/system-validator'
-import { eventsHooks } from './helper/application-events'
+import { flagModule } from './flags/flag.module'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
@@ -18,7 +18,7 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
         openapi: {
             servers: [
                 {
-                    url: 'https://cloud.activepieces.com/api',
+                    url: 'http://localhost:3000/api',
                     description: 'Production Server',
                 },
             ],
@@ -40,11 +40,11 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
                 },
             },
             info: {
-                title: 'Activepieces Documentation',
+                title: 'Pickup Documentation',
                 version: '0.0.0',
             },
             externalDocs: {
-                url: 'https://www.activepieces.com/docs',
+                url: 'https://www.pickup.edu/docs',
                 description: 'Find more info here',
             },
         },
@@ -88,6 +88,7 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
 
     app.addHook('preHandler', securityHandlerChain)
     await app.register(openapiModule)
+    await app.register(flagModule)
 
     app.get(
         '/redirect',
@@ -118,7 +119,7 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
     const edition = system.getEdition()
     logger.info({
         edition,
-    }, 'Activepieces Edition')
+    }, 'Pickup Edition')
     switch (edition) {
         case PuEdition.COMMUNITY:
             break

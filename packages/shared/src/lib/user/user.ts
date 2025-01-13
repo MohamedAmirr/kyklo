@@ -29,8 +29,7 @@ export const User = Type.Object({
     password: Type.String(),
     verified: Type.Boolean(),
     status: Type.Enum(UserStatus),
-    platformId: Type.Union([PuId, Type.Null()]),
-    classroomRole: Type.Enum(ClassroomMemberRole),
+    schoolId: Type.Union([PuId, Type.Null()]),
     tokenVersion: Type.Optional(Type.String()),
 })
 
@@ -42,8 +41,7 @@ export const UserMeta = Type.Object({
     firstName: Type.String(),
     lastName: Type.String(),
     status: Type.Enum(UserStatus),
-    platformId: Type.Union([PuId, Type.Null()]),
-    classroomRole: Type.Enum(ClassroomMemberRole),
+    schoolId: Type.Union([PuId, Type.Null()]),
     created: Type.String(),
     updated: Type.String(),
 })

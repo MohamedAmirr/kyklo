@@ -9,12 +9,13 @@ import {
 } from 'typeorm'
 import { OtpEntity } from '../otp/otp-entity'
 import { createPostgresDataSource } from './postgres-connection'
+import { FlagEntity } from '../flags/flag.entity'
 
 function getEntities(): EntitySchema<unknown>[] {
     const edition = system.getEdition()
 
     const entities: EntitySchema[] = [
-
+        FlagEntity,
     ]
 
     switch (edition) {
@@ -35,7 +36,7 @@ function getEntities(): EntitySchema<unknown>[] {
 const getSynchronize = (): boolean => {
     const env = system.getOrThrow<PuEnvironment>(SharedSystemProp.ENVIRONMENT)
 
-    return env !== PuEnvironment.DEVELOPMENT
+    return env !== PuEnvironment.PRODUCTION
 }
 
 export const commonProperties = {

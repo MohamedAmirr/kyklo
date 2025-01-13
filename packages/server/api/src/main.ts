@@ -6,10 +6,9 @@ import { seedDevData } from './app/database/seeds/dev-seeds'
 import { setupServer } from './app/server'
 
 const start = async (app: FastifyInstance): Promise<void> => {
-    console.log('Starting server')
     try {
         await app.listen({
-            host: '0.0.0.0',
+            host: '127.0.0.1',
             port: 3000,
         })
         if (system.isApp()) {

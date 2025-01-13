@@ -16,9 +16,9 @@ export default defineConfig({
         target: 'http://127.0.0.1:3000',
         secure: false,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, '/'),
         headers: {
-          Host: '127.0.0.1:4200',
+          Host: '127.0.0.1:3000',
         },
         ws: true,
       },

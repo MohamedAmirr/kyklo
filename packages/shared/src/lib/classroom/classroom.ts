@@ -27,7 +27,7 @@ export const Classroom = Type.Object({
     deleted: Nullable(Type.String()),
     ownerId: Type.String(),
     displayName: Type.String(),
-    platformId: PuId,
+    schoolId: PuId,
 })
 
 export type Classroom = Static<typeof Classroom>

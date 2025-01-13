@@ -6,10 +6,10 @@ import { otpService } from './otp-service'
 export const otpController: FastifyPluginAsyncTypebox = async (app) => {
     app.post('/', CreateOtpRequest, async (req, res) => {
         // TODO: get platformId from request
-        const platformId = 'hahah'
-        assertNotNullOrUndefined(platformId, 'platformId')
+        const schoolId = 'hahah'
+        assertNotNullOrUndefined(schoolId, 'schoolId')
         await otpService.createAndSend({
-            platformId,
+            schoolId,
             email: req.body.email,
             type: req.body.type,
         })

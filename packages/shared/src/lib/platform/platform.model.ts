@@ -4,9 +4,9 @@ import { BaseModelSchema } from '../common/base-model'
 import { PuId } from '../common/id-generator'
 import { SMTPInformation } from '../invitations'
 
-export type PlatformId = PuId
+export type SchoolId = PuId
 
-export const Platform = Type.Object({
+export const School = Type.Object({
     ...BaseModelSchema,
     ownerId: PuId,
     name: Type.String(),
@@ -23,4 +23,4 @@ export const Platform = Type.Object({
     licenseKey: Type.Optional(Type.String()),
 })
 
-export type Platform = Static<typeof Platform>
+export type School = Static<typeof School>
