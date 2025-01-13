@@ -1,5 +1,5 @@
-import { ActiveClassroom, ApplicationEventName, AuthenticationEvent, Classroom, ClassroomRoleEvent, isNil, PuEdition, PuEnvironment } from '@pickup/shared'
-import { AppSystemProp, logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
+import { ApplicationEventName, AuthenticationEvent, ClassroomRoleEvent, PuEdition, PuEnvironment } from '@pickup/shared'
+import { logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
 import swagger from '@fastify/swagger'
 import { FastifyInstance, FastifyRequest, HTTPMethods } from 'fastify'
 import fastifySocketIO from 'fastify-socket.io'
@@ -152,12 +152,4 @@ export async function appPostBoot(): Promise<void> {
             `[WARNING]: The application is running in ${environment} mode.`,
         )
     }
-    // const oldestPlatform = await platformService.getOldestPlatform()
-    // const key = system.get<string>(AppSystemProp.LICENSE_KEY)
-    // if (!isNil(oldestPlatform) && !isNil(key)) {
-    //     await platformService.update({
-    //         id: oldestPlatform.id,
-    //         licenseKey: key,
-    //     })
-    // }
 }
