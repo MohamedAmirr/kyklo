@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ProgressCircularComponent } from '@/components/custom/circular-progress';
 import { Button } from '@/components/ui/button';
 import { UserAvatar } from '@/components/ui/user-avatar';
-import { ProjectSwitcher } from '@/features/projects/components/project-switcher';
+import { ClassroomSwitcher } from '@/features/classrooms/components/classroom-switcher';
 import { classroomHooks } from '@/hooks/project-hooks';
 import { formatUtils } from '@/lib/utils';
 import { PuFlagId, isNil } from '@pickup/shared';
@@ -31,7 +31,7 @@ export const Header = () => {
             {t('Platform Admin')}
           </span>
         ) : (
-          <ProjectSwitcher />
+          <ClassroomSwitcher />
         )}
         <div className="grow"></div>
         <div className="flex items-center justify-center gap-4">

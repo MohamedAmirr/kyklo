@@ -37,11 +37,12 @@ export const classroomHooks = {
     return useQuery<ActiveClassroom[], Error>({
       queryKey: ['classrooms'],
       queryFn: async () => {
-        const results = await classroomApi.list({
-          cursor: undefined,
-          limit: 1000,
-        });
-        return results.data;
+        // TODO: UNCOMMENT THIS
+        // const results = await classroomApi.list({
+        //   cursor: undefined,
+        //   limit: 1000,
+        // });
+        return [];
       },
     });
   },

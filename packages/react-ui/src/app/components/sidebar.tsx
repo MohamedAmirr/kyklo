@@ -50,9 +50,12 @@ const CustomTooltipLink = ({
       to={to}
       target={newWindow ? '_blank' : ''}
       rel={newWindow ? 'noopener noreferrer' : ''}
+      className={`flex flex-col items-start justify-start rounded-sm ${
+        isActive ? 'bg-primary text-white' : 'hover:bg-accent'
+      } ${extraClasses || ''}`}
     >
       <div
-        className={`relative flex flex-col items-center justify-center gap-1`}
+        className={`relative flex items-center justify-center gap-1`}
       >
         {locked && (
           <LockKeyhole
@@ -61,11 +64,9 @@ const CustomTooltipLink = ({
           />
         )}
         <Icon
-          className={`size-10 p-2.5 hover:text-primary rounded-lg transition-colors ${
-            isActive ? 'bg-accent text-primary' : ''
-          } ${extraClasses || ''}`}
+          className={`size-10 p-2.5 rounded-lg transition-colors `}
         />
-        <span className="text-[10px]">{label}</span>
+        <span className="text-[15px]">{label}</span>
         {notification && (
           <span className="bg-destructive absolute right-[1px] top-[3px] size-2 rounded-full"></span>
         )}
@@ -100,21 +101,26 @@ export function Sidebar({
     <div>
       <div className="flex min-h-screen w-full  ">
         {!hideSideNav && (
-          <aside className=" border-r sticky  top-0 h-screen bg-muted/50 w-[65px] ">
+          <aside className=" border-r sticky  top-0 h-screen bg-muted/50 w-[260px] ">
             <ScrollArea>
-              <nav className="flex flex-col items-center h-screen  sm:py-5  gap-5 p-2 ">
+              <nav className="flex flex-col  h-screen  sm:py-5  gap-4 px-4">
                 <Link
                   to="/home"
                   className="h-[48px] items-center justify-center "
                 >
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <img
-                        src={branding.logos.logoIconUrl}
-                        alt={t('home')}
-                        width={28}
-                        height={28}
-                      />
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={branding.logos.logoIconUrl}
+                          alt={t('home')}
+                          width={50}
+                          height={50}
+                        />
+                        <span className="text-[24px]">
+                          {branding.websiteName}
+                        </span>
+                      </div>
                     </TooltipTrigger>
                     <TooltipContent side="right">{t('Home')}</TooltipContent>
                   </Tooltip>
@@ -141,7 +147,7 @@ export function Sidebar({
                       newWindow={true}
                     />
                     <CustomTooltipLink
-                      to="https://activepieces.com/docs"
+                      to="https://google.com/"
                       label={t('Docs')}
                       Icon={FileTextIcon}
                       newWindow={true}
