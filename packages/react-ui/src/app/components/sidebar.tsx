@@ -165,7 +165,6 @@ export function Sidebar({
           </div>
         </div>
       </div>
-      <ShowPoweredBy show={isHomeDashboard} />
     </div>
   );
 }
