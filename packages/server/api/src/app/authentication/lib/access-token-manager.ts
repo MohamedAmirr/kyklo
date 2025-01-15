@@ -1,6 +1,9 @@
 import { assertNotNullOrUndefined, ErrorCode, PickUpError, Principal } from '@pickup/shared'
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { jwtUtils } from '../../helper/jwt-utils'
+
+dayjs.extend(duration);
 
 export const accessTokenManager = {
     async generateToken(principal: Principal, expiresInSeconds: number = dayjs.duration(7, 'day').asSeconds()): Promise<string> {
