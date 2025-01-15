@@ -1,9 +1,9 @@
 import { logger, SharedSystemProp, system } from '@pickup/server-shared'
-import {PuEnvironment, UserStatus, UserTypes} from '@pickup/shared'
+import {PuEnvironment, UserTypes} from '@pickup/shared'
 import { databaseConnection } from '../database-connection'
 import { FlagEntity } from '../../flags/flag.entity'
-import { SchoolEntity } from '../../school/school.entity'
-import { UserEntity } from '../../user/user.entity'
+import {SchoolEntity} from "../../school/school.entity";
+import {userService} from "../../user/user.service";
 
 const DEV_DATA_SEEDED_FLAG = 'DEV_DATA_SEEDED'
 
@@ -31,7 +31,6 @@ const seedDevUser = async (): Promise<void> => {
     const DEV_EMAIL = 'dev@ap.com';
     const DEV_PASSWORD = '12345678';
 
-    const userRepo = databaseConnection().getRepository(UserEntity);
     const schoolRepo = databaseConnection().getRepository(SchoolEntity);
 
     let school = await schoolRepo.findOneBy({ name: 'Dev School' });
@@ -44,14 +43,12 @@ const seedDevUser = async (): Promise<void> => {
         await schoolRepo.save(school);
     }
 
-    await userRepo.save({
-        id:"dev-user",
+    await userService.create({
         email: DEV_EMAIL,
         password: DEV_PASSWORD,
         firstName: 'Dev',
         lastName: 'User',
         schoolId: school.id,
-        status: UserStatus.ACTIVE,
         type:UserTypes.STAFF
     });
 

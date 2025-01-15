@@ -10,6 +10,9 @@ import { openapiModule } from './helper/openapi/openapi.module'
 import { validateEnvPropsOnStartup } from './helper/system-validator'
 import { flagModule } from './flags/flag.module'
 import { PuEdition, PuEnvironment } from '@pickup/shared'
+import { authenticationModule } from './authentication/authentication.module'
+import {classroomModule} from "./classroom/classroom.module";
+import { studentModule } from './student/student.module'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
@@ -53,6 +56,9 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
     app.addHook('preHandler', securityHandlerChain)
     await app.register(openapiModule)
     await app.register(flagModule)
+    await app.register(authenticationModule)
+    await app.register(classroomModule)
+    await app.register(studentModule)
 
     app.get(
         '/redirect',
