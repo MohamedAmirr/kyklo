@@ -3,11 +3,12 @@ import {ALL_PRINCIPAL_TYPES, AuthenticationResponse, SignInRequest,} from '@pick
 import {RateLimitOptions} from '@fastify/rate-limit'
 import {FastifyPluginAsyncTypebox} from '@fastify/type-provider-typebox'
 import {authenticationService} from './authentication-service'
+import {FastifyRequest} from "fastify";
 
 export const authenticationController: FastifyPluginAsyncTypebox = async (
     app,
 ):Promise<void> => {
-    app.post('/sign-in', SignInRequestOptions, async (request):Promise<AuthenticationResponse> => {
+    app.post('/sign-in', SignInRequestOptions, async (request:FastifyRequest<{ Body: SignInRequest }>):Promise<AuthenticationResponse> => {
         return await authenticationService.signIn({
             email: request.body.email,
             password: request.body.password,
