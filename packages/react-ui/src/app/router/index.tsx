@@ -23,6 +23,7 @@ import { SignUpPage } from '../routes/sign-up';
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper';
 import HomePage from '../routes/home';
+import TicketPage from '../routes/ticket';
 
 const SettingsRerouter = () => {
   const { hash } = useLocation();
@@ -41,6 +42,16 @@ const routes = [
       <DashboardContainer>
         <PageTitle title="Home">
           <HomePage />
+        </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: '/ticket',
+    element: (
+      <DashboardContainer>
+        <PageTitle title="Ticket">
+          <TicketPage />
         </PageTitle>
       </DashboardContainer>
     ),
