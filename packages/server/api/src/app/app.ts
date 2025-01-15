@@ -11,6 +11,7 @@ import { validateEnvPropsOnStartup } from './helper/system-validator'
 import { flagModule } from './flags/flag.module'
 import { PuEdition, PuEnvironment } from '@pickup/shared'
 import {authenticationModule} from "./authentication/authentication.module";
+import {userModule} from "./user/user.module";
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
@@ -55,6 +56,7 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
     await app.register(openapiModule)
     await app.register(flagModule)
     await app.register(authenticationModule)
+    await app.register(userModule)
 
     app.get(
         '/redirect',
