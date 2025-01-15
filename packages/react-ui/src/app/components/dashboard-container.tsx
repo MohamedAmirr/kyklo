@@ -15,44 +15,30 @@ type DashboardContainerProps = {
 
 export function DashboardContainer({ children }: DashboardContainerProps) {
   const currentClassroomId = authenticationSession.getClassroomId();
-  if (isNil(currentClassroomId) || currentClassroomId === '') {
-    return <Navigate to="/sign-in" replace />;
-  }
+  // if (isNil(currentClassroomId) || currentClassroomId === '') {
+  //   return <Navigate to="/sign-in" replace />;
+  // }
   const links: SidebarLink[] = [
     {
       to: '/home',
       label: t('Home'),
       icon: Home,
-      showInEmbed: true,
-    },
-    {
-      to: '/runs',
-      label: t('Runs'),
-      icon: Logs,
-      showInEmbed: true,
     },
     {
       to: '/settings',
       label: t('Settings'),
       icon: Wrench,
-      showInEmbed: false,
     },
   ]
-    .map((link) => {
-      return {
-        ...link,
-        to: `/classrooms/${currentClassroomId}${link.to}`,
-      };
-    });
 
   return (
-    <AllowOnlyLoggedInUserOnlyGuard>
+    // <AllowOnlyLoggedInUserOnlyGuard>
       <Sidebar
         isHomeDashboard={true}
         links={links}
       >
         {children}
       </Sidebar>
-    </AllowOnlyLoggedInUserOnlyGuard>
+    // </AllowOnlyLoggedInUserOnlyGuard>
   );
 }

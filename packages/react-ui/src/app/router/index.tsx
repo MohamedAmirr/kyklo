@@ -40,9 +40,11 @@ const routes = [
   {
     path: '/home',
     element: (
-      <AllowOnlyLoggedInUserOnlyGuard>
-        <HomePage />
-      </AllowOnlyLoggedInUserOnlyGuard>
+      <DashboardContainer>
+        <PageTitle title="Home">
+          <HomePage />
+        </PageTitle>
+      </DashboardContainer>
     ),
   },
   {
