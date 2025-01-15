@@ -18,8 +18,6 @@ import NotFoundPage from '../routes/404-page';
 import AuthenticatePage from '../routes/authenticate';
 import { ChangePasswordPage } from '../routes/change-password';
 import { ResetPasswordPage } from '../routes/forget-password';
-import AppearancePage from '../routes/settings/appearance';
-import GeneralPage from '../routes/settings/general';
 import { SignInPage } from '../routes/sign-in';
 import { SignUpPage } from '../routes/sign-up';
 
@@ -99,30 +97,6 @@ const routes = [
       </PageTitle>
     ),
   },
-  ...ProjectRouterWrapper({
-    path: '/settings/appearance',
-    element: (
-      <DashboardContainer>
-        <ClassroomSettingsLayout>
-          <PageTitle title="Appearance">
-            <AppearancePage />
-          </PageTitle>
-        </ClassroomSettingsLayout>
-      </DashboardContainer>
-    ),
-  }),
-  ...ProjectRouterWrapper({
-    path: '/settings/general',
-    element: (
-      <DashboardContainer>
-        <ClassroomSettingsLayout>
-          <PageTitle title="General">
-            <GeneralPage />
-          </PageTitle>
-        </ClassroomSettingsLayout>
-      </DashboardContainer>
-    ),
-  }),
   {
     path: '/404',
     element: (

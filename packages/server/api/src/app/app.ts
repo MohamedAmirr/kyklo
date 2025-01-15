@@ -1,4 +1,3 @@
-import { ApplicationEventName, AuthenticationEvent, PuEdition, PuEnvironment } from '@pickup/shared'
 import { logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
 import swagger from '@fastify/swagger'
 import { FastifyInstance, FastifyRequest, HTTPMethods } from 'fastify'
@@ -10,42 +9,10 @@ import { websocketService } from './websockets/websockets.service'
 import { openapiModule } from './helper/openapi/openapi.module'
 import { validateEnvPropsOnStartup } from './helper/system-validator'
 import { flagModule } from './flags/flag.module'
+import { PuEdition, PuEnvironment } from '@pickup/shared'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
-    await app.register(swagger, {
-        hideUntagged: true,
-        openapi: {
-            servers: [
-                {
-                    url: 'http://localhost:3000/api',
-                    description: 'Production Server',
-                },
-            ],
-            components: {
-                securitySchemes: {
-                    apiKey: {
-                        type: 'http',
-                        description: 'Use your api key generated from the admin console',
-                        scheme: 'bearer',
-                    },
-                },
-                schemas: {
-                    [ApplicationEventName.USER_SIGNED_IN]: AuthenticationEvent,
-                    [ApplicationEventName.USER_PASSWORD_RESET]: AuthenticationEvent,
-                    [ApplicationEventName.USER_EMAIL_VERIFIED]: AuthenticationEvent,
-                },
-            },
-            info: {
-                title: 'Pickup Documentation',
-                version: '0.0.0',
-            },
-            externalDocs: {
-                url: 'https://www.pickup.edu/docs',
-                description: 'Find more info here',
-            },
-        },
-    })
 
     await app.register(fastifySocketIO, {
         cors: {
