@@ -1,7 +1,9 @@
 import { logger, SharedSystemProp, system } from '@pickup/server-shared'
-import { isNil, PuEnvironment } from '@pickup/shared'
+import {PuEnvironment, UserStatus, UserTypes} from '@pickup/shared'
 import { databaseConnection } from '../database-connection'
 import { FlagEntity } from '../../flags/flag.entity'
+import { SchoolEntity } from '../../school/school.entity'
+import { UserEntity } from '../../user/user.entity'
 
 const DEV_DATA_SEEDED_FLAG = 'DEV_DATA_SEEDED'
 
@@ -26,21 +28,35 @@ const setDevDataSeededFlag = async (): Promise<void> => {
 }
 
 const seedDevUser = async (): Promise<void> => {
-    const DEV_EMAIL = 'dev@ap.com'
-    const DEV_PASSWORD = '12345678'
+    const DEV_EMAIL = 'dev@ap.com';
+    const DEV_PASSWORD = '12345678';
 
-    //TODO INSERT DEV USER
-    // await authenticationService.signUp({
-    //     email: DEV_EMAIL,
-    //     password: DEV_PASSWORD,
-    //     firstName: 'Dev',
-    //     lastName: 'User',
-    //     verified: true,
-    //     platformId: null,
-    // })
+    const userRepo = databaseConnection().getRepository(UserEntity);
+    const schoolRepo = databaseConnection().getRepository(SchoolEntity);
 
-    logger.info({ name: 'seedDevUser' }, `email=${DEV_EMAIL} pass=${DEV_PASSWORD}`)
-}
+    let school = await schoolRepo.findOneBy({ name: 'Dev School' });
+
+    if (!school) {
+        school = schoolRepo.create({
+            id: 'dev-school',
+            name: 'Dev School',
+        });
+        await schoolRepo.save(school);
+    }
+
+    await userRepo.save({
+        id:"dev-user",
+        email: DEV_EMAIL,
+        password: DEV_PASSWORD,
+        firstName: 'Dev',
+        lastName: 'User',
+        schoolId: school.id,
+        status: UserStatus.ACTIVE,
+        type:UserTypes.STAFF
+    });
+
+    logger.info({ name: 'seedDevUser' }, `email=${DEV_EMAIL} pass=${DEV_PASSWORD}`);
+};
 
 export const seedDevData = async (): Promise<void> => {
     if (currentEnvIsNotDev()) {

@@ -10,12 +10,16 @@ import {
 import { OtpEntity } from '../otp/otp-entity'
 import { createPostgresDataSource } from './postgres-connection'
 import { FlagEntity } from '../flags/flag.entity'
+import {UserEntity} from "../user/user.entity";
+import {SchoolEntity} from "../school/school.entity";
 
 function getEntities(): EntitySchema<unknown>[] {
     const edition = system.getEdition()
 
     const entities: EntitySchema[] = [
         FlagEntity,
+        UserEntity,
+        SchoolEntity
     ]
 
     switch (edition) {
