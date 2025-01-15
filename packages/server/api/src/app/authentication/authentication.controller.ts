@@ -8,6 +8,7 @@ export const authenticationController: FastifyPluginAsyncTypebox = async (
     app,
 ) => {
     app.post('/sign-in', SignInRequestOptions, async (request) => {
+        console.log("hobaaa")
         return await authenticationService.signIn({
             email: request.body.email,
             password: request.body.password,

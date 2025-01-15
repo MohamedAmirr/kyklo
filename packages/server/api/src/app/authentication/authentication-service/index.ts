@@ -12,6 +12,7 @@ import { userService } from '../../user/user.service'
 
 export const authenticationService = {
     async signIn(request: SignInParams): Promise<AuthenticationResponse> {
+        console.log("hoba")
         const user = await userService.getSingleUserByEmail({
             email: request.email,
         })
