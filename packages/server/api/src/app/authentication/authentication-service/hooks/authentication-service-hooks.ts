@@ -1,4 +1,4 @@
-import { Classroom, User } from '@pickup/shared'
+import { User } from '@pickup/shared'
 
 export type AuthenticationServiceHooks = {
     signIn(p: SignInParams): Promise<SignInResult>
@@ -10,6 +10,6 @@ type SignInParams = {
 
 type SignInResult = {
     user: User
-    classroom: Classroom
     token: string
+    schoolId: string
 }

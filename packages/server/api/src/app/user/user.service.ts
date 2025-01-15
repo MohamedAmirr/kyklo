@@ -87,6 +87,7 @@ export const userService = {
             schoolId: user.schoolId,
             firstName: user.firstName,
             lastName: user.lastName,
+            type: user.type,
             status: user.status,
             created: user.created,
             updated: user.updated,
@@ -150,9 +151,7 @@ type UpdateParams = {
     status?: UserStatus
 }
 
-type CreateParams = SignUpRequest & {
-    schoolId: SchoolId | null
-}
+type CreateParams = SignUpRequest
 
 type NewUser = Omit<User, 'created' | 'updated'>
 

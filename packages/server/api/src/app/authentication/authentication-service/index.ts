@@ -16,19 +16,14 @@ export const authenticationService = {
             email: request.email,
         })
         assertUserIsAllowedToSignIn(user)
-        const authnResponse = await hooks.get().signIn({
-            user,
-        })
-
-        assertUserIsAllowedToSignIn(authnResponse.user)
 
         await assertPasswordMatches({
             requestPassword: request.password,
-            userPassword: authnResponse.user.password,
+            userPassword: user.password,
         })
 
         return this.signInResponse({
-            user: authnResponse.user,
+            user,
         })
     },
     async signInResponse({
@@ -43,7 +38,7 @@ export const authenticationService = {
         return {
             ...userWithoutPassword,
             token: authnResponse.token,
-            classroomId: authnResponse.classroom.id,
+            schoolId: authnResponse.schoolId,
         }
     },
 }

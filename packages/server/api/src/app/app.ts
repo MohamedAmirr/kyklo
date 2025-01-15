@@ -1,4 +1,4 @@
-import { ApplicationEventName, AuthenticationEvent, ClassroomRoleEvent, PuEdition, PuEnvironment } from '@pickup/shared'
+import { ApplicationEventName, AuthenticationEvent, PuEdition, PuEnvironment } from '@pickup/shared'
 import { logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
 import swagger from '@fastify/swagger'
 import { FastifyInstance, FastifyRequest, HTTPMethods } from 'fastify'
@@ -34,9 +34,6 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
                     [ApplicationEventName.USER_SIGNED_IN]: AuthenticationEvent,
                     [ApplicationEventName.USER_PASSWORD_RESET]: AuthenticationEvent,
                     [ApplicationEventName.USER_EMAIL_VERIFIED]: AuthenticationEvent,
-                    [ApplicationEventName.CLASSROOM_ROLE_CREATED]: ClassroomRoleEvent,
-                    [ApplicationEventName.CLASSROOM_ROLE_DELETED]: ClassroomRoleEvent,
-                    [ApplicationEventName.CLASSROOM_ROLE_UPDATED]: ClassroomRoleEvent,
                 },
             },
             info: {
