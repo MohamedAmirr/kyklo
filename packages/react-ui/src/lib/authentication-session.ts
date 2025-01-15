@@ -4,7 +4,6 @@ import { classroomApi } from '@/lib/classroom-api';
 import {
   AuthenticationResponse,
   isNil,
-  ClassroomMemberRole,
 } from '@pickup/shared';
 
 const tokenKey = 'token';
