@@ -4,7 +4,6 @@ import { classroomApi } from '@/lib/classroom-api';
 import {
   AuthenticationResponse,
   isNil,
-  ClassroomMemberRole,
 } from '@pickup/shared';
 
 const tokenKey = 'token';
@@ -32,12 +31,7 @@ export const authenticationSession = {
     const decodedJwt = jwtDecode<{ classroomId: string }>(token);
     return decodedJwt.classroomId;
   },
-  getPlatformId(): string | null {
-    return this.getCurrentUser()?.platformId ?? null;
-  },
-  getUserClassroomRole(): ClassroomMemberRole | null {
-    return this.getCurrentUser()?.classroomRole ?? null;
-  },
+
   async switchToSession(classroomId: string) {
     const result = await classroomApi.getTokenForClassroom(classroomId);
     localStorage.setItem(tokenKey, result.token);
