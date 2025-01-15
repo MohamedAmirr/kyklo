@@ -1,10 +1,9 @@
-import { AuthenticationEvent, ClassroomRoleEvent } from '@pickup/shared'
+import { AuthenticationEvent } from '@pickup/shared'
 import { Static, Type } from '@sinclair/typebox'
 import { FastifyRequest } from 'fastify'
 
 export const AuditEventParam = Type.Pick(Type.Union([
     AuthenticationEvent,
-    ClassroomRoleEvent,
 ]), ['data', 'action'])
 export type AuditEventParam = Static<typeof AuditEventParam>
 
@@ -34,8 +33,6 @@ export type ApplicationEventHooks = {
 }
 
 type MetaInformation = {
-    platformId: string
     userId: string
-    classroomId: string
     ip: string
 }

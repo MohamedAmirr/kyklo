@@ -1,5 +1,4 @@
 import {
-    ClassroomMemberRole,
     ErrorCode,
     isNil,
     PickUpError,
@@ -14,8 +13,6 @@ import {
     UserStatus,
 } from '@pickup/shared'
 import dayjs from 'dayjs'
-import { nanoid } from 'nanoid'
-import { IsNull } from 'typeorm'
 import { repoFactory } from '../core/db/repo-factory'
 import { UserEntity } from './user.entity'
 import { passwordHasher } from '../authentication/lib/password-hasher'
@@ -33,16 +30,14 @@ export const userService = {
             email: params.email.toLowerCase().trim(),
             status: UserStatus.ACTIVE,
             password: hashedPassword,
-            tokenVersion: nanoid(),
         }
 
         return userRepo().save(user)
     },
-    async update({ id, status, schoolId }: UpdateParams): Promise<User> {
+    async update({ id, status }: UpdateParams): Promise<User> {
 
         const updateResult = await userRepo().update({
             id,
-            schoolId,
         }, {
             ...spreadIfDefined('status', status),
         })
@@ -58,7 +53,6 @@ export const userService = {
         }
         return userRepo().findOneByOrFail({
             id,
-            schoolId,
         })
     },
     async list({ schoolId }: ListParams): Promise<SeekPage<User>> {
@@ -71,22 +65,6 @@ export const userService = {
             next: null,
             previous: null,
         }
-    },
-
-    async verify({ id }: IdParams): Promise<User> {
-        const user = await userRepo().findOneByOrFail({ id })
-        if (user.verified) {
-            throw new PickUpError({
-                code: ErrorCode.AUTHORIZATION,
-                params: {
-                    message: 'User is already verified',
-                },
-            })
-        }
-        return userRepo().save({
-            ...user,
-            verified: true,
-        })
     },
 
     async get({ id }: IdParams): Promise<User | null> {
@@ -109,16 +87,16 @@ export const userService = {
             schoolId: user.schoolId,
             firstName: user.firstName,
             lastName: user.lastName,
+            type: user.type,
             status: user.status,
             created: user.created,
             updated: user.updated,
         }
     },
 
-    async delete({ id, schoolId }: DeleteParams): Promise<void> {
+    async delete({ id }: DeleteParams): Promise<void> {
         await userRepo().delete({
             id,
-            schoolId,
         })
     },
     async getBasicInformation(id: string): Promise<Pick<User, 'email' | 'firstName' | 'lastName'>> {
@@ -129,27 +107,12 @@ export const userService = {
             lastName: user.lastName,
         }
     },
-    async getUsersByEmail({ email }: { email: string }): Promise<User[]> {
+    async getSingleUserByEmail({ email }: { email: string }): Promise<User | null> {
         return userRepo()
             .createQueryBuilder()
-            .andWhere('LOWER(email) = LOWER(:email)', { email })
-            .getMany()
-    },
-    async getBySchoolAndEmail({
-        schoolId,
-        email,
-    }: GetBySchoolAndEmailParams): Promise<User | null> {
-        const schoolWhereQuery = schoolId
-            ? { schoolId }
-            : { schoolId: IsNull() }
-
-        return userRepo()
-            .createQueryBuilder()
-            .where(schoolWhereQuery)
             .andWhere('LOWER(email) = LOWER(:email)', { email })
             .getOne()
     },
-
     async updatePassword({
         id,
         newPassword,
@@ -159,11 +122,10 @@ export const userService = {
         await userRepo().update(id, {
             updated: dayjs().toISOString(),
             password: hashedPassword,
-            tokenVersion: nanoid(),
         })
     },
 
-    async addOwnerToPlatform({
+    async addUserToSchool({
         id,
         schoolId,
     }: UpdateSchoolIdParams): Promise<void> {
@@ -176,7 +138,6 @@ export const userService = {
 
 type DeleteParams = {
     id: UserId
-    schoolId: SchoolId
 }
 
 
@@ -188,21 +149,11 @@ type ListParams = {
 type UpdateParams = {
     id: UserId
     status?: UserStatus
-    schoolId: SchoolId
 }
 
-type CreateParams = SignUpRequest & {
-    verified: boolean
-    schoolId: string | null
-    classroomRole: ClassroomMemberRole
-}
+type CreateParams = SignUpRequest
 
 type NewUser = Omit<User, 'created' | 'updated'>
-
-type GetBySchoolAndEmailParams = {
-    schoolId: string | null
-    email: string
-}
 
 type IdParams = {
     id: UserId

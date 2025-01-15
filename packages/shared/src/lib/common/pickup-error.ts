@@ -2,7 +2,6 @@ import { FileId } from '../file'
 import { UserId } from '../user'
 import { Permission } from './security'
 import { ClassroomId } from '../classroom'
-import { ClassroomRole } from '../classroom-role'
 
 export class PickUpError extends Error {
     constructor(public error: PickUpErrorParams, message?: string) {
@@ -69,7 +68,6 @@ ErrorCode.PERMISSION_DENIED,
 {
     userId: UserId
     classroomId: ClassroomId
-    role: ClassroomRole
     permission: Permission | undefined
 }
 >

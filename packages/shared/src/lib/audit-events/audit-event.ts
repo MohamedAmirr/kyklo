@@ -1,7 +1,6 @@
 import { Static, Type } from '@sinclair/typebox';
 import {
   BaseModelSchema,
-  ClassroomRole,
   User,
 } from '@pickup/shared';
 
@@ -52,31 +51,9 @@ export const AuthenticationEvent = Type.Object({
 
 export type AuthenticationEvent = Static<typeof AuthenticationEvent>;
 
-export const ClassroomRoleEvent = Type.Object({
-  ...BaseAuditEventProps,
-  action: Type.Union([
-    Type.Literal(ApplicationEventName.CLASSROOM_ROLE_CREATED),
-    Type.Literal(ApplicationEventName.CLASSROOM_ROLE_UPDATED),
-    Type.Literal(ApplicationEventName.CLASSROOM_ROLE_DELETED),
-  ]),
-  data: Type.Object({
-    classroomRole: Type.Pick(ClassroomRole, [
-      'id',
-      'created',
-      'updated',
-      'name',
-      'permissions',
-      'platformId',
-    ]),
-  }),
-});
-
-export type ClassroomRoleEvent = Static<typeof ClassroomRoleEvent>;
-
 
 export const ApplicationEvent = Type.Union([
   AuthenticationEvent,
-  ClassroomRoleEvent,
 ]);
 
 export type ApplicationEvent = Static<typeof ApplicationEvent>;
@@ -89,12 +66,6 @@ export function summarizeApplicationEvent(event: ApplicationEvent) {
       return `User ${event.userEmail} reset password`;
     case ApplicationEventName.USER_EMAIL_VERIFIED:
       return `User ${event.userEmail} verified email`;
-    case ApplicationEventName.CLASSROOM_ROLE_CREATED:
-      return `${event.data.classroomRole.name} is created`;
-    case ApplicationEventName.CLASSROOM_ROLE_UPDATED:
-      return `${event.data.classroomRole.name} is updated`;
-    case ApplicationEventName.CLASSROOM_ROLE_DELETED:
-      return `${event.data.classroomRole.name} is deleted`;
   }
 }
 
