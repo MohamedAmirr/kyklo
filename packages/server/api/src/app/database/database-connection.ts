@@ -12,6 +12,7 @@ import { createPostgresDataSource } from './postgres-connection'
 import { FlagEntity } from '../flags/flag.entity'
 import {UserEntity} from "../user/user.entity";
 import {SchoolEntity} from "../school/school.entity";
+import {ClassroomEntity} from "../classroom/classroom.entity";
 
 function getEntities(): EntitySchema<unknown>[] {
     const edition = system.getEdition()
@@ -19,7 +20,8 @@ function getEntities(): EntitySchema<unknown>[] {
     const entities: EntitySchema[] = [
         FlagEntity,
         UserEntity,
-        SchoolEntity
+        SchoolEntity,
+        ClassroomEntity
     ]
 
     switch (edition) {
