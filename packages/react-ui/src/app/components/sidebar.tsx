@@ -12,8 +12,6 @@ import {
 } from '@/components/ui/tooltip';
 import { flagsHooks } from '@/hooks/flags-hooks';
 
-import { ShowPoweredBy } from '../../components/show-powered-by';
-
 import { Header } from './header';
 
 type Link = {

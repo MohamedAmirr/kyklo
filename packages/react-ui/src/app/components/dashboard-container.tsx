@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { Home, Logs, Wrench } from 'lucide-react';
+import { Home, Logs, Wrench, CalendarRange } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 
 import { isNil } from '@pickup/shared';
@@ -23,6 +23,11 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
       to: '/home',
       label: t('Home'),
       icon: Home,
+    },
+    {
+      to: '/events',
+      label: t('Events'),
+      icon: CalendarRange,
     },
     {
       to: '/settings',

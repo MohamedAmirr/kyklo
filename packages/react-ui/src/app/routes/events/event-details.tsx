@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom'; // For web
 
 // Type Imports
-import type { Event } from '../../../../../shared/src/lib/event/event';
+import type { Event } from '../../../../../shared/src/lib/event';
+import {useQuery} from "@tanstack/react-query";
 
 const EventDetails = () => {
     // Get the event ID from the URL
@@ -13,7 +14,7 @@ const EventDetails = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
+    useQuery(() => {
         const fetchEventData = async () => {
             try {
                 const response = await fetch(`/api/events/${id}`); // Replace with your API endpoint
