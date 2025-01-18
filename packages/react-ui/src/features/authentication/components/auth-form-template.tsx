@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -9,12 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { PuFlagId } from '@pickup/shared';
-
-import { flagsHooks } from '@/hooks/flags-hooks';
 
 import { SignInForm } from './sign-in-form';
-import { SignUpForm } from './sign-up-form';
 
 const BottomNote = ({ isSignup }: { isSignup: boolean }) => {
   return isSignup ? (
@@ -44,7 +40,6 @@ const AuthFormTemplate = React.memo(
   ({ form }: { form: 'signin' | 'signup' }) => {
     const isSignUp = form === 'signup';
 
-    const [showCheckYourEmailNote, setShowCheckYourEmailNote] = useState(false);
     const data = {
       signin: {
         title: t('Welcome Back!'),
@@ -60,12 +55,10 @@ const AuthFormTemplate = React.memo(
 
     return (
       <Card className="w-[28rem] rounded-sm drop-shadow-xl">
-        {!showCheckYourEmailNote && (
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">{data.title}</CardTitle>
-            <CardDescription>{data.description}</CardDescription>
-          </CardHeader>
-        )}
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl">{data.title}</CardTitle>
+          <CardDescription>{data.description}</CardDescription>
+        </CardHeader>
 
         <CardContent>
           <SignInForm />

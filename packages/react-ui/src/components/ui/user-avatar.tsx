@@ -2,8 +2,6 @@ import { t } from 'i18next';
 import { LogOut, SunMoon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { authenticationSession } from '@/lib/authentication-session';
-
 import { Avatar, AvatarFallback } from './avatar';
 import { AvatarLetter } from './avatar-letter';
 import {
@@ -16,7 +14,12 @@ import {
 import { TextWithIcon } from './text-with-icon';
 
 export function UserAvatar() {
-  const user = authenticationSession.getCurrentUser();
+  const user = {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+  };
+  // TODO: Add authenticationSession.getCurrentUser();
   if (!user) {
     return null;
   }
@@ -51,7 +54,7 @@ export function UserAvatar() {
 
         <DropdownMenuItem
           onClick={() => {
-            authenticationSession.logOut();
+            // TODO: Add authenticationSession.logOut();
           }}
           className="cursor-pointer"
         >

@@ -1,4 +1,3 @@
-import { api } from '@/lib/api';
 import {
   AuthenticationResponse,
   SignInRequest,
@@ -7,6 +6,8 @@ import {
   ResetPasswordRequestBody,
   VerifyEmailRequestBody,
 } from '@pickup/shared';
+
+import { api } from '@/lib/api';
 
 export const authenticationApi = {
   signIn(request: SignInRequest) {

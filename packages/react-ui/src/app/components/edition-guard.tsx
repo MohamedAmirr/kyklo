@@ -1,5 +1,6 @@
-import { flagsHooks } from '@/hooks/flags-hooks';
 import { PuEdition, PuFlagId } from '@pickup/shared';
+
+import { flagsHooks } from '@/hooks/flags-hooks';
 
 type EditionGuardProps = {
   children: React.ReactNode;

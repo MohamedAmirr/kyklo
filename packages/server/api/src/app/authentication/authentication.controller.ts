@@ -7,7 +7,7 @@ import {FastifyRequest} from "fastify";
 
 export const authenticationController: FastifyPluginAsyncTypebox = async (
     app,
-):Promise<void> => {
+) => {
     app.post('/sign-in', SignInRequestOptions, async (request:FastifyRequest<{ Body: SignInRequest }>):Promise<AuthenticationResponse> => {
         return await authenticationService.signIn({
             email: request.body.email,
