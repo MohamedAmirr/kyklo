@@ -15,7 +15,7 @@ export const authenticationService = {
         const user = await userService.getSingleUserByEmail({
             email: request.email,
         })
-        console.log("hoba",user)
+
         assertUserIsAllowedToSignIn(user)
 
         await assertPasswordMatches({

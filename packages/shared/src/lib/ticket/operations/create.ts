@@ -1,6 +1,7 @@
 import {Static, Type } from "@sinclair/typebox";
 
 export const newTicket = Type.Object({
+    id: Type.String(),
     title: Type.String(),
     categoryId: Type.String(),
     raisedById: Type.String(),
