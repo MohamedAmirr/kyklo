@@ -93,6 +93,7 @@
     "tailwindcss-animate": "^1.0.7",
     "tinycolor2": "^1.6.0",
     "typeorm": "^0.3.20",
+    "use-debounce": "^10.0.4",
     "use-ripple-hook": "^1.0.24",
     "vite-plugin-checker": "^0.8.0"
   },

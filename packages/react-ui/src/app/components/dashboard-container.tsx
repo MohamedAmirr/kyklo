@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { Home, Logs, Wrench } from 'lucide-react';
+import { Home, MessageCircleQuestion, Wrench } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 
 import { isNil } from '@pickup/shared';
@@ -29,6 +29,12 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
       label: t('Settings'),
       icon: Wrench,
     },
+    {
+      to: '/ticket',
+      label: t('Tickets'),
+      icon: MessageCircleQuestion,
+    },
+
   ]
 
   return (
