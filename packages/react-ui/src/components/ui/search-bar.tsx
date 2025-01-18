@@ -7,6 +7,7 @@ import {SearchIcon} from 'lucide-react';
 import {Badge} from './badge';
 import {Popover,PopoverContent,PopoverTrigger} from './popover';
 import {Separator} from './seperator';
+import { t } from 'i18next';
 
 interface SearchBarProps {
     title?:string;
@@ -31,7 +32,7 @@ export const SearchBar = ({
             <PopoverTrigger asChild>
                 <Button variant="outline" size="sm" className="h-8 border">
                     <SearchIcon className="mr-2 size-4" />
-                    {title}
+                    {title ? t(title) : ''}
                     {filterValue.length > 0 && (
                         <>
                             <Separator orientation="vertical" className="mx-2 h-4" />
@@ -48,7 +49,7 @@ export const SearchBar = ({
             <PopoverContent className="w-[200px] p-0" align="start">
                 <Input
                     type="text"
-                    placeholder="What are you looking for?"
+                    placeholder={t('What are you looking for?')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />

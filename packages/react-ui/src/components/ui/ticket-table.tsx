@@ -34,6 +34,18 @@ import {
 import {SearchBar} from "./search-bar"
 import OpenClosedTickets from "@/components/open-closed-tickets";
 import TicketDetails from "../ticket-details"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
+import {Input} from "./input"
+import {Textarea} from "@/components/ui/textarea";
+import {t} from "i18next"
 
 
 export type Payment = {
@@ -51,7 +63,7 @@ export const columns: ColumnDef<Payment>[] = [
         accessorKey: "ticketId",
         header: ({column}) => (
             <div className="flex items-center">
-                Ticket ID
+                {t('Ticket ID')}
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
@@ -68,7 +80,7 @@ export const columns: ColumnDef<Payment>[] = [
         accessorKey: "title",
         header: ({column}) => (
             <div className="flex items-center">
-                Title
+                {t('Title')}
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
@@ -85,7 +97,7 @@ export const columns: ColumnDef<Payment>[] = [
         accessorKey: "category",
         header: ({column}) => (
             <div className="flex items-center">
-                Category
+                {t('Category')}
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
@@ -102,7 +114,7 @@ export const columns: ColumnDef<Payment>[] = [
         accessorKey: "username",
         header: ({column}) => (
             <div className="flex items-center">
-                Username
+                {t('Username')}
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
@@ -119,7 +131,7 @@ export const columns: ColumnDef<Payment>[] = [
         accessorKey: "status",
         header: ({column}) => (
             <div className="flex items-center">
-                Status
+                {t('Status')}
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
@@ -134,7 +146,7 @@ export const columns: ColumnDef<Payment>[] = [
 
             return (
                 <div className={`capitalize ${bgColor}  p-1 px-2 inline-block text-center rounded-3xl`}>
-                    {status}
+                    {t(status)}
                 </div>
             );
         },
@@ -152,7 +164,7 @@ export const columns: ColumnDef<Payment>[] = [
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
+                            <span className="sr-only">{t('Open menu')}</span>
                             <MoreHorizontal/>
                         </Button>
                     </DropdownMenuTrigger>
@@ -170,6 +182,7 @@ export const columns: ColumnDef<Payment>[] = [
 ]
 
 export function TicketTable({data}: { data: Payment[] }) {
+    const [openDialog, setOpenDialog] = React.useState(false);
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         [{id: "status", value: "opened"}]
@@ -228,7 +241,7 @@ export function TicketTable({data}: { data: Payment[] }) {
         updateFilter("title", title);
     };
 
-    const handleRowOnClick = (row:Payment) => {
+    const handleRowOnClick = (row: Payment) => {
         setSelectedRow(row);
         setOpenSelectedTicket(true);
     }
@@ -251,7 +264,46 @@ export function TicketTable({data}: { data: Payment[] }) {
                             onFilterChange={setStatusFilter}
                         />
                     </div>
-                    <Button size={"sm"}>New Ticket</Button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button size="sm">{t('New Ticket')}</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>{t('Create New Ticket')}</DialogTitle>
+                            </DialogHeader>
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    console.log("Ticket created");
+                                    setOpenDialog(false);
+                                }}
+                            >
+                                <div className="space-y-4">
+                                    {[
+                                        {label: t('Title'), type: 'text'},
+                                        {label: t('Category'), type: 'text'},
+                                        {label: t('Description'), type: 'textarea'},
+                                    ].map(({label, type}) => (
+                                        <div key={label} className="space-y-1">
+                                            <span>{label}</span>
+                                            {type === 'textarea' ? (
+                                                <Textarea className="w-full p-2 border rounded" required/>
+                                            ) : (
+                                                <Input type={type} className="w-full p-2 border rounded" required/>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                                <DialogFooter>
+                                    <DialogClose asChild>
+                                        <Button variant="ghost">{t('Cancel')}</Button>
+                                    </DialogClose>
+                                    <Button type="submit">{t('Submit')}</Button>
+                                </DialogFooter>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
                 </div>
                 <Table>
                     <TableHeader>
@@ -278,7 +330,7 @@ export function TicketTable({data}: { data: Payment[] }) {
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
-                                    onClick={()=>handleRowOnClick(row.original)}
+                                    onClick={() => handleRowOnClick(row.original)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -296,7 +348,7 @@ export function TicketTable({data}: { data: Payment[] }) {
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                                    No results.
+                                    {t('No results.')}
                                 </TableCell>
                             </TableRow>
                         )}
@@ -304,20 +356,20 @@ export function TicketTable({data}: { data: Payment[] }) {
                 </Table>
                 {selectedRow && (
                     <TicketDetails
-                    open={openSelectedTicket}
-                    handleClose={() => setOpenSelectedTicket(false)}
-                    customerName={selectedRow.username}
-                    customerRole={""}
-                    ticketId={selectedRow.ticketId}
-                    category={selectedRow.category}
-                    status={selectedRow.status}
-                />
+                        open={openSelectedTicket}
+                        handleClose={() => setOpenSelectedTicket(false)}
+                        customerName={selectedRow.username}
+                        customerRole={""}
+                        ticketId={selectedRow.ticketId}
+                        category={selectedRow.category}
+                        status={selectedRow.status}
+                    />
                 )}
                 <div className="flex items-center justify-between space-x-2 p-4">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline">
-                                Columns <ChevronDown/>
+                                {t('Columns')} <ChevronDown/>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
@@ -347,7 +399,7 @@ export function TicketTable({data}: { data: Payment[] }) {
                             onClick={() => table.previousPage()}
                             disabled={!table.getCanPreviousPage()}
                         >
-                            Previous
+                            {t('Previous')}
                         </Button>
                         <Button
                             variant="outline"
@@ -355,7 +407,7 @@ export function TicketTable({data}: { data: Payment[] }) {
                             onClick={() => table.nextPage()}
                             disabled={!table.getCanNextPage()}
                         >
-                            Next
+                            {t('Next')}
                         </Button>
                     </div>
                 </div>

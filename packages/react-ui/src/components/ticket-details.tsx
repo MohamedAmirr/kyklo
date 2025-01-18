@@ -12,6 +12,7 @@ import {Separator} from "./ui/seperator";
 import profileImg from "@/assets/profile-sample.png";
 import React from "react";
 import {cn} from "@/lib/utils";
+import {t} from "i18next";
 
 type Props = {
     open: boolean;
@@ -26,7 +27,7 @@ type Props = {
 const TicketDetails = ({open, handleClose, customerName, customerRole, ticketId, category, status}: Props) => {
     const TicketDetail = React.memo(({label, value}: { label: string; value: string }) => (
         <div className="flex flex-col justify-center items-start gap-1">
-            <h2 className="text-gray-400 text-lg font-semibold">{label}</h2>
+            <h2 className="text-gray-400 text-lg font-semibold">{t(label)}</h2>
             {(value.toLowerCase() === "opened" || value.toLowerCase() === "closed") ? (
                 <h2
                     className={
@@ -41,10 +42,11 @@ const TicketDetails = ({open, handleClose, customerName, customerRole, ticketId,
                                     ''
                         )
                     }
-                >{value}
+                >
+                    {t(value)}
                 </h2>
             ) : (
-                <h2 className="text-lg">{value}</h2>
+                <h2 className="text-lg">{t(value)}</h2>
             )}
         </div>
     ));
@@ -57,7 +59,7 @@ const TicketDetails = ({open, handleClose, customerName, customerRole, ticketId,
                         <div className="flex justify-center items-center h-11 w-11 bg-blue-50 rounded-md">
                             <CircleHelp className=" h-6 w-6 text-blue-600"/>
                         </div>
-                        <h2 className="text-lg">Customer Issue</h2>
+                        <h2 className="text-lg capitalize">{t('customer issue')}</h2>
                     </div>
                     <SheetClose asChild>
                         <Button variant="ghost" size="icon" aria-label={"close"} className="bg-gray-100 rounded-3xl">
@@ -78,11 +80,11 @@ const TicketDetails = ({open, handleClose, customerName, customerRole, ticketId,
                     </div>
                     <div
                         className={"flex flex-row sm:flex-row sm:justify-evenly justify-evenly border-2 w-full h-24 rounded-xl p-1"}>
-                        <TicketDetail label="Ticket ID" value={ticketId}/>
+                        <TicketDetail label={t("Ticket ID")} value={ticketId}/>
                         <Separator orientation="vertical" className="mx-2 h-12 self-center"/>
-                        <TicketDetail label="Category" value={category}/>
+                        <TicketDetail label={t("Category")} value={category}/>
                         <Separator orientation="vertical" className="mx-2 h-12 self-center"/>
-                        <TicketDetail label="Ticket Status" value={status}/>
+                        <TicketDetail label={t("Ticket Status")} value={status}/>
                     </div>
                 </div>
             </SheetContent>
