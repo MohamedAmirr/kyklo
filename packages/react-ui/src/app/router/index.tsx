@@ -118,7 +118,7 @@ const routes = [
     ),
   },
 ];
-const ApRouter = () => {
+const PuRouter = () => {
   const router = useMemo(() => {
     return createBrowserRouter(routes);
   }, []);
@@ -126,4 +126,4 @@ const ApRouter = () => {
   return <RouterProvider router={router}></RouterProvider>;
 };
 
-export { ApRouter };
+export { PuRouter };

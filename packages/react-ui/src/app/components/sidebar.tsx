@@ -158,10 +158,10 @@ export function Sidebar({
             </ScrollArea>
           </aside>
         )}
-        <div className="flex-1 p-4">
+        <div className="flex-1 py-4 px-10">
           <div className="flex flex-col">
             <Header />
-            <div className="container mx-auto flex py-10">{children}</div>
+            <div className="flex py-10">{children}</div>
           </div>
         </div>
       </div>

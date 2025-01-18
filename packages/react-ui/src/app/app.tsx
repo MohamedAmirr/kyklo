@@ -9,7 +9,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 import { InitialDataGuard } from './components/initial-data-guard';
-import { ApRouter } from './router';
+import { PuRouter } from './router';
 
 const queryClient = new QueryClient();
 let typesFormatsAdded = false;
@@ -27,7 +27,7 @@ export function App() {
       <InitialDataGuard>
           <TooltipProvider>
             <ThemeProvider storageKey="vite-ui-theme">
-              <ApRouter />
+              <PuRouter />
               <Toaster />
             </ThemeProvider>
           </TooltipProvider>
