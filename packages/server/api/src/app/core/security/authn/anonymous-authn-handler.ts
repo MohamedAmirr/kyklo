@@ -1,8 +1,8 @@
 import {
-    puId,
     isNil,
     Principal,
     PrincipalType,
+    puId,
 } from '@pickup/shared'
 import { FastifyRequest } from 'fastify'
 import { BaseSecurityHandler } from '../security-handler'

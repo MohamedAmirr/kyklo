@@ -1,4 +1,4 @@
-import { PickUpError, ErrorCode, isNil, PrincipalType, User, Classroom } from '@pickup/shared'
+import { Classroom, ErrorCode, isNil, PickUpError, PrincipalType, User } from '@pickup/shared'
 import { accessTokenManager } from '../../lib/access-token-manager'
 import { AuthenticationServiceHooks } from './authentication-service-hooks'
 import { userService } from '../../../user/user.service'
@@ -10,7 +10,7 @@ export const communityAuthenticationServiceHooks: AuthenticationServiceHooks = {
     },
 }
 
-async function getSchoolAndToken(user: User): Promise<{ user: User, schoolId: string, token: string}> {
+async function getSchoolAndToken(user: User): Promise<{ user: User, schoolId: string, token: string }> {
     const updatedUser = await userService.getOneOrFail({ id: user.id })
     const token = await accessTokenManager.generateToken({
         id: user.id,

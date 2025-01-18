@@ -1,5 +1,5 @@
 import { SharedSystemProp, system } from '@pickup/server-shared'
-import { PuFlagId, Flag } from '@pickup/shared'
+import { Flag, PuFlagId } from '@pickup/shared'
 import { In } from 'typeorm'
 import { repoFactory } from '../core/db/repo-factory'
 import { FlagEntity } from './flag.entity'

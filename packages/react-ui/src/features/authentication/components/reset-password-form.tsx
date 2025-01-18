@@ -1,4 +1,5 @@
 import { typeboxResolver } from '@hookform/resolvers/typebox';
+import { CreateOtpRequestBody, OtpType } from '@pickup/shared';
 import { Type, Static } from '@sinclair/typebox';
 import { useMutation } from '@tanstack/react-query';
 import { t } from 'i18next';
@@ -21,7 +22,6 @@ import { INTERNAL_ERROR_TOAST, toast } from '@/components/ui/use-toast';
 import { CheckEmailNote } from '@/features/authentication/components/check-email-note';
 import { HttpError, api } from '@/lib/api';
 import { authenticationApi } from '@/lib/authentication-api';
-import { CreateOtpRequestBody, OtpType } from '@pickup/shared';
 
 const FormSchema = Type.Object({
   email: Type.String({

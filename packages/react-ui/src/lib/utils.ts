@@ -1,10 +1,9 @@
+import { LocalesEnum } from '@pickup/shared';
 import { AxiosError } from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState, RefObject } from 'react';
 import { twMerge } from 'tailwind-merge';
-
-import { LocalesEnum } from '@pickup/shared';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

@@ -1,6 +1,6 @@
-import {ErrorCode, newTicket, PickUpError, puId, SeekPage, Ticket} from '@pickup/shared'
-import {repoFactory} from '../core/db/repo-factory'
-import {TicketEntity} from './ticket.entity'
+import { ErrorCode, newTicket, PickUpError, puId, SeekPage, Ticket } from '@pickup/shared'
+import { repoFactory } from '../core/db/repo-factory'
+import { TicketEntity } from './ticket.entity'
 
 export const ticketRepo = repoFactory(TicketEntity)
 
@@ -64,7 +64,7 @@ export const ticketService = {
             next: null,
             previous: null,
         }
-    }
+    },
 }
 
 type CreateParams = newTicket

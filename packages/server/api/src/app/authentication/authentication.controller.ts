@@ -1,15 +1,15 @@
-import {AppSystemProp, system} from '@pickup/server-shared'
-import {ALL_PRINCIPAL_TYPES, SignInRequest,} from '@pickup/shared'
-import {RateLimitOptions} from '@fastify/rate-limit'
-import {FastifyPluginAsyncTypebox} from '@fastify/type-provider-typebox'
-import {authenticationService} from './authentication-service'
+import { AppSystemProp, system } from '@pickup/server-shared'
+import { ALL_PRINCIPAL_TYPES, SignInRequest } from '@pickup/shared'
+import { RateLimitOptions } from '@fastify/rate-limit'
+import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
+import { authenticationService } from './authentication-service'
 
 export const authenticationController: FastifyPluginAsyncTypebox = async (
     app,
 ) => {
     app.post('/sign-in', SignInRequestOptions, async (request) => {
-        console.log("hobaaa")
-        return await authenticationService.signIn({
+        console.log('hobaaa')
+        return authenticationService.signIn({
             email: request.body.email,
             password: request.body.password,
         })

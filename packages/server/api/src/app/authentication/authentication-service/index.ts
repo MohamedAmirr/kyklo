@@ -1,8 +1,8 @@
 import {
-    PickUpError,
     AuthenticationResponse,
     ErrorCode,
     isNil,
+    PickUpError,
     User,
     UserStatus,
 } from '@pickup/shared'

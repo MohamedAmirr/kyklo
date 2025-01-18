@@ -1,5 +1,5 @@
 import { AppSystemProp, DatabaseType, SharedSystemProp, system } from '@pickup/server-shared'
-import { PuEdition, PuEnvironment, isNil } from '@pickup/shared'
+import { isNil, PuEdition, PuEnvironment } from '@pickup/shared'
 import {
     ArrayContains,
     DataSource,
@@ -10,8 +10,8 @@ import {
 import { OtpEntity } from '../otp/otp-entity'
 import { createPostgresDataSource } from './postgres-connection'
 import { FlagEntity } from '../flags/flag.entity'
-import {UserEntity} from "../user/user.entity";
-import {SchoolEntity} from "../school/school.entity";
+import { UserEntity } from '../user/user.entity'
+import { SchoolEntity } from '../school/school.entity'
 
 function getEntities(): EntitySchema<unknown>[] {
     const edition = system.getEdition()

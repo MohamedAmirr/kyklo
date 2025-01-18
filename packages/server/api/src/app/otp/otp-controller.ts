@@ -1,4 +1,4 @@
-import { assertNotNullOrUndefined, CreateOtpRequestBody, ALL_PRINCIPAL_TYPES } from '@pickup/shared'
+import { ALL_PRINCIPAL_TYPES, assertNotNullOrUndefined, CreateOtpRequestBody } from '@pickup/shared'
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 import { StatusCodes } from 'http-status-codes'
 import { otpService } from './otp-service'

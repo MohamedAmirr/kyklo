@@ -2,8 +2,8 @@ import {
     OtpModel,
     OtpState,
     OtpType,
-    SchoolId,
     puId,
+    SchoolId,
     User,
     UserId,
 } from '@pickup/shared'

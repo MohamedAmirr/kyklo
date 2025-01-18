@@ -1,7 +1,7 @@
+import { PuFlagId } from '@pickup/shared';
 import { usePrefetchQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 import { flagsApi, FlagsMap } from '@/lib/flags-api';
-import { PuFlagId } from '@pickup/shared';
 
 type WebsiteBrand = {
   websiteName: string;

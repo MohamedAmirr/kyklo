@@ -1,5 +1,5 @@
 import { AppSystemProp, ContainerType, DatabaseType, logger, SharedSystemProp, system, SystemProp } from '@pickup/server-shared'
-import { PuEdition, PuEnvironment, isNil } from '@pickup/shared'
+import { isNil, PuEdition, PuEnvironment } from '@pickup/shared'
 import { jwtUtils } from './jwt-utils'
 
 

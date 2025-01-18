@@ -1,8 +1,8 @@
+import { isNil } from '@pickup/shared';
 import { Pencil } from 'lucide-react';
 import React, { useState, useRef, useCallback } from 'react';
 
 import { useElementSize } from '@/lib/utils';
-import { isNil } from '@activepieces/shared';
 
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 

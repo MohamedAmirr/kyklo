@@ -1,9 +1,9 @@
-import {EntitySchema} from "typeorm";
-import {BaseColumnSchemaPart} from "../database/database-common";
-import {School, Ticket, TicketCategory, User} from "@pickup/shared";
+import { EntitySchema } from 'typeorm'
+import { BaseColumnSchemaPart } from '../database/database-common'
+import { School, Ticket, TicketCategory, User } from '@pickup/shared'
 
 export type TicketCategorySchema = TicketCategory & {
-    tickets: Ticket[],
+    tickets: Ticket[]
 }
 
 export const TicketCategoriesEntity = new EntitySchema<TicketCategorySchema>({
@@ -22,12 +22,12 @@ export const TicketCategoriesEntity = new EntitySchema<TicketCategorySchema>({
             inverseSide: 'category',
         },
     },
-});
+})
 
 export type TicketSchema = Ticket & {
-    category: TicketCategory,
-    raisedBy: User,
-    school: School,
+    category: TicketCategory
+    raisedBy: User
+    school: School
 }
 
 
@@ -54,7 +54,7 @@ export const TicketEntity = new EntitySchema<TicketSchema>({
         },
         schoolId: {
             type: String,
-        }
+        },
     },
     relations: {
         category: {
@@ -71,7 +71,7 @@ export const TicketEntity = new EntitySchema<TicketSchema>({
             inverseSide: 'tickets',
             joinColumn: {
                 name: 'raised_by_id',
-            }
+            },
         },
         school: {
             type: 'many-to-one',
@@ -79,7 +79,7 @@ export const TicketEntity = new EntitySchema<TicketSchema>({
             inverseSide: 'tickets',
             joinColumn: {
                 name: 'school_id',
-            }
-        }
+            },
+        },
     },
-});
+})

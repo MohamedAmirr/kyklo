@@ -1,29 +1,27 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   Navigate,
   RouterProvider,
   createBrowserRouter,
-  createMemoryRouter,
   useLocation,
 } from 'react-router-dom';
 
 import { PageTitle } from '@/app/components/page-title';
-import ClassroomSettingsLayout from '@/app/components/classroom-settings-layout';
 import { RedirectPage } from '@/app/routes/redirect';
 import { VerifyEmail } from '@/features/authentication/components/verify-email';
 
-import { AllowOnlyLoggedInUserOnlyGuard } from '../components/allow-logged-in-user-only-guard';
 import { DashboardContainer } from '../components/dashboard-container';
+import MaterialsPageLayout from '../components/page-layout/materials/layout';
 import NotFoundPage from '../routes/404-page';
 import AuthenticatePage from '../routes/authenticate';
 import { ChangePasswordPage } from '../routes/change-password';
 import { ResetPasswordPage } from '../routes/forget-password';
+import HomePage from '../routes/home';
 import { SignInPage } from '../routes/sign-in';
 import { SignUpPage } from '../routes/sign-up';
+import TicketPage from '../routes/ticket';
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper';
-import HomePage from '../routes/home';
-import TicketPage from '../routes/ticket';
 
 const SettingsRerouter = () => {
   const { hash } = useLocation();
@@ -53,6 +51,14 @@ const routes = [
         <PageTitle title="Ticket">
           <TicketPage />
         </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: '/materials',
+    element: (
+      <DashboardContainer>
+        <MaterialsPageLayout />
       </DashboardContainer>
     ),
   },
@@ -129,7 +135,7 @@ const routes = [
     ),
   },
 ];
-const ApRouter = () => {
+const PuRouter = () => {
   const router = useMemo(() => {
     return createBrowserRouter(routes);
   }, []);
@@ -137,4 +143,4 @@ const ApRouter = () => {
   return <RouterProvider router={router}></RouterProvider>;
 };
 
-export { ApRouter };
+export { PuRouter };

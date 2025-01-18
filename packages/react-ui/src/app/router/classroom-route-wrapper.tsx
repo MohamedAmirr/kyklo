@@ -1,3 +1,4 @@
+import { PuEdition, PuFlagId, isNil } from '@pickup/shared';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { t } from 'i18next';
 import React from 'react';
@@ -6,15 +7,13 @@ import { useParams, Navigate, useSearchParams } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 import { flagsHooks } from '@/hooks/flags-hooks';
 import { api } from '@/lib/api';
-import { PuEdition, PuFlagId, isNil } from '@pickup/shared';
-
-import { authenticationSession } from '../../lib/authentication-session';
 
 const TokenCheckerWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { classroomId } = useParams<{ classroomId: string }>();
-  const currentClassroomId = authenticationSession.getClassroomId();
+  // const currentClassroomId = authenticationSession.getClassroomId();
+  const currentClassroomId = 'TODO ADD IT';
   const { data: edition } = flagsHooks.useFlag<PuEdition>(PuFlagId.EDITION);
 
   const { toast } = useToast();
@@ -28,7 +27,7 @@ const TokenCheckerWrapper: React.FC<{ children: React.ReactNode }> = ({
         return false;
       }
       try {
-        await authenticationSession.switchToSession(classroomId!);
+        // TODO: Add authenticationSession.switchToSession(classroomId!);
         return true;
       } catch (error) {
         if (api.isError(error) && error.response?.status === 401) {
@@ -39,7 +38,7 @@ const TokenCheckerWrapper: React.FC<{ children: React.ReactNode }> = ({
               'Either the classroom does not exist or you do not have access to it.',
             ),
           });
-          authenticationSession.clearSession();
+          // TODO: Add authenticationSession.clearSession();
         }
         return false;
       }
@@ -56,7 +55,7 @@ const TokenCheckerWrapper: React.FC<{ children: React.ReactNode }> = ({
     return <Navigate to="/404" replace />;
   }
 
-  return <>{children}</>;
+  return children;
 };
 
 type RedirectToCurrentClassroomRouteProps = {
@@ -66,7 +65,8 @@ type RedirectToCurrentClassroomRouteProps = {
 const RedirectToCurrentClassroomRoute: React.FC<
   RedirectToCurrentClassroomRouteProps
 > = ({ path }) => {
-  const currentClassroomId = authenticationSession.getClassroomId();
+  // const currentClassroomId = authenticationSession.getClassroomId();
+  const currentClassroomId = 'TODO ADD IT';
   const params = useParams();
   const [searchParams] = useSearchParams();
   if (isNil(currentClassroomId)) {

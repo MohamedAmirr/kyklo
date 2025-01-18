@@ -1,8 +1,8 @@
-import { FastifyRequest } from "fastify"
-import { flagService } from "./flag.service"
-import { flagHooks } from "./flags.hooks"
-import { ALL_PRINCIPAL_TYPES } from "@pickup/shared"
-import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox"
+import { FastifyRequest } from 'fastify'
+import { flagService } from './flag.service'
+import { flagHooks } from './flags.hooks'
+import { ALL_PRINCIPAL_TYPES } from '@pickup/shared'
+import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 
 export const flagController: FastifyPluginAsyncTypebox = async (app) => {
     app.get(

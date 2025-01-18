@@ -1,0 +1,41 @@
+{
+    "root": true,
+    "ignorePatterns": ["**/*"],
+    "plugins": ["@nx"],
+    "overrides": [
+      {
+        "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+        "rules": {
+          "@nx/enforce-module-boundaries": [
+            "error",
+            {
+              "enforceBuildableLibDependency": true,
+              "allow": [],
+              "depConstraints": [
+                {
+                  "sourceTag": "*",
+                  "onlyDependOnLibsWithTags": ["*"]
+                }
+              ]
+            }
+          ],
+            "indent": ["error",4,{"SwitchCase": 1}]
+        }
+      },
+      {
+        "files": ["*.ts", "*.tsx"],
+        "extends": ["plugin:@nx/typescript"],
+          "rules": {
+              "indent": ["error", 4, { "SwitchCase": 1 }]
+          }
+      },
+      {
+        "files": ["*.js", "*.jsx"],
+        "extends": ["plugin:@nx/javascript"],
+          "rules": {
+              "indent": ["error", 4, { "SwitchCase": 1 }]
+          }
+      }
+    ]
+  }
+  

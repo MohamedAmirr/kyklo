@@ -1,7 +1,7 @@
 import {
     ErrorCode,
-    PrincipalType,
     PickUpError,
+    PrincipalType,
 } from '@pickup/shared'
 import { FastifyRequest } from 'fastify'
 import { BaseSecurityHandler } from '../security-handler'

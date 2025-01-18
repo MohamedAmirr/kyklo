@@ -10,8 +10,8 @@ import { openapiModule } from './helper/openapi/openapi.module'
 import { validateEnvPropsOnStartup } from './helper/system-validator'
 import { flagModule } from './flags/flag.module'
 import { PuEdition, PuEnvironment } from '@pickup/shared'
-import {authenticationModule} from "./authentication/authentication.module";
-import {userModule} from "./user/user.module";
+import { authenticationModule } from './authentication/authentication.module'
+import { userModule } from './user/user.module'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 

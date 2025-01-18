@@ -1,6 +1,5 @@
 import { typeboxResolver } from '@hookform/resolvers/typebox';
 import { Static, Type } from '@sinclair/typebox';
-import { useMutation } from '@tanstack/react-query';
 import { t } from 'i18next';
 import { CheckCircle } from 'lucide-react';
 import { useState } from 'react';
@@ -34,10 +33,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { INTERNAL_ERROR_TOAST, useToast } from '@/components/ui/use-toast';
-import { authenticationSession } from '@/lib/authentication-session';
-import { PuEdition, PuFlagId } from '@pickup/shared';
-import { flagsHooks } from '@/hooks/flags-hooks';
+
+// import { authenticationSession } from '@/lib/authentication-session';
 
 const logos = [
   'https://www.activepieces.com/logos/alan.svg',
@@ -146,7 +143,13 @@ type RequestTrialProps = {
   featureKey: FeatureKey;
 };
 export const RequestTrial = ({ featureKey }: RequestTrialProps) => {
-  const currentUser = authenticationSession.getCurrentUser();
+  // const currentUser = authenticationSession.getCurrentUser();
+  // TODO: Add authenticationSession.getCurrentUser();
+  const currentUser = {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+  };
   const form = useForm<FormSchema>({
     resolver: typeboxResolver(formSchema),
     defaultValues: {
@@ -156,10 +159,10 @@ export const RequestTrial = ({ featureKey }: RequestTrialProps) => {
         : '',
     },
   });
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: edition } = flagsHooks.useFlag<PuEdition>(PuFlagId.EDITION);
+  // const { data: edition } = flagsHooks.useFlag<PuEdition>(PuFlagId.EDITION);
 
   return (
     <Drawer
@@ -168,9 +171,7 @@ export const RequestTrial = ({ featureKey }: RequestTrialProps) => {
       onOpenChange={(open: boolean) => setIsOpen(open)}
     >
       <DrawerTrigger asChild>
-        <Button>
-          {t('Request Trial')}
-        </Button>
+        <Button>{t('Request Trial')}</Button>
       </DrawerTrigger>
       <DrawerContent className="h-full top-0 right-0 left-auto mt-0 w-[620px] rounded-none py-2 ">
         <ScrollArea
@@ -302,7 +303,7 @@ export const RequestTrial = ({ featureKey }: RequestTrialProps) => {
             </div>
             <div className="flex flex-wrap gap-5 items-center justify-center">
               {logos.map((logo, index) => (
-                <img key={index} className="h-6" src={logo} />
+                <img key={index} className="h-6" alt={''} src={logo} />
               ))}
             </div>
           </div>
