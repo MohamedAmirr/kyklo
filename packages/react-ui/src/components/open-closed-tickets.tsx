@@ -1,4 +1,5 @@
 import {Button} from "@/components/ui/button";
+import { t } from "i18next";
 
 interface OpenClosedTicketsProps {
     numberOfOpenedTickets: number;
@@ -30,12 +31,12 @@ const OpenClosedTickets = ({
                 variant={`${selectedStatus === "opened" ? "transparent" : "ghost"}`}
                 onClick={() => onFilterChange("opened")}
                 className={`
-                relative z-10 flex-1 h-full text-black rounded-md
+                relative z-10 flex-1 h-full text-black rounded-md capitalize
                 ${selectedStatus === "opened" ? "font-bold" : "font-normal"}
                 `}
                 size={"sm"}
             >
-                Opened ({numberOfOpenedTickets})
+                {t('opened')} ({numberOfOpenedTickets})
             </Button>
 
             {/* Closed Button */}
@@ -43,12 +44,12 @@ const OpenClosedTickets = ({
                 variant={`${selectedStatus === "closed" ? "transparent" : "ghost"}`}
                 onClick={() => onFilterChange("closed")}
                 className={`
-                relative z-10 flex-1 h-full text-black rounded-md
+                relative z-10 flex-1 h-full text-black rounded-md capitalize
                 ${selectedStatus === "closed" ? "font-bold" : "font-normal"}
                 `}
                 size={"sm"}
             >
-                Closed ({numberOfClosedTickets})
+                {t('closed')} ({numberOfClosedTickets})
             </Button>
         </div>
     );
