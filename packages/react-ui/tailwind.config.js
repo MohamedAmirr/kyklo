@@ -129,7 +129,39 @@ module.exports = {
           '100%': {
             backgroundPosition: '0%'
           }
-        }
+        },
+          'slideInTop': {
+              from: { transform: "translateY(-100%)" },
+              to: { transform: "translateY(0)" },
+          },
+          'slideOutTop': {
+              from: { transform: "translateY(0)" },
+              to: { transform: "translateY(-100%)" },
+          },
+          'slideInBottom': {
+              from: { transform: "translateY(100%)" },
+              to: { transform: "translateY(0)" },
+          },
+          'slideOutBottom': {
+              from: { transform: "translateY(0)" },
+              to: { transform: "translateY(100%)" },
+          },
+          'slideInLeft': {
+              from: { transform: "translateX(-100%)" },
+              to: { transform: "translateX(0)" },
+          },
+          'slideOutLeft': {
+              from: { transform: "translateX(0)" },
+              to: { transform: "translateX(-100%)" },
+          },
+          'slideInRight': {
+              from: { transform: "translateX(100%)" },
+              to: { transform: "translateX(0)" },
+          },
+          'slideOutRight': {
+              from: { transform: "translateX(0)" },
+              to: { transform: "translateX(100%)" },
+          },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -137,7 +169,15 @@ module.exports = {
         fade: 'fade 0.2s ease-out',
         typing: 'typing 0.7s steps(7) alternate',
         'typing-sm': 'typing 0.5s steps(5) alternate',
-        'ask-ai-background' : 'ask-ai-background 4s ease-in-out infinite'
+        'ask-ai-background' : 'ask-ai-background 4s ease-in-out infinite',
+          slideInTop: "slideInTop 0.4s ease-in-out",
+          slideOutTop: "slideOutTop 0.4s ease-in-out",
+          slideInBottom: "slideInBottom 0.4s ease-in-out",
+          slideOutBottom: "slideOutBottom 0.4s ease-in-out",
+          slideInLeft: "slideInLeft 0.4s ease-in-out",
+          slideOutLeft: "slideOutLeft 0.4s ease-in-out",
+          slideInRight: "slideInRight 0.4s ease-in-out",
+          slideOutRight: "slideOutRight 0.4s ease-in-out",
       },
       boxShadow: {
         'step-container': '0px 0px 22px hsl(var(--border) / 0.4)',

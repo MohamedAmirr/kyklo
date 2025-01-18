@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/table"
 import {SearchBar} from "./search-bar"
 import OpenClosedTickets from "@/components/open-closed-tickets";
+import TicketDetails from "../ticket-details"
 
 
 export type Payment = {
@@ -41,7 +42,7 @@ export type Payment = {
     category: string
     ticketId: string
     username: string
-    status: 'Opened' | 'Closed'
+    status: 'opened' | 'closed'
     actions: string
 }
 
@@ -55,12 +56,12 @@ export const columns: ColumnDef<Payment>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    <ArrowUpDown className="h-4 w-4"/>
                 </Button>
             </div>
         ),
         cell: ({row}) => (
-            <div className="capitalize">{row.getValue("ticketId")}</div>
+            <div className="capitalize text-blue-500 cursor-pointer">{row.getValue("ticketId")}</div>
         ),
     },
     {
@@ -72,7 +73,7 @@ export const columns: ColumnDef<Payment>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    <ArrowUpDown className="h-4 w-4"/>
                 </Button>
             </div>
         ),
@@ -89,7 +90,7 @@ export const columns: ColumnDef<Payment>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    <ArrowUpDown className="h-4 w-4"/>
                 </Button>
             </div>
         ),
@@ -106,7 +107,7 @@ export const columns: ColumnDef<Payment>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    <ArrowUpDown className="h-4 w-4"/>
                 </Button>
             </div>
         ),
@@ -123,13 +124,13 @@ export const columns: ColumnDef<Payment>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    <ArrowUpDown className="h-4 w-4"/>
                 </Button>
             </div>
         ),
         cell: ({row}) => {
-            const status: string = row.getValue("status");
-            const bgColor = status === 'Opened' ? 'bg-success-100 text-success-300' : 'bg-destructive-100 text-destructive-300';
+            const status: string = (row.getValue("status") as string).toLowerCase();
+            const bgColor = status === 'opened' ? 'bg-success-100 text-success-300' : 'bg-destructive-100 text-destructive-300';
 
             return (
                 <div className={`capitalize ${bgColor}  p-1 px-2 inline-block text-center rounded-3xl`}>
@@ -146,7 +147,7 @@ export const columns: ColumnDef<Payment>[] = [
         id: "actions",
         header: "Actions",
         enableHiding: false,
-        cell: () => {
+        cell: ({row}) => {
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -157,7 +158,9 @@ export const columns: ColumnDef<Payment>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="center">
                         <DropdownMenuItem className="cursor-pointer p-0 px-0">
-                            <Button size={"sm"} className={"w-full"}>Close Ticket</Button>
+                            <Button size={"sm"} className={"w-full"}>
+                                {(row.getValue("status") as string).toLowerCase() === "closed" ? "Re-open Ticket" : "Close Ticket"}
+                            </Button>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -169,11 +172,13 @@ export const columns: ColumnDef<Payment>[] = [
 export function TicketTable({data}: { data: Payment[] }) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        [{ id: "status", value: "opened" }]
+        [{id: "status", value: "opened"}]
     )
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
+    const [openSelectedTicket, setOpenSelectedTicket] = React.useState(false);
+    const [selectedRow, setSelectedRow] = React.useState<Payment | null>(null);
 
     const table = useReactTable({
         data,
@@ -204,14 +209,14 @@ export function TicketTable({data}: { data: Payment[] }) {
                 if (value) {
                     return prevFilters.map((filter, index) =>
                         index === existingFilterIndex
-                            ? { id, value }
+                            ? {id, value}
                             : filter
                     );
                 }
                 return prevFilters.filter((filter) => filter.id !== id);
             }
 
-            return [...prevFilters, { id, value }];
+            return [...prevFilters, {id, value}];
         });
     };
 
@@ -223,6 +228,11 @@ export function TicketTable({data}: { data: Payment[] }) {
         updateFilter("title", title);
     };
 
+    const handleRowOnClick = (row:Payment) => {
+        setSelectedRow(row);
+        setOpenSelectedTicket(true);
+    }
+
     return (
         <div className="w-full">
             <div className="rounded-md border">
@@ -233,8 +243,8 @@ export function TicketTable({data}: { data: Payment[] }) {
                             handleFilterChange={setTitleFilter}
                         />
                         <OpenClosedTickets
-                            numberOfClosedTickets={data.filter(ticket => ticket.status === 'Closed').length}
-                            numberOfOpenedTickets={data.filter(ticket => ticket.status === 'Opened').length}
+                            numberOfClosedTickets={data.filter(ticket => ticket.status.toLowerCase() === 'closed').length}
+                            numberOfOpenedTickets={data.filter(ticket => ticket.status.toLowerCase() === 'opened').length}
                             selectedStatus={(columnFilters.find(
                                 (f) => f.id === "status"
                             )?.value as "opened" | "closed") || "opened"}
@@ -268,6 +278,7 @@ export function TicketTable({data}: { data: Payment[] }) {
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
+                                    onClick={()=>handleRowOnClick(row.original)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -291,6 +302,17 @@ export function TicketTable({data}: { data: Payment[] }) {
                         )}
                     </TableBody>
                 </Table>
+                {selectedRow && (
+                    <TicketDetails
+                    open={openSelectedTicket}
+                    handleClose={() => setOpenSelectedTicket(false)}
+                    customerName={selectedRow.username}
+                    customerRole={""}
+                    ticketId={selectedRow.ticketId}
+                    category={selectedRow.category}
+                    status={selectedRow.status}
+                />
+                )}
                 <div className="flex items-center justify-between space-x-2 p-4">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
