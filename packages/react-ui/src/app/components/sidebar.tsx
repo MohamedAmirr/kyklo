@@ -12,10 +12,6 @@ import {
 } from '@/components/ui/tooltip';
 import { flagsHooks } from '@/hooks/flags-hooks';
 
-import { ShowPoweredBy } from '../../components/show-powered-by';
-
-import { Header } from './header';
-
 type Link = {
   icon: React.ReactNode;
   label: string;
@@ -54,18 +50,14 @@ const CustomTooltipLink = ({
         isActive ? 'bg-primary text-white' : 'hover:bg-accent'
       } ${extraClasses || ''}`}
     >
-      <div
-        className={`relative flex items-center justify-center gap-1`}
-      >
+      <div className={`relative flex items-center justify-center gap-1`}>
         {locked && (
           <LockKeyhole
             className="absolute right-[-1px] bottom-[20px] size-3"
             color="grey"
           />
         )}
-        <Icon
-          className={`size-10 p-2.5 rounded-lg transition-colors `}
-        />
+        <Icon className={`size-10 p-2.5 rounded-lg transition-colors `} />
         <span className="text-[15px]">{label}</span>
         {notification && (
           <span className="bg-destructive absolute right-[1px] top-[3px] size-2 rounded-full"></span>
@@ -158,10 +150,9 @@ export function Sidebar({
             </ScrollArea>
           </aside>
         )}
-        <div className="flex-1 py-4 px-10">
+        <div className="flex-1 py-8">
           <div className="flex flex-col">
-            <Header />
-            <div className="flex py-10">{children}</div>
+            <div className="flex px-10">{children}</div>
           </div>
         </div>
       </div>

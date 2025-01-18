@@ -6,8 +6,6 @@ import axios, {
 } from 'axios';
 import qs from 'qs';
 
-import { authenticationSession } from '@/lib/authentication-session';
-
 export const API_BASE_URL = 'http://localhost:3000';
 export const API_URL = `${API_BASE_URL}/api`;
 
@@ -38,15 +36,14 @@ function request<TResponse>(
   const unAuthenticated = disallowedRoutes.some((route) =>
     url.startsWith(route),
   );
+  const Token = 'TODO ADD IT';
   return axios({
     url: resolvedUrl,
     ...config,
     headers: {
       ...config.headers,
       Authorization:
-        unAuthenticated || !isApWebsite
-          ? undefined
-          : `Bearer ${authenticationSession.getToken()}`,
+        unAuthenticated || !isApWebsite ? undefined : `Bearer ${Token}`,
     },
   }).then((response) => response.data as TResponse);
 }

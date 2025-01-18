@@ -1,14 +1,15 @@
-import { Separator } from '@radix-ui/react-dropdown-menu';
-import { Link, useLocation } from 'react-router-dom';
-
-import { buttonVariants } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/seperator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface SidebarLayoutProps {
-  title: string;
   items: SidebarItem[];
-  children: React.ReactNode;
+  content: SideBarContent[];
 }
+
+export type SideBarContent = {
+  href: string;
+  content: React.ReactNode;
+};
 
 export type SidebarItem = {
   title: string;
@@ -16,60 +17,26 @@ export type SidebarItem = {
   icon: JSX.Element;
 };
 
-interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
-  items: SidebarItem[];
-}
-
-function SidebarItem({ className, items, ...props }: SidebarNavProps) {
-  const location = useLocation();
-
+export default function SidebarLayout({ items, content }: SidebarLayoutProps) {
   return (
-    <nav
-      className={cn(
-        'flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1',
-        className,
-      )}
-      {...props}
-    >
-      {items.map((item) => (
-        <Link
-          key={item.href}
-          to={item.href}
-          className={cn(
-            buttonVariants({ variant: 'ghost' }),
-            location.pathname.toLowerCase() === item.href.toLowerCase()
-              ? 'bg-muted hover:bg-muted'
-              : 'hover:bg-transparent hover:underline',
-            'justify-start',
-          )}
-        >
-          <div className="flex items-center justify-center gap-2">
-            {item.icon}
+    <Tabs defaultValue={items[0].href} className="w-full">
+      <TabsList className="bg-white border-none rounded-none gap-6 p-0">
+        {items.map((item) => (
+          <TabsTrigger
+            key={item.href}
+            className="px-0 shadow-none rounded-none flex-1 border-b-2 border-transparent pb-4 data-[state=active]:border-black data-[state=active]:shadow-none data-[state=active]:font-bold"
+            value={item.href}
+          >
             {item.title}
-          </div>
-        </Link>
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      <Separator className="bg-gray-200"></Separator>
+      {content.map((item) => (
+        <TabsContent key={item.href} value={item.href}>
+          {item.content}
+        </TabsContent>
       ))}
-    </nav>
-  );
-}
-
-export default function SidebarLayout({
-  title,
-  items,
-  children,
-}: SidebarLayoutProps) {
-  return (
-    <div className="w-full md:block">
-      <div className="space-y-0.5">
-        <h2 className="text-3xl font-bold tracking-tight">{title}</h2>
-      </div>
-      <Separator className="my-6" />
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <aside className="-mx-4 lg:w-1/5">
-          <SidebarItem items={items} />
-        </aside>
-        <div className="w-full flex-1">{children}</div>
-      </div>
-    </div>
+    </Tabs>
   );
 }

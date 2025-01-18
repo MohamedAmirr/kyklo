@@ -1,5 +1,6 @@
 'use client';
 
+import { SeekPage } from '@pickup/shared';
 import {
   ColumnDef as TanstackColumnDef,
   flexRender,
@@ -20,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { SeekPage } from '@activepieces/shared';
 
 import { Button } from '../button';
 import {

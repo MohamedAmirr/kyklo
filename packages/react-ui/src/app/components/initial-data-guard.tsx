@@ -1,8 +1,8 @@
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
+
+import { flagsHooks } from '@/hooks/flags-hooks';
 
 import { LoadingScreen } from './loading-screen';
-import React from 'react';
-import { flagsHooks } from '@/hooks/flags-hooks';
 
 type InitialDataGuardProps = {
   children: React.ReactNode;

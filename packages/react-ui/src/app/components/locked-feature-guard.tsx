@@ -1,7 +1,7 @@
+import { PuFlagId } from '@pickup/shared';
 import React from 'react';
 
 import { flagsHooks } from '@/hooks/flags-hooks';
-import { PuFlagId } from '@pickup/shared';
 
 import { FeatureKey, RequestTrial } from './request-trial';
 

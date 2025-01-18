@@ -25,12 +25,12 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <InitialDataGuard>
-          <TooltipProvider>
-            <ThemeProvider storageKey="vite-ui-theme">
-              <PuRouter />
-              <Toaster />
-            </ThemeProvider>
-          </TooltipProvider>
+        <TooltipProvider>
+          <ThemeProvider storageKey="vite-ui-theme">
+            <PuRouter />
+            <Toaster />
+          </ThemeProvider>
+        </TooltipProvider>
       </InitialDataGuard>
     </QueryClientProvider>
   );

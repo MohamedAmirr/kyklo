@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/popover';
 
 function ClassroomSwitcher() {
-
   const [open, setOpen] = React.useState(false);
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -38,8 +37,7 @@ function ClassroomSwitcher() {
           <CommandList>
             <CommandInput placeholder="Search project..." />
             <CommandEmpty>No classrooms found.</CommandEmpty>
-            <CommandGroup key="classrooms" heading="Classrooms">
-            </CommandGroup>
+            <CommandGroup key="classrooms" heading="Classrooms"></CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>
