@@ -1,5 +1,5 @@
 import { logger, SharedSystemProp, system } from '@pickup/server-shared'
-import {PuEnvironment, UserTypes} from '@pickup/shared'
+import {PuEnvironment, UserType} from '@pickup/shared'
 import { databaseConnection } from '../database-connection'
 import { FlagEntity } from '../../flags/flag.entity'
 import {SchoolEntity} from "../../school/school.entity";
@@ -49,7 +49,7 @@ const seedDevUser = async (): Promise<void> => {
         firstName: 'Dev',
         lastName: 'User',
         schoolId: school.id,
-        type:UserTypes.STAFF
+        type:UserType.STAFF
     });
 
     logger.info({ name: 'seedDevUser' }, `email=${DEV_EMAIL} pass=${DEV_PASSWORD}`);

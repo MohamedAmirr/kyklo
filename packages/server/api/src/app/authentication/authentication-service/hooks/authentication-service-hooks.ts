@@ -1,4 +1,4 @@
-import { User, UserType } from '@pickup/shared'
+import { PrincipalType, User, UserType } from '@pickup/shared'
 import { accessTokenManager } from '../../lib/access-token-manager'
 import { StudentEntity } from '../../../student/student.entity'
 import { databaseConnection } from '../../../database/database-connection'
@@ -21,7 +21,8 @@ export const studentAuthenticationServiceHooks: AuthenticationServiceHooks = {
 
         const token = await accessTokenManager.generateToken({
             id: user.id,
-            type: UserType.STUDENT,
+            type: PrincipalType.USER,
+            role: UserType.STUDENT,
             schoolId: user.schoolId,
         })
         return {
