@@ -1,0 +1,5 @@
+export enum SuccessCodes {
+    TICKET_CREATED = "TICKET_CREATED",
+    TICKET_UPDATED = "TICKET_UPDATED",
+    USER_LOGGED_IN = "USER_LOGGED_IN",
+}

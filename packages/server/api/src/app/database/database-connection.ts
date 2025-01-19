@@ -23,7 +23,7 @@ function getEntities(): EntitySchema<unknown>[] {
         UserEntity,
         SchoolEntity,
         ClassroomEntity,
-        StudentEntity
+        StudentEntity,
     ]
 
     switch (edition) {
