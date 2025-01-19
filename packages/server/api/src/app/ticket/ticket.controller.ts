@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 import { FastifyRequest } from 'fastify'
 import { ticketService } from './ticket.service'
-import { newTicket } from '@pickup/shared'
+import { NewTicket } from '@pickup/shared'
 
 export const ticketController: FastifyPluginAsyncTypebox = async (app) => {
     app.get('', async (request: FastifyRequest) => {
@@ -12,10 +12,10 @@ export const ticketController: FastifyPluginAsyncTypebox = async (app) => {
         '',
         {
             schema: {
-                body: newTicket,
+                body: NewTicket,
             },
         },
-        async (request: FastifyRequest<{ Body: newTicket }>) => {
+        async (request: FastifyRequest<{ Body: NewTicket }>) => {
             await ticketService.create(request.body)
             return { message: 'Ticket created' }
         }

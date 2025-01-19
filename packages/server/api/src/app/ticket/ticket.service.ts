@@ -1,4 +1,4 @@
-import { ErrorCode, newTicket, PickUpError, puId, SeekPage, Ticket } from '@pickup/shared'
+import { ErrorCode, NewTicket, PickUpError, puId, SeekPage, Ticket } from '@pickup/shared'
 import { repoFactory } from '../core/db/repo-factory'
 import { TicketEntity } from './ticket.entity'
 
@@ -7,7 +7,7 @@ export const ticketRepo = repoFactory(TicketEntity)
 export const ticketService = {
     async create(params: CreateParams): Promise<Ticket> {
         const id = puId()
-        const ticket: newTicket = {
+        const ticket: NewTicket = {
             ...params,
             id,
         }
@@ -67,4 +67,4 @@ export const ticketService = {
     },
 }
 
-type CreateParams = newTicket
+type CreateParams = NewTicket
