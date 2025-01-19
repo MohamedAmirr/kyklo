@@ -1,9 +1,9 @@
 import { PuId } from '../../common/id-generator'
 import { SchoolId } from '../../school'
-import { PrincipalType } from './principal-type'
+import { UserType } from '../../user'
 
 export type Principal = {
     id: PuId
-    type: PrincipalType
+    type: UserType
     schoolId: SchoolId
 }

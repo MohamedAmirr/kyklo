@@ -1,13 +1,13 @@
-import { AuthenticationServiceHooks } from './authentication-service-hooks'
-import { communityAuthenticationServiceHooks } from './community-authentication-hooks'
-
-let hooks = communityAuthenticationServiceHooks
+import { AuthenticationServiceHooks, studentAuthenticationServiceHooks } from './authentication-service-hooks'
+import { UserType } from '@pickup/shared'
 
 export const authenticationServiceHooks = {
-    set(newHooks: AuthenticationServiceHooks): void {
-        hooks = newHooks
-    },
-    get(): AuthenticationServiceHooks {
-        return hooks
+    get(userType: UserType): AuthenticationServiceHooks {
+        switch (userType) {
+            case UserType.STUDENT:
+                return studentAuthenticationServiceHooks
+            default:
+                throw new Error(`Unsupported user type: ${userType}`)
+        }
     },
 }

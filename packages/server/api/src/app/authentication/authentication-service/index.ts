@@ -30,7 +30,7 @@ export const authenticationService = {
     async signInResponse({
                              user,
                          }: SignInResponseParams): Promise<AuthenticationResponse> {
-        const authnResponse = await hooks.get().signIn({
+        const authnResponse = await hooks.get(user.type).signIn({
             user,
         })
 

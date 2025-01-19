@@ -1,5 +1,5 @@
 import {AppSystemProp, system} from '@pickup/server-shared'
-import {ALL_PRINCIPAL_TYPES, AuthenticationResponse, SignInRequest,} from '@pickup/shared'
+import {AuthenticationResponse, SignInRequest,} from '@pickup/shared'
 import {RateLimitOptions} from '@fastify/rate-limit'
 import {FastifyPluginAsyncTypebox} from '@fastify/type-provider-typebox'
 import {authenticationService} from './authentication-service'
@@ -26,7 +26,6 @@ const rateLimitOptions: RateLimitOptions = {
 
 const SignInRequestOptions = {
     config: {
-        allowedPrincipals: ALL_PRINCIPAL_TYPES,
         rateLimit: rateLimitOptions,
     },
     schema: {
