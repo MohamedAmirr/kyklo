@@ -7,7 +7,7 @@ const data: Payment[] = [
     title: 'Payment for Service A',
     category: 'Service',
     username: 'user1',
-    status: 'Opened',
+    status: 'opened',
     actions: 'View',
   },
   {
@@ -16,7 +16,7 @@ const data: Payment[] = [
     title: 'Payment for Service B',
     category: 'Service',
     username: 'user2',
-    status: 'Opened',
+    status: 'opened',
     actions: 'View',
   },
   {
@@ -25,7 +25,7 @@ const data: Payment[] = [
     title: 'Payment for Product C',
     category: 'Product',
     username: 'user3',
-    status: 'Closed',
+    status: 'closed',
     actions: 'View',
   },
   {
@@ -34,7 +34,7 @@ const data: Payment[] = [
     title: 'Payment for Product D',
     category: 'Product',
     username: 'user4',
-    status: 'Opened',
+    status: 'closed',
     actions: 'View',
   },
   {
@@ -43,7 +43,7 @@ const data: Payment[] = [
     title: 'Payment for Service E',
     category: 'Service',
     username: 'user5',
-    status: 'Opened',
+    status: 'closed',
     actions: 'View',
   },
   {
@@ -52,7 +52,7 @@ const data: Payment[] = [
     title: 'Payment for Service E',
     category: 'Service',
     username: 'user5',
-    status: 'Opened',
+    status: 'opened',
     actions: 'View',
   },
   {
@@ -61,7 +61,7 @@ const data: Payment[] = [
     title: 'Payment for Service E',
     category: 'Service',
     username: 'user5',
-    status: 'Opened',
+    status: 'opened',
     actions: 'View',
   },
 ];
