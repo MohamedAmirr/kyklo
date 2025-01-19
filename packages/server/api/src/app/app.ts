@@ -12,6 +12,7 @@ import { flagModule } from './flags/flag.module'
 import { PuEdition, PuEnvironment } from '@pickup/shared'
 import { authenticationModule } from './authentication/authentication.module'
 import { userModule } from './user/user.module'
+import {ticketModule} from "./ticket/ticket.module";
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
@@ -54,6 +55,7 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
 
     app.addHook('preHandler', securityHandlerChain)
     await app.register(openapiModule)
+    await app.register(ticketModule)
     await app.register(flagModule)
     await app.register(authenticationModule)
     await app.register(userModule)
