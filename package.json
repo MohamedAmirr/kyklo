@@ -57,7 +57,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
-    "dayjs": "^1.11.9",
+    "dayjs": "1.11.9",
     "deepmerge": "^4.3.1",
     "dnd-kit": "^0.0.2",
     "embla-carousel-react": "^8.5.2",

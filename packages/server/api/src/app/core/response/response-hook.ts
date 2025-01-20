@@ -1,28 +1,26 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { APIResponse, ErrorCode } from "@pickup/shared";
+import { ErrorCode, SuccessCode } from "@pickup/shared";
+import { StatusCodes } from "http-status-codes";
 
 export default function addGlobalResponseFormat(fastify: FastifyInstance) {
   fastify.addHook(
     "preSerialization",
     async (
-      request: FastifyRequest,
+      _request: FastifyRequest,
       reply: FastifyReply,
       payload
-    ): Promise<APIResponse<unknown>> => {
-        const responseCode: string | undefined = reply.responseCode;
-
+    ) => {
         if (reply.statusCode < 300) {
           return {
             success: true,
-            code: responseCode || "SUCCESS",
+            code: reply.responseCode || SuccessCode.SUCCESS,
             data: payload,
           }
         }
-        else{
-            reply.status(200);
+        else {
             return {
                 success: false,
-                code: responseCode || ErrorCode.SYSTEM_PROP_INVALID,
+                code: reply.responseCode || ErrorCode.SYSTEM_PROP_INVALID,
                 data: payload,
             };
         }

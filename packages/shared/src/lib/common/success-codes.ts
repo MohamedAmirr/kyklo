@@ -1,5 +1,6 @@
-export enum SuccessCodes {
+export enum SuccessCode {
     TICKET_CREATED = "TICKET_CREATED",
     TICKET_UPDATED = "TICKET_UPDATED",
     USER_LOGGED_IN = "USER_LOGGED_IN",
+    SUCCESS = "SUCCESS",
 }

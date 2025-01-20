@@ -1,9 +1,8 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import {  ErrorCode, PickUpError } from "@pickup/shared";
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { ErrorCode, PickUpError } from '@pickup/shared';
 
 export function setupGlobalErrorHandler(app: FastifyInstance): void {
     app.setErrorHandler((error, request: FastifyRequest, reply: FastifyReply) => {
-
         if (error instanceof PickUpError) {
             reply.responseCode = error.error.code;
         } else if (error.validation) {

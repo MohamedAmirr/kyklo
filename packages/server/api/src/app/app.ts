@@ -1,5 +1,4 @@
 import { logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
-import swagger from '@fastify/swagger'
 import { FastifyInstance, FastifyRequest, HTTPMethods } from 'fastify'
 import fastifySocketIO from 'fastify-socket.io'
 import { Socket } from 'socket.io'
@@ -9,12 +8,12 @@ import { websocketService } from './websockets/websockets.service'
 import { openapiModule } from './helper/openapi/openapi.module'
 import { validateEnvPropsOnStartup } from './helper/system-validator'
 import { flagModule } from './flags/flag.module'
-import {PuEdition, PuEnvironment, SuccessCodes} from '@pickup/shared'
+import { PuEdition, PuEnvironment } from '@pickup/shared'
 import { authenticationModule } from './authentication/authentication.module'
-import {classroomModule} from "./classroom/classroom.module";
+import { classroomModule } from './classroom/classroom.module'
 import { studentModule } from './student/student.module'
-import {setupGlobalErrorHandler} from "./core/response/exception-handler";
-import addGlobalResponseFormat from "./core/response/response-hook";
+import { setupGlobalErrorHandler } from './core/response/exception-handler'
+import addGlobalResponseFormat from './core/response/response-hook'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 

@@ -9,7 +9,7 @@ const FullLogo = () => {
     <div className="h-[60px]">
       <img
         className="h-full"
-        src={branding?.logos.fullLogoUrl}
+        src={branding.logos.fullLogoUrl}
         alt={t('logo')}
       />
     </div>

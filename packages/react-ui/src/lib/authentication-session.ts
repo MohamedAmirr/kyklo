@@ -1,10 +1,10 @@
-import { APIResponse, AuthenticationResponse, isNil } from '@pickup/shared';
+import { ApiResponse, AuthenticationResponse, isNil } from '@pickup/shared';
 import { jwtDecode } from 'jwt-decode';
 
 const tokenKey = 'token';
 const currentUserKey = 'currentUser';
 export const authenticationSession = {
-  saveResponse(response: APIResponse<AuthenticationResponse>) {
+  saveResponse(response: ApiResponse<AuthenticationResponse>) {
     localStorage.setItem(tokenKey, response.data.token);
     localStorage.setItem(
       currentUserKey,

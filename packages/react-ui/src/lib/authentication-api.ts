@@ -1,5 +1,6 @@
 import {
   AuthenticationResponse,
+  ApiResponse,
   SignInRequest,
   SignUpRequest,
   CreateOtpRequestBody,
@@ -11,13 +12,13 @@ import { api } from '@/lib/api';
 
 export const authenticationApi = {
   signIn(request: SignInRequest) {
-    return api.post<AuthenticationResponse>(
+    return api.post<ApiResponse<AuthenticationResponse>>(
       '/v1/authentication/sign-in',
       request,
     );
   },
   signUp(request: SignUpRequest) {
-    return api.post<AuthenticationResponse>(
+    return api.post<ApiResponse<AuthenticationResponse>>(
       '/v1/authentication/sign-up',
       request,
     );
