@@ -11,8 +11,8 @@ const PageTitle = ({ title, children }: PageTitleProps) => {
   const websiteBranding = flagsHooks.useWebsiteBranding();
 
   useEffect(() => {
-    document.title = `${title} | ${websiteBranding.websiteName}`;
-  }, [title, websiteBranding.websiteName]);
+    document.title = `${title} | ${websiteBranding?.websiteName}`;
+  }, [title, websiteBranding?.websiteName]);
 
   return children;
 };
