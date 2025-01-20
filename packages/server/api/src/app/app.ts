@@ -4,7 +4,7 @@ import { FastifyInstance, FastifyRequest, HTTPMethods } from 'fastify'
 import fastifySocketIO from 'fastify-socket.io'
 import { Socket } from 'socket.io'
 import { accessTokenManager } from './authentication/lib/access-token-manager'
-import { securityHandlerChain } from './core/security/security-handler-chain'
+// import { securityHandlerChain } from './core/security/security-handler-chain'
 import { websocketService } from './websockets/websockets.service'
 import { openapiModule } from './helper/openapi/openapi.module'
 import { validateEnvPropsOnStartup } from './helper/system-validator'
@@ -53,7 +53,7 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
         }
     })
 
-    app.addHook('preHandler', securityHandlerChain)
+    // app.addHook('preHandler', securityHandlerChain)
     await app.register(openapiModule)
     await app.register(ticketModule)
     await app.register(flagModule)
