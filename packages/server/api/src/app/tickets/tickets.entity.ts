@@ -31,7 +31,7 @@ export type TicketSchema = Ticket & {
 }
 
 
-export const TicketEntity = new EntitySchema<TicketSchema>({
+export const TicketsEntity = new EntitySchema<TicketSchema>({
     name: 'ticket',
     columns: {
         ...BaseColumnSchemaPart,

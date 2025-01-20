@@ -1,10 +1,10 @@
 import { ErrorCode, NewTicket, PickUpError, puId, SeekPage, Ticket } from '@pickup/shared'
 import { repoFactory } from '../core/db/repo-factory'
-import { TicketEntity } from './ticket.entity'
+import { TicketsEntity } from './tickets.entity'
 
-export const ticketRepo = repoFactory(TicketEntity)
+export const ticketsRepo = repoFactory(TicketsEntity)
 
-export const ticketService = {
+export const ticketsService = {
     async create(params: CreateParams): Promise<Ticket> {
         const id = puId()
         const ticket: NewTicket = {
@@ -12,10 +12,10 @@ export const ticketService = {
             id,
         }
 
-        return ticketRepo().save(ticket)
+        return ticketsRepo().save(ticket)
     },
     async closeTicket(id: string): Promise<Ticket> {
-        const updateResult = await ticketRepo().update({
+        const updateResult = await ticketsRepo().update({
             id,
         }, {
             status: 'closed',
@@ -30,12 +30,12 @@ export const ticketService = {
                 },
             })
         }
-        return ticketRepo().findOneByOrFail({
+        return ticketsRepo().findOneByOrFail({
             id,
         })
     },
     async openTicket(id: string): Promise<Ticket> {
-        const updateResult = await ticketRepo().update({
+        const updateResult = await ticketsRepo().update({
             id,
         }, {
             status: 'open',
@@ -50,12 +50,12 @@ export const ticketService = {
                 },
             })
         }
-        return ticketRepo().findOneByOrFail({
+        return ticketsRepo().findOneByOrFail({
             id,
         })
     },
     async list(schoolId: string): Promise<SeekPage<Ticket>> {
-        const tickets = await ticketRepo().findBy({
+        const tickets = await ticketsRepo().findBy({
             schoolId,
         })
 

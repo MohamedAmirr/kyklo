@@ -19,7 +19,7 @@ import { ResetPasswordPage } from '../routes/forget-password';
 import HomePage from '../routes/home';
 import { SignInPage } from '../routes/sign-in';
 import { SignUpPage } from '../routes/sign-up';
-import TicketPage from '../routes/ticket';
+import TicketPage from '../routes/tickets';
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper';
 
@@ -45,10 +45,10 @@ const routes = [
     ),
   },
   {
-    path: '/ticket',
+    path: '/tickets',
     element: (
       <DashboardContainer>
-        <PageTitle title="Ticket">
+        <PageTitle title="Tickets">
           <TicketPage />
         </PageTitle>
       </DashboardContainer>

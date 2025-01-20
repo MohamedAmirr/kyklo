@@ -15,7 +15,7 @@ export * from './lib/roles'
 export * from './lib/school'
 export * from './lib/student'
 export * from './lib/classroom'
-export * from './lib/ticket'
+export * from './lib/tickets'
 // Look at https://github.com/sinclairzx81/typebox/issues/350
 import { TypeSystemPolicy } from '@sinclair/typebox/system'
 TypeSystemPolicy.ExactOptionalPropertyTypes = false

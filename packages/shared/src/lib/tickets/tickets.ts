@@ -12,7 +12,7 @@ export type TicketCategory = Static<typeof TicketCategory>
 
 export type TicketId = PuId
 
-export const Ticket = Type.Object({
+export const Tickets = Type.Object({
     ...BaseModelSchema,
     title: Type.String(),
     status: Type.Enum({ open: 'open', closed: 'closed' }),
@@ -22,4 +22,4 @@ export const Ticket = Type.Object({
     schoolId: Type.String(),
 })
 
-export type Ticket = Static<typeof Ticket>
+export type Ticket = Static<typeof Tickets>

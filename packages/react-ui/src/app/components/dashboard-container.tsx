@@ -24,7 +24,7 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
       icon: BookOpen,
     },
     {
-      to: '/ticket',
+      to: '/tickets',
       label: t('Tickets'),
       icon: MessageCircleQuestion,
     },

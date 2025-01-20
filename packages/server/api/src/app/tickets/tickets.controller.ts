@@ -1,12 +1,12 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { FastifyRequest } from "fastify";
-import { ticketService } from "./ticket.service";
+import { ticketsService } from "./tickets.service";
 import { NewTicket } from "@pickup/shared";
 
-export const ticketController: FastifyPluginAsyncTypebox = async (app) => {
+export const ticketsController: FastifyPluginAsyncTypebox = async (app) => {
   app.get("", async (request: FastifyRequest) => {
     const schoolId = request.principal.schoolId;
-    return await ticketService.list(schoolId);
+    return await ticketsService.list(schoolId);
   });
   app.post(
     "",
@@ -16,21 +16,21 @@ export const ticketController: FastifyPluginAsyncTypebox = async (app) => {
       },
     },
     async (request: FastifyRequest<{ Body: NewTicket }>) => {
-      await ticketService.create(request.body);
+      await ticketsService.create(request.body);
       return { message: "Ticket created" };
     }
   );
   app.patch<{ Params: { id: string } }>(
     "/:id/close",
     async (request: FastifyRequest<{ Params: { id: string } }>) => {
-      await ticketService.closeTicket(request.params.id);
+      await ticketsService.closeTicket(request.params.id);
       return { message: "Ticket closed" };
     }
   );
   app.patch<{ Params: { id: string } }>(
     "/:id/open",
     async (request: FastifyRequest<{ Params: { id: string } }>) => {
-      await ticketService.openTicket(request.params.id);
+      await ticketsService.openTicket(request.params.id);
       return { message: "Ticket opened" };
     }
   );
