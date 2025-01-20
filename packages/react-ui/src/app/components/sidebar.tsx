@@ -104,13 +104,13 @@ export function Sidebar({
                     <TooltipTrigger asChild>
                       <div className="flex items-center gap-2">
                         <img
-                          src={branding?.logos?.logoIconUrl}
+                          src={branding.logos.logoIconUrl}
                           alt={t('home')}
                           width={50}
                           height={50}
                         />
                         <span className="text-[24px]">
-                          {branding?.websiteName}
+                          {branding.websiteName}
                         </span>
                       </div>
                     </TooltipTrigger>

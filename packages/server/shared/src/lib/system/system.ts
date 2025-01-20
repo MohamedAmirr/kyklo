@@ -28,7 +28,7 @@ const systemPropDefaultValues: Partial<Record<SystemProp, string>> = {
     [AppSystemProp.EDITION]: PuEdition.COMMUNITY,
     [AppSystemProp.SHOW_PLATFORM_DEMO]: 'false',
     [AppSystemProp.MAX_FILE_SIZE_MB]: '4',
-    [SharedSystemProp.ENVIRONMENT]: 'dev',
+    [SharedSystemProp.ENVIRONMENT]: 'prod',
     [SharedSystemProp.LOG_LEVEL]: 'info',
     [SharedSystemProp.LOG_PRETTY]: 'false',
     [SharedSystemProp.CONTAINER_TYPE]: ContainerType.APP,
