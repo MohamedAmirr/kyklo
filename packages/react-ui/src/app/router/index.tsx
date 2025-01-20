@@ -19,7 +19,7 @@ import { ResetPasswordPage } from '../routes/forget-password';
 import HomePage from '../routes/home';
 import { SignInPage } from '../routes/sign-in';
 import { SignUpPage } from '../routes/sign-up';
-import TicketPage from '../routes/tickets';
+import { TicketPage } from '../routes/tickets';
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper';
 
