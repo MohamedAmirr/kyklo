@@ -19,6 +19,7 @@ import { Label } from '@/components/ui/label';
 import { flagsHooks } from '@/hooks/flags-hooks';
 import { HttpError, api } from '@/lib/api';
 import { authenticationApi } from '@/lib/authentication-api';
+import { authenticationSession } from '@/lib/authentication-session';
 import { formatUtils } from '@/lib/utils';
 
 const SignInSchema = Type.Object({
@@ -55,7 +56,7 @@ const SignInForm: React.FC = () => {
   >({
     mutationFn: authenticationApi.signIn,
     onSuccess: (data) => {
-      // TODO: Add authenticationSession.saveResponse(data);
+      authenticationSession.saveResponse(data);
       navigate('/home');
     },
     onError: (error) => {

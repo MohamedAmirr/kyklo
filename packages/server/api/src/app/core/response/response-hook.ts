@@ -8,7 +8,7 @@ export default function addGlobalResponseFormat(fastify: FastifyInstance) {
       request: FastifyRequest,
       reply: FastifyReply,
       payload
-    ): Promise<APIResponse> => {
+    ): Promise<APIResponse<unknown>> => {
         const responseCode: string | undefined = reply.responseCode;
 
         if (reply.statusCode < 300) {
