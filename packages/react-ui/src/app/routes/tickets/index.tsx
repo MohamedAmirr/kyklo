@@ -45,7 +45,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import TicketDetails from '@/components/ui/ticket-details';
 
-const data: Payment[] = [
+const data: Ticket[] = [
   {
     id: 'a1b2c3d4',
     ticketId: '#12345',
@@ -111,7 +111,7 @@ const data: Payment[] = [
   },
 ];
 
-export type Payment = {
+export type Ticket = {
   id: string;
   title: string;
   category: string;
@@ -121,7 +121,7 @@ export type Payment = {
   actions: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Ticket>[] = [
   {
     accessorKey: 'ticketId',
     header: ({ column }) => (
@@ -263,7 +263,7 @@ export function TicketPage() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [openSelectedTicket, setOpenSelectedTicket] = React.useState(false);
-  const [selectedRow, setSelectedRow] = React.useState<Payment | null>(null);
+  const [selectedRow, setSelectedRow] = React.useState<Ticket | null>(null);
 
   const table = useReactTable({
     data,
@@ -311,7 +311,7 @@ export function TicketPage() {
     updateFilter('title', title);
   };
 
-  const handleRowOnClick = (row: Payment) => {
+  const handleRowOnClick = (row: Ticket) => {
     setSelectedRow(row);
     setOpenSelectedTicket(true);
   };
