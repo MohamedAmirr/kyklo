@@ -1,9 +1,9 @@
 export * from './lib/common'
 export * from './lib/flag/flag'
+export * from './lib/authentication/model/principal-type'
 export * from './lib/authentication/dto/authentication-response'
 export * from './lib/authentication/dto/sign-up-request'
 export * from './lib/authentication/dto/sign-in-request'
-export * from './lib/authentication/model/principal-type'
 export * from './lib/authentication/model/principal'
 export * from './lib/common/seek-page'
 export * from './lib/common/id-generator'
@@ -15,6 +15,7 @@ export * from './lib/roles'
 export * from './lib/school'
 export * from './lib/student'
 export * from './lib/classroom'
+export * from './lib/api-response'
 // Look at https://github.com/sinclairzx81/typebox/issues/350
 import { TypeSystemPolicy } from '@sinclair/typebox/system'
 TypeSystemPolicy.ExactOptionalPropertyTypes = false

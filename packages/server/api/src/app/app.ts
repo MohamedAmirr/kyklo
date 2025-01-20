@@ -1,5 +1,4 @@
 import { logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
-import swagger from '@fastify/swagger'
 import { FastifyInstance, FastifyRequest, HTTPMethods } from 'fastify'
 import fastifySocketIO from 'fastify-socket.io'
 import { Socket } from 'socket.io'
@@ -10,9 +9,17 @@ import { openapiModule } from './helper/openapi/openapi.module'
 import { validateEnvPropsOnStartup } from './helper/system-validator'
 import { flagModule } from './flags/flag.module'
 import { PuEdition, PuEnvironment } from '@pickup/shared'
+import { authenticationModule } from './authentication/authentication.module'
+import { classroomModule } from './classroom/classroom.module'
+import { studentModule } from './student/student.module'
+import { setupGlobalErrorHandler } from './core/response/exception-handler'
+import addGlobalResponseFormat from './core/response/response-hook'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
+    setupGlobalErrorHandler(app)
+    app.decorateReply('responseCode')
+    addGlobalResponseFormat(app);
 
     await app.register(fastifySocketIO, {
         cors: {
@@ -51,8 +58,12 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
     })
 
     app.addHook('preHandler', securityHandlerChain)
+
     await app.register(openapiModule)
     await app.register(flagModule)
+    await app.register(authenticationModule)
+    await app.register(classroomModule)
+    await app.register(studentModule)
 
     app.get(
         '/redirect',

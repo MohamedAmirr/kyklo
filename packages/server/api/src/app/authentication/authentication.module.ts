@@ -3,6 +3,6 @@ import { authenticationController } from './authentication.controller'
 
 export const authenticationModule: FastifyPluginAsyncTypebox = async (app) => {
     await app.register(authenticationController, {
-        prefix: '/v1/authentication',
+        prefix: '/api/v1/authentication',
     })
 }

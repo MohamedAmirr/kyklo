@@ -27,6 +27,29 @@ function isUrlRelative(url: string) {
   return !url.startsWith('http') && !url.startsWith('https');
 }
 
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  paramsSerializer: (params) => {
+    return qs.stringify(params, {
+      arrayFormat: 'repeat',
+    });
+  },
+});
+
+axiosInstance.interceptors.response.use(
+  (response: AxiosResponse) => {
+    if (response.data && response.data.success === false) {
+      const error = new Error(response.data.message || 'Request failed');
+      (error as any).response = response;
+      throw error;
+    }
+    return response;
+  },
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  },
+);
+
 function request<TResponse>(
   url: string,
   config: AxiosRequestConfig = {},
@@ -37,7 +60,7 @@ function request<TResponse>(
     url.startsWith(route),
   );
   const Token = 'TODO ADD IT';
-  return axios({
+  return axiosInstance({
     url: resolvedUrl,
     ...config,
     headers: {

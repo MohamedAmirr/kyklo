@@ -5,13 +5,14 @@ import {
     isNil,
     User,
     UserStatus,
+    SignInRequest,
 } from '@pickup/shared'
-import { passwordHasher } from '../lib/password-hasher'
-import { authenticationServiceHooks as hooks } from './hooks'
-import { userService } from '../../user/user.service'
+import {passwordHasher} from '../lib/password-hasher'
+import {authenticationServiceHooks as hooks} from './hooks'
+import {userService} from '../../user/user.service'
 
 export const authenticationService = {
-    async signIn(request: SignInParams): Promise<AuthenticationResponse> {
+    async signIn(request: SignInRequest): Promise<AuthenticationResponse> {
         const user = await userService.getSingleUserByEmail({
             email: request.email,
         })
@@ -27,9 +28,9 @@ export const authenticationService = {
         })
     },
     async signInResponse({
-        user,
-    }: SignInResponseParams): Promise<AuthenticationResponse> {
-        const authnResponse = await hooks.get().signIn({
+                             user,
+                         }: SignInResponseParams): Promise<AuthenticationResponse> {
+        const authnResponse = await hooks.get(user.type).signIn({
             user,
         })
 
@@ -45,7 +46,7 @@ export const authenticationService = {
 
 const assertUserIsAllowedToSignIn: (
     user: User | null
-) => asserts user is User = (user) => {
+) => asserts user is User = (user): void => {
     if (isNil(user)) {
         throw new PickUpError({
             code: ErrorCode.INVALID_CREDENTIALS,
@@ -63,9 +64,9 @@ const assertUserIsAllowedToSignIn: (
 }
 
 const assertPasswordMatches = async ({
-    requestPassword,
-    userPassword,
-}: AssertPasswordsMatchParams): Promise<void> => {
+                                         requestPassword,
+                                         userPassword,
+                                     }: AssertPasswordsMatchParams): Promise<void> => {
     const passwordMatches = await passwordHasher.compare(
         requestPassword,
         userPassword,
@@ -80,13 +81,8 @@ const assertPasswordMatches = async ({
 }
 
 const removePasswordPropFromUser = (user: User): Omit<User, 'password'> => {
-    const { password: _, ...filteredUser } = user
+    const {password: _, ...filteredUser} = user
     return filteredUser
-}
-
-type SignInParams = {
-    email: string
-    password: string
 }
 
 type AssertPasswordsMatchParams = {

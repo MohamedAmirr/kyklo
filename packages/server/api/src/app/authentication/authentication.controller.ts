@@ -1,5 +1,9 @@
 import {AppSystemProp, system} from '@pickup/server-shared'
-import {ALL_PRINCIPAL_TYPES, SignInRequest,} from '@pickup/shared'
+import {
+    AuthenticationResponse,
+    SignInRequest,
+    SuccessCode,
+} from "@pickup/shared";
 import {RateLimitOptions} from '@fastify/rate-limit'
 import {FastifyPluginAsyncTypebox} from '@fastify/type-provider-typebox'
 import {authenticationService} from './authentication-service'
@@ -7,7 +11,8 @@ import {authenticationService} from './authentication-service'
 export const authenticationController: FastifyPluginAsyncTypebox = async (
     app,
 ) => {
-    app.post('/sign-in', SignInRequestOptions, async (request) => {
+    app.post('/sign-in',  SignInRequestOptions, async (request, reply):Promise<AuthenticationResponse> => {
+        reply.responseCode = SuccessCode.USER_LOGGED_IN
         return await authenticationService.signIn({
             email: request.body.email,
             password: request.body.password,
@@ -25,7 +30,6 @@ const rateLimitOptions: RateLimitOptions = {
 
 const SignInRequestOptions = {
     config: {
-        allowedPrincipals: ALL_PRINCIPAL_TYPES,
         rateLimit: rateLimitOptions,
     },
     schema: {

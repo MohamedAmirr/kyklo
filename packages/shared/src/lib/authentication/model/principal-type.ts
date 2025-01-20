@@ -2,11 +2,6 @@ export enum PrincipalType {
     USER = 'USER',
     SERVICE = 'SERVICE',
     UNKNOWN = 'UNKNOWN',
-
-    /**
-     * @deprecated
-     */
-    SUPER_USER = 'SUPER_USER',
 }
 
 export const ALL_PRINCIPAL_TYPES = Object.values(PrincipalType)
