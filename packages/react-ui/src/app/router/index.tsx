@@ -50,11 +50,13 @@ const routes = [
   {
     path: '/tickets',
     element: (
-      <DashboardContainer>
-        <PageTitle title="Tickets">
-          <TicketPage />
-        </PageTitle>
-      </DashboardContainer>
+      <AllowOnlyLoggedInUserOnlyGuard>
+        <DashboardContainer>
+          <PageTitle title="Tickets">
+            <TicketPage />
+          </PageTitle>
+        </DashboardContainer>
+      </AllowOnlyLoggedInUserOnlyGuard>
     ),
   },
   {
@@ -147,3 +149,10 @@ const PuRouter = () => {
 };
 
 export { PuRouter };
+<AllowOnlyLoggedInUserOnlyGuard>
+  <DashboardContainer>
+    <PageTitle title="Home">
+      <HomePage />
+    </PageTitle>
+  </DashboardContainer>
+</AllowOnlyLoggedInUserOnlyGuard>;

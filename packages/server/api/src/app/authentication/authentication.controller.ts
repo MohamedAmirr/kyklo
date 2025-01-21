@@ -3,7 +3,6 @@ import {
     AuthenticationResponse,
     SignInRequest,
     SuccessCode,
-    ALL_PRINCIPAL_TYPES,
 } from "@pickup/shared";
 import { RateLimitOptions } from '@fastify/rate-limit'
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
