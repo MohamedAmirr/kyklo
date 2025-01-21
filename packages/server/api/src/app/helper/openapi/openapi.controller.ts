@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify'
+import "@fastify/swagger";
 
 export const openapiController = async (fastify: FastifyInstance) => {
     fastify.get('/', async () => {
