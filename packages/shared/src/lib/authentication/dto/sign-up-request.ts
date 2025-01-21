@@ -1,5 +1,5 @@
 import { Static, Type } from '@sinclair/typebox'
-import { EmailType, PasswordType, UserTypes } from '../../user/user'
+import { EmailType, PasswordType, UserType } from '../../user/user'
 import { PuId } from '../../common/id-generator'
 
 export const SignUpRequest = Type.Object({
@@ -7,7 +7,7 @@ export const SignUpRequest = Type.Object({
     password: PasswordType,
     firstName: Type.String(),
     lastName: Type.String(),
-    type: Type.Enum(UserTypes),
+    type: Type.Enum(UserType),
     schoolId: PuId,
 })
 

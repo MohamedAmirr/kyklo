@@ -15,6 +15,12 @@ declare module 'fastify' {
     export interface FastifyInstance {
         io: Server<{ hello: string }>
     }
+
+    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+    export interface FastifyReply {
+        responseCode?: string;
+    }
+
     // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     export interface FastifyContextConfig {
         allowedPrincipals?: PrincipalType[]

@@ -1,7 +1,11 @@
 import { logger, SharedSystemProp, system } from '@pickup/server-shared'
-import { isNil, PuEnvironment } from '@pickup/shared'
+import {PuEnvironment, puId, SchoolGrades, SchoolSemesters, UserType} from '@pickup/shared'
 import { databaseConnection } from '../database-connection'
 import { FlagEntity } from '../../flags/flag.entity'
+import {SchoolEntity} from "../../school/school.entity";
+import {userService} from "../../user/user.service";
+import { StudentEntity } from '../../student/student.entity';
+import { ClassroomEntity } from '../../classroom/classroom.entity';
 
 const DEV_DATA_SEEDED_FLAG = 'DEV_DATA_SEEDED'
 
@@ -26,21 +30,46 @@ const setDevDataSeededFlag = async (): Promise<void> => {
 }
 
 const seedDevUser = async (): Promise<void> => {
-    const DEV_EMAIL = 'dev@ap.com'
-    const DEV_PASSWORD = '12345678'
+    const DEV_EMAIL = 'dev@ap.com';
+    const DEV_PASSWORD = '12345678';
 
-    //TODO INSERT DEV USER
-    // await authenticationService.signUp({
-    //     email: DEV_EMAIL,
-    //     password: DEV_PASSWORD,
-    //     firstName: 'Dev',
-    //     lastName: 'User',
-    //     verified: true,
-    //     platformId: null,
-    // })
+    const schoolRepo = databaseConnection().getRepository(SchoolEntity);
+    const studentRepo = databaseConnection().getRepository(StudentEntity)
+    const classroomRepo = databaseConnection().getRepository(ClassroomEntity)
 
-    logger.info({ name: 'seedDevUser' }, `email=${DEV_EMAIL} pass=${DEV_PASSWORD}`)
-}
+
+    const school = schoolRepo.create({
+        id: 'dev-school',
+        name: 'Dev School',
+    });
+    await schoolRepo.save(school);
+
+    const user = await userService.create({
+        email: DEV_EMAIL,
+        password: DEV_PASSWORD,
+        firstName: 'Dev',
+        lastName: 'User',
+        schoolId: school.id,
+        type:UserType.STUDENT
+    });
+
+    const classroom = classroomRepo.create({
+        id: 'dev-classroom',
+        name: 'Dev Classroom',
+    })
+    await classroomRepo.save(classroom)
+
+    const student = studentRepo.create({
+        id: puId(),
+        grade: SchoolGrades.FIRST,
+        semester: SchoolSemesters.FIRST,
+        classroomId: classroom.id,
+        userId: user.id,
+    })
+    await studentRepo.save(student)
+
+    logger.info({ name: 'seedDevUser' }, `email=${DEV_EMAIL} pass=${DEV_PASSWORD}`);
+};
 
 export const seedDevData = async (): Promise<void> => {
     if (currentEnvIsNotDev()) {

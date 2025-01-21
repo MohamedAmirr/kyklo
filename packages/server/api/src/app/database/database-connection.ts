@@ -10,6 +10,8 @@ import {
 import { OtpEntity } from '../otp/otp-entity'
 import { createPostgresDataSource } from './postgres-connection'
 import { FlagEntity } from '../flags/flag.entity'
+import {ClassroomEntity} from "../classroom/classroom.entity";
+import {StudentEntity} from "../student/student.entity";
 import { UserEntity } from '../user/user.entity'
 import { SchoolEntity } from '../school/school.entity'
 import {TicketCategoriesEntity, TicketsEntity} from '../tickets/tickets.entity'
@@ -21,6 +23,8 @@ function getEntities(): EntitySchema<unknown>[] {
         FlagEntity,
         UserEntity,
         SchoolEntity,
+        ClassroomEntity,
+        StudentEntity,
         TicketCategoriesEntity,
         TicketsEntity
     ]
@@ -42,7 +46,7 @@ function getEntities(): EntitySchema<unknown>[] {
 
 const getSynchronize = (): boolean => {
     const env = system.getOrThrow<PuEnvironment>(SharedSystemProp.ENVIRONMENT)
-    console.log(env)
+
     return env !== PuEnvironment.PRODUCTION
 }
 

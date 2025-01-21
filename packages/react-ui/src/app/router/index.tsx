@@ -6,6 +6,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 
+import { AllowOnlyLoggedInUserOnlyGuard } from '@/app/components/allow-logged-in-user-only-guard';
 import { PageTitle } from '@/app/components/page-title';
 import { RedirectPage } from '@/app/routes/redirect';
 import { VerifyEmail } from '@/features/authentication/components/verify-email';
@@ -37,11 +38,13 @@ const routes = [
   {
     path: '/home',
     element: (
-      <DashboardContainer>
-        <PageTitle title="Home">
-          <HomePage />
-        </PageTitle>
-      </DashboardContainer>
+      <AllowOnlyLoggedInUserOnlyGuard>
+        <DashboardContainer>
+          <PageTitle title="Home">
+            <HomePage />
+          </PageTitle>
+        </DashboardContainer>
+      </AllowOnlyLoggedInUserOnlyGuard>
     ),
   },
   {

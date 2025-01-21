@@ -11,7 +11,7 @@ export enum UserStatus {
     INACTIVE = 'INACTIVE',
 }
 
-export enum UserTypes {
+export enum UserType {
     STAFF = 'STAFF',
     STUDENT = 'STUDENT',
     PARENT = 'PARENT',
@@ -32,7 +32,7 @@ export const User = Type.Object({
     firstName: Type.String(),
     lastName: Type.String(),
     password: Type.String(),
-    type: Type.Enum(UserTypes),
+    type: Type.Enum(UserType),
     status: Type.Enum(UserStatus),
     schoolId: PuId,
 })
@@ -44,7 +44,7 @@ export const UserMeta = Type.Object({
     email: Type.String(),
     firstName: Type.String(),
     lastName: Type.String(),
-    type: Type.Enum(UserTypes),
+    type: Type.Enum(UserType),
     status: Type.Enum(UserStatus),
     schoolId: PuId,
 })

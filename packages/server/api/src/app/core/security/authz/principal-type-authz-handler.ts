@@ -10,6 +10,7 @@ export class PrincipalTypeAuthzHandler extends BaseSecurityHandler {
     private static readonly IGNORED_ROUTES = [
         '/favicon.ico',
         '/v1/docs',
+        '/api/v1/authentication/sign-in',
         '/redirect',
     ]
 
