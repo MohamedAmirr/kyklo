@@ -31,6 +31,10 @@ export const UserEntity = new EntitySchema<UserSchema>({
         schoolId: {
             type: String,
         },
+        tokenVersion: {
+            type: String,
+            nullable: true,
+        },
     },
     indices: [
         {

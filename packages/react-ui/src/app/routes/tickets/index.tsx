@@ -358,7 +358,6 @@ export function TicketPage() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  console.log('Ticket created');
                   setOpenDialog(false);
                 }}
               >

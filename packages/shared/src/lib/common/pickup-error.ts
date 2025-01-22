@@ -35,6 +35,7 @@ export type PickUpErrorParams =
     | InvalidLicenseKeyParams
     | NoClassroomFoundErrorParams
     | InvalidSmtpCredentialsErrorParams
+    | InvitationOnlySignUpErrorParams
 export type BaseErrorParams<T, V> = {
     code: T
     params: V
@@ -175,6 +176,10 @@ export type InvalidSmtpCredentialsErrorParams = BaseErrorParams<ErrorCode.INVALI
     message?: string,
 }>
 
+export type InvitationOnlySignUpErrorParams = BaseErrorParams<ErrorCode.INVITATION_ONLY_SIGN_UP, {
+    message?: string,
+}>
+
 export enum ErrorCode {
     AUTHENTICATION = 'AUTHENTICATION',
     AUTHORIZATION = 'AUTHORIZATION',
@@ -201,4 +206,5 @@ export enum ErrorCode {
     EMAIL_AUTH_DISABLED = 'EMAIL_AUTH_DISABLED',
     NO_CLASSROOM_FOUND = 'NO_CLASSROOM_FOUND',
     INVALID_SMTP_CREDENTIALS = 'INVALID_SMTP_CREDENTIALS',
+    INVITATION_ONLY_SIGN_UP = 'INVITATION_ONLY_SIGN_UP',
 }

@@ -1,5 +1,6 @@
 import { ApiResponse, AuthenticationResponse, isNil } from '@pickup/shared';
 import { jwtDecode } from 'jwt-decode';
+import { authenticationApi } from './authentication-api';
 
 const tokenKey = 'token';
 const currentUserKey = 'currentUser';
@@ -18,20 +19,28 @@ export const authenticationSession = {
   getToken(): string | null {
     return localStorage.getItem(tokenKey) ?? null;
   },
-  getProjectId(): string | null {
+  getSchoolId(): string | null {
     const token = this.getToken();
     if (isNil(token)) {
       return null;
     }
-    const decodedJwt = jwtDecode<{ projectId: string }>(token);
-    return decodedJwt.projectId;
+    const decodedJwt = jwtDecode<{ schoolId: string }>(token);
+    return decodedJwt.schoolId;
+  },
+  getClassroomId(): string | null {
+    const token = this.getToken();
+    if (isNil(token)) {
+      return null;
+    }
+    const decodedJwt = jwtDecode<{ classroomId: string }>(token);
+    return decodedJwt.classroomId;
   },
   appendProjectRoutePrefix(path: string): string {
-    const projectId = this.getProjectId();
-    if (isNil(projectId)) {
+    const schoolId = this.getSchoolId();
+    if (isNil(schoolId)) {
       return path;
     }
-    return `/projects/${projectId}${path.startsWith('/') ? path : `/${path}`}`;
+    return `/schools/${schoolId}${path.startsWith('/') ? path : `/${path}`}`;
   },
   isLoggedIn(): boolean {
     return !!this.getToken() && !!this.getCurrentUser();
@@ -56,4 +65,19 @@ export const authenticationSession = {
     }
     return null;
   },
+  // async switchToSession(classroomId: string) {
+  //   if (authenticationSession.getClassroomId() === classroomId) {
+  //     return;
+  //   }
+  //   const result = await authenticationApi.switchClassroom({ classroomId });
+  //   localStorage.setItem(tokenKey, result.token);
+  //   localStorage.setItem(
+  //     currentUserKey,
+  //     JSON.stringify({
+  //       ...this.getCurrentUser(),
+  //       classroomId,
+  //     }),
+  //   );
+  //   window.dispatchEvent(new Event('storage'));
+  // },
 };
