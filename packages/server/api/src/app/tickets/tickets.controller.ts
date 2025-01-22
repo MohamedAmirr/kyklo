@@ -10,7 +10,7 @@ import {
 
 export const ticketsController: FastifyPluginAsyncTypebox = async (app) => {
   app.get("", ListTicketsParams, async (request) => {
-    const schoolId = request.principal.schoolId;
+      const schoolId = request.principal.schoolId;
       return await ticketsService.list({
       schoolId,
       request: request.query,

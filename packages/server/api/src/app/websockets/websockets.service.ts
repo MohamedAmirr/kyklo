@@ -10,7 +10,7 @@ const listener: Record<string, WebsocketListener<any>> = {}
 export const websocketService = {
     async init(socket: Socket): Promise<void> {
         const principal = await accessTokenManager.verifyPrincipal(socket.handshake.auth.token)
-        console.log('principal', principal)
+
         await socket.join(principal.classroomId)
         for (const [event, handler] of Object.entries(listener)) {
             socket.on(event, async (data) => {

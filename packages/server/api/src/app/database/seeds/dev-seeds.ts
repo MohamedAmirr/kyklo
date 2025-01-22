@@ -116,8 +116,8 @@ export const seedDevData = async (): Promise<void> => {
         return
     }
 
-    await seedDevTickets()
     await seedDevUser()
+    await seedDevTickets()
     await setDevDataSeededFlag()
 }
 
