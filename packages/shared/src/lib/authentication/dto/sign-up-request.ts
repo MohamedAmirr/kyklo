@@ -9,6 +9,7 @@ export const SignUpRequest = Type.Object({
     lastName: Type.String(),
     type: Type.Enum(UserType),
     schoolId: PuId,
+    tokenVersion: PuId,
 })
 
 export type SignUpRequest = Static<typeof SignUpRequest>

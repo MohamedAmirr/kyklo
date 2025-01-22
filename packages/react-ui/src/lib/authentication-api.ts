@@ -6,6 +6,7 @@ import {
   CreateOtpRequestBody,
   ResetPasswordRequestBody,
   VerifyEmailRequestBody,
+  SwitchClassroomRequest,
 } from '@pickup/shared';
 
 import { api } from '@/lib/api';
@@ -31,5 +32,11 @@ export const authenticationApi = {
   },
   verifyEmail(request: VerifyEmailRequestBody) {
     return api.post<void>('/v1/authn/local/verify-email', request);
+  },
+  switchClassroom(request: SwitchClassroomRequest) {
+    return api.post<AuthenticationResponse>(
+      `/v1/authentication/switch-classroom`,
+      request,
+    );
   },
 };

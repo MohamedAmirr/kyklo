@@ -7,13 +7,13 @@ import { useParams, Navigate, useSearchParams } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 import { flagsHooks } from '@/hooks/flags-hooks';
 import { api } from '@/lib/api';
+import { authenticationSession } from '@/lib/authentication-session';
 
 const TokenCheckerWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { classroomId } = useParams<{ classroomId: string }>();
-  // const currentClassroomId = authenticationSession.getClassroomId();
-  const currentClassroomId = 'TODO ADD IT';
+  const currentClassroomId = authenticationSession.getClassroomId();
   const { data: edition } = flagsHooks.useFlag<PuEdition>(PuFlagId.EDITION);
 
   const { toast } = useToast();
@@ -27,7 +27,7 @@ const TokenCheckerWrapper: React.FC<{ children: React.ReactNode }> = ({
         return false;
       }
       try {
-        // TODO: Add authenticationSession.switchToSession(classroomId!);
+        authenticationSession.switchToSession(classroomId!);
         return true;
       } catch (error) {
         if (api.isError(error) && error.response?.status === 401) {
@@ -38,7 +38,7 @@ const TokenCheckerWrapper: React.FC<{ children: React.ReactNode }> = ({
               'Either the classroom does not exist or you do not have access to it.',
             ),
           });
-          // TODO: Add authenticationSession.clearSession();
+          authenticationSession.clearSession();
         }
         return false;
       }
@@ -65,8 +65,7 @@ type RedirectToCurrentClassroomRouteProps = {
 const RedirectToCurrentClassroomRoute: React.FC<
   RedirectToCurrentClassroomRouteProps
 > = ({ path }) => {
-  // const currentClassroomId = authenticationSession.getClassroomId();
-  const currentClassroomId = 'TODO ADD IT';
+  const currentClassroomId = authenticationSession.getClassroomId();
   const params = useParams();
   const [searchParams] = useSearchParams();
   if (isNil(currentClassroomId)) {

@@ -16,6 +16,7 @@ import { setupGlobalErrorHandler } from './core/response/exception-handler'
 import addGlobalResponseFormat from './core/response/response-hook'
 import { userModule } from './user/user.module'
 import {ticketsModule} from "./tickets/tickets.module";
+import { classroomMemberModule } from './classroom-members/classroom-member.module'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
@@ -66,6 +67,7 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
     await app.register(flagModule)
     await app.register(authenticationModule)
     await app.register(classroomModule)
+    await app.register(classroomMemberModule)
     await app.register(studentModule)
     await app.register(userModule)
 

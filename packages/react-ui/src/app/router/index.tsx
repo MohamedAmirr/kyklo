@@ -19,7 +19,6 @@ import { ChangePasswordPage } from '../routes/change-password';
 import { ResetPasswordPage } from '../routes/forget-password';
 import HomePage from '../routes/home';
 import { SignInPage } from '../routes/sign-in';
-import { SignUpPage } from '../routes/sign-up';
 import { TicketPage } from '../routes/tickets';
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper';
@@ -38,25 +37,21 @@ const routes = [
   {
     path: '/home',
     element: (
-      <AllowOnlyLoggedInUserOnlyGuard>
-        <DashboardContainer>
-          <PageTitle title="Home">
-            <HomePage />
-          </PageTitle>
-        </DashboardContainer>
-      </AllowOnlyLoggedInUserOnlyGuard>
+      <DashboardContainer>
+        <PageTitle title="Home">
+          <HomePage />
+        </PageTitle>
+      </DashboardContainer>
     ),
   },
   {
     path: '/tickets',
     element: (
-      <AllowOnlyLoggedInUserOnlyGuard>
-        <DashboardContainer>
-          <PageTitle title="Tickets">
-            <TicketPage />
-          </PageTitle>
-        </DashboardContainer>
-      </AllowOnlyLoggedInUserOnlyGuard>
+      <DashboardContainer>
+        <PageTitle title="Tickets">
+          <TicketPage />
+        </PageTitle>
+      </DashboardContainer>
     ),
   },
   {
@@ -108,14 +103,6 @@ const routes = [
     element: (
       <PageTitle title="Verify Email">
         <VerifyEmail />
-      </PageTitle>
-    ),
-  },
-  {
-    path: '/sign-up',
-    element: (
-      <PageTitle title="Sign Up">
-        <SignUpPage />
       </PageTitle>
     ),
   },

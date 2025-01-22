@@ -10,6 +10,7 @@ import {
 import {passwordHasher} from '../lib/password-hasher'
 import {authenticationServiceHooks as hooks} from './hooks'
 import {userService} from '../../user/user.service'
+import { authenticationUtils } from '../authentication.utils'
 
 export const authenticationService = {
     async signIn(request: SignInRequest): Promise<AuthenticationResponse> {
@@ -40,8 +41,15 @@ export const authenticationService = {
         return {
             ...userWithoutPassword,
             token: authnResponse.token,
-            schoolId: authnResponse.schoolId,
+            classroomId: authnResponse.classroomId,
         }
+    },
+    async switchClassroom(params: SwitchClassroomParams): Promise<AuthenticationResponse> {
+        return authenticationUtils.getClassroomAndToken({
+            userId: params.userId,
+            schoolId: params.schoolId,
+            classroomId: params.classroomId,
+        })
     },
 }
 
@@ -73,6 +81,8 @@ const assertPasswordMatches = async ({
         userPassword,
     )
 
+    console.log('passwordMatches', passwordMatches)
+
     if (!passwordMatches) {
         throw new PickUpError({
             code: ErrorCode.INVALID_CREDENTIALS,
@@ -93,4 +103,10 @@ type AssertPasswordsMatchParams = {
 
 type SignInResponseParams = {
     user: User
+}
+
+type SwitchClassroomParams = {
+    userId: string
+    schoolId: string
+    classroomId: string
 }
