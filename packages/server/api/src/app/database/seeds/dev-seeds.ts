@@ -6,7 +6,6 @@ import {SchoolEntity} from "../../school/school.entity";
 import { StudentEntity } from '../../student/student.entity';
 import { ClassroomEntity } from '../../classroom/classroom.entity';
 import { ClassroomMemberEntity } from '../../classroom-members/classroom-member.entity';
-import { UserEntity } from '../../user/user.entity';
 import { userService } from '../../user/user.service';
 
 const DEV_DATA_SEEDED_FLAG = 'DEV_DATA_SEEDED'
