@@ -65,19 +65,19 @@ export const authenticationSession = {
     }
     return null;
   },
-  // async switchToSession(classroomId: string) {
-  //   if (authenticationSession.getClassroomId() === classroomId) {
-  //     return;
-  //   }
-  //   const result = await authenticationApi.switchClassroom({ classroomId });
-  //   localStorage.setItem(tokenKey, result.token);
-  //   localStorage.setItem(
-  //     currentUserKey,
-  //     JSON.stringify({
-  //       ...this.getCurrentUser(),
-  //       classroomId,
-  //     }),
-  //   );
-  //   window.dispatchEvent(new Event('storage'));
-  // },
+  async switchToSession(classroomId: string) {
+    if (authenticationSession.getClassroomId() === classroomId) {
+      return;
+    }
+    const result = await authenticationApi.switchClassroom({ classroomId });
+    localStorage.setItem(tokenKey, result.token);
+    localStorage.setItem(
+      currentUserKey,
+      JSON.stringify({
+        ...this.getCurrentUser(),
+        classroomId,
+      }),
+    );
+    window.dispatchEvent(new Event('storage'));
+  },
 };

@@ -27,7 +27,7 @@ const TokenCheckerWrapper: React.FC<{ children: React.ReactNode }> = ({
         return false;
       }
       try {
-        // authenticationSession.switchToSession(classroomId!);
+        authenticationSession.switchToSession(classroomId!);
         return true;
       } catch (error) {
         if (api.isError(error) && error.response?.status === 401) {
@@ -38,7 +38,7 @@ const TokenCheckerWrapper: React.FC<{ children: React.ReactNode }> = ({
               'Either the classroom does not exist or you do not have access to it.',
             ),
           });
-          // TODO: Add authenticationSession.clearSession();
+          authenticationSession.clearSession();
         }
         return false;
       }
