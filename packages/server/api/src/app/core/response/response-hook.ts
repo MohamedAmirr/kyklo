@@ -10,6 +10,7 @@ export default function addGlobalResponseFormat(fastify: FastifyInstance) {
       reply: FastifyReply,
       payload
     ) => {
+        console.log("na hena",payload)
         if (reply.statusCode < 300) {
           return {
             success: true,

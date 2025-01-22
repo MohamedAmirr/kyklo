@@ -5,6 +5,8 @@ import {
   ColumnDef as TanstackColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { t } from 'i18next';
@@ -174,12 +176,18 @@ export function DataTable<
     setPreviousPageCursor(page?.previous ?? undefined);
     setTableData(enrichPageData(page?.data ?? []));
   }, [page?.data]);
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
     data: tableData,
     columns,
     manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: {
+      sorting,
+    },
     getRowId: () => uuid(),
     initialState: {
       pagination: {
@@ -231,42 +239,44 @@ export function DataTable<
 
   return (
     <div>
-      <DataTableToolbar>
-        <div className="w-full flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            {filters &&
-              filters.map((filter) => (
-                <DataTableFacetedFilter
-                  key={filter.accessorKey}
-                  type={filter.type}
-                  column={table.getColumn(filter.accessorKey)}
-                  title={filter.title}
-                  options={filter.options}
-                />
-              ))}
+      {filters && bulkActions?.length > 0 && (
+        <DataTableToolbar>
+          <div className="w-full flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              {filters &&
+                filters.map((filter) => (
+                  <DataTableFacetedFilter
+                    key={filter.accessorKey}
+                    type={filter.type}
+                    column={table.getColumn(filter.accessorKey)}
+                    title={filter.title}
+                    options={filter.options}
+                  />
+                ))}
+            </div>
+            {bulkActions.length > 0 && (
+              <DataTableBulkActions
+                selectedRows={table
+                  .getSelectedRowModel()
+                  .rows.map((row) => row.original)}
+                actions={bulkActions.map((action) => ({
+                  render: (selectedRows: RowDataWithActions<TData>[]) =>
+                    action.render(selectedRows, resetSelection),
+                }))}
+              />
+            )}
           </div>
-          {bulkActions.length > 0 && (
-            <DataTableBulkActions
-              selectedRows={table
-                .getSelectedRowModel()
-                .rows.map((row) => row.original)}
-              actions={bulkActions.map((action) => ({
-                render: (selectedRows: RowDataWithActions<TData>[]) =>
-                  action.render(selectedRows, resetSelection),
-              }))}
-            />
-          )}
-        </div>
-      </DataTableToolbar>
+        </DataTableToolbar>
+      )}
 
-      <div className="rounded-md border m-">
+      <div className="border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-background">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className={'bg-gray-100'}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -347,7 +357,7 @@ export function DataTable<
         </Table>
       </div>
       {!hidePagination && (
-        <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex items-center justify-end space-x-2 p-4">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}

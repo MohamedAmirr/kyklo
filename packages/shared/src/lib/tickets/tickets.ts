@@ -22,4 +22,4 @@ export const Tickets = Type.Object({
     schoolId: Type.String(),
 })
 
-export type Ticket = Static<typeof Tickets>
+export type Tickets = Static<typeof Tickets>

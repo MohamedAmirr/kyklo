@@ -1,20 +1,20 @@
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-  VisibilityState,
-} from '@tanstack/react-table';
+import { ApiResponse, NewTicket, Tickets } from '@pickup/shared';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { ColumnDef, ColumnFiltersState } from '@tanstack/react-table';
 import { t } from 'i18next';
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import * as React from 'react';
+import { useRef } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
+import {
+  CURSOR_QUERY_PARAM,
+  DataTable,
+  LIMIT_QUERY_PARAM,
+  RowDataWithActions,
+} from '@/components/ui/data-table';
 import {
   Dialog,
   DialogClose,
@@ -26,110 +26,34 @@ import {
 } from '@/components/ui/dialog';
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { FormField, Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import OpenClosedTickets from '@/components/ui/open-closed-tickets';
 import { SearchBar } from '@/components/ui/search-bar';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import TicketDetails from '@/components/ui/ticket-details';
+import { toast } from '@/components/ui/use-toast';
+import { ticketApi } from '@/lib/ticket-api';
 
-const data: Ticket[] = [
+export const columns: ColumnDef<RowDataWithActions<Tickets>>[] = [
   {
-    id: 'a1b2c3d4',
-    ticketId: '#12345',
-    title: 'Payment for Service A',
-    category: 'Service',
-    username: 'user1',
-    status: 'opened',
-    actions: 'View',
-  },
-  {
-    id: 'e5f6g7h8',
-    ticketId: '#67890',
-    title: 'Payment for Service B',
-    category: 'Service',
-    username: 'user2',
-    status: 'opened',
-    actions: 'View',
-  },
-  {
-    id: 'i9j0k1l2',
-    ticketId: '#11223',
-    title: 'Payment for Product C',
-    category: 'Product',
-    username: 'user3',
-    status: 'closed',
-    actions: 'View',
-  },
-  {
-    id: 'm3n4o5p6',
-    ticketId: '#44556',
-    title: 'Payment for Product D',
-    category: 'Product',
-    username: 'user4',
-    status: 'closed',
-    actions: 'View',
-  },
-  {
-    id: 'q7r8s9t0',
-    ticketId: '#77889',
-    title: 'Payment for Service E',
-    category: 'Service',
-    username: 'user5',
-    status: 'closed',
-    actions: 'View',
-  },
-  {
-    id: 'q7r8s9t0',
-    ticketId: '#77889',
-    title: 'Payment for Service E',
-    category: 'Service',
-    username: 'user5',
-    status: 'opened',
-    actions: 'View',
-  },
-  {
-    id: 'q7r8s9t0',
-    ticketId: '#77889',
-    title: 'Payment for Service E',
-    category: 'Service',
-    username: 'user5',
-    status: 'opened',
-    actions: 'View',
-  },
-];
-
-export type Ticket = {
-  id: string;
-  title: string;
-  category: string;
-  ticketId: string;
-  username: string;
-  status: 'opened' | 'closed';
-  actions: string;
-};
-
-export const columns: ColumnDef<Ticket>[] = [
-  {
-    accessorKey: 'ticketId',
+    accessorKey: 'id',
+    enableSorting: true,
     header: ({ column }) => (
       <div className="flex items-center">
         {t('Ticket ID')}
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            column.toggleSorting(column.getIsSorted() === 'asc');
+          }}
         >
           <ArrowUpDown className="h-4 w-4" />
         </Button>
@@ -137,18 +61,23 @@ export const columns: ColumnDef<Ticket>[] = [
     ),
     cell: ({ row }) => (
       <div className="capitalize text-blue-500 cursor-pointer">
-        {row.getValue('ticketId')}
+        {row.getValue('id')}
       </div>
     ),
   },
   {
     accessorKey: 'title',
+    enableSorting: true,
     header: ({ column }) => (
       <div className="flex items-center">
         {t('Title')}
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            column.toggleSorting(column.getIsSorted() === 'asc');
+          }}
         >
           <ArrowUpDown className="h-4 w-4" />
         </Button>
@@ -160,12 +89,17 @@ export const columns: ColumnDef<Ticket>[] = [
   },
   {
     accessorKey: 'category',
+    enableSorting: true,
     header: ({ column }) => (
       <div className="flex items-center">
         {t('Category')}
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            column.toggleSorting(column.getIsSorted() === 'asc');
+          }}
         >
           <ArrowUpDown className="h-4 w-4" />
         </Button>
@@ -177,12 +111,17 @@ export const columns: ColumnDef<Ticket>[] = [
   },
   {
     accessorKey: 'username',
+    enableSorting: true,
     header: ({ column }) => (
       <div className="flex items-center">
         {t('Username')}
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            column.toggleSorting(column.getIsSorted() === 'asc');
+          }}
         >
           <ArrowUpDown className="h-4 w-4" />
         </Button>
@@ -199,7 +138,11 @@ export const columns: ColumnDef<Ticket>[] = [
         {t('Status')}
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          size="sm"
+          onClick={(e) => {
+            e.stopPropagation();
+            column.toggleSorting(column.getIsSorted() === 'asc');
+          }}
         >
           <ArrowUpDown className="h-4 w-4" />
         </Button>
@@ -208,7 +151,7 @@ export const columns: ColumnDef<Ticket>[] = [
     cell: ({ row }) => {
       const status: string = (row.getValue('status') as string).toLowerCase();
       const bgColor =
-        status === 'opened'
+        status === 'open'
           ? 'bg-success-100 text-success-300'
           : 'bg-destructive-100 text-destructive-300';
 
@@ -255,39 +198,56 @@ export const columns: ColumnDef<Ticket>[] = [
 
 export function TicketPage() {
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([
-    { id: 'status', value: 'opened' },
+    { id: 'status', value: 'open' },
   ]);
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
   const [openSelectedTicket, setOpenSelectedTicket] = React.useState(false);
-  const [selectedRow, setSelectedRow] = React.useState<Ticket | null>(null);
+  const [selectedRow, setSelectedRow] = React.useState<Tickets | null>(null);
 
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
+  const [searchParams] = useSearchParams();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['issues', searchParams.toString()],
+    staleTime: 0,
+    gcTime: 0,
+    queryFn: () => {
+      const cursor = searchParams.get(CURSOR_QUERY_PARAM);
+      const limit = searchParams.get(LIMIT_QUERY_PARAM)
+        ? parseInt(searchParams.get(LIMIT_QUERY_PARAM)!)
+        : 10;
+      return ticketApi.list({
+        cursor: cursor ?? undefined,
+        limit,
+      });
     },
   });
+
+  const filteredData = React.useMemo(() => {
+    let result = data?.data ?? [];
+
+    columnFilters.forEach((filter) => {
+      if (filter?.id === 'title' && filter?.value) {
+        result = result?.filter((ticket) =>
+          ticket?.title
+            .toLowerCase()
+            .includes((filter?.value as string).toLowerCase()),
+        );
+      } else if (filter?.id === 'status' && filter?.value) {
+        result = result?.filter(
+          (ticket) =>
+            ticket?.status.toLowerCase() ===
+            (filter?.value as string).toLowerCase(),
+        );
+      }
+    });
+
+    return result;
+  }, [columnFilters]);
 
   const updateFilter = (id: string, value: string | undefined) => {
     setColumnFilters((prevFilters) => {
       const existingFilterIndex = prevFilters.findIndex(
-        (filter) => filter.id === id,
+        (filter) => filter?.id === id,
       );
 
       if (existingFilterIndex > -1) {
@@ -296,14 +256,26 @@ export function TicketPage() {
             index === existingFilterIndex ? { id, value } : filter,
           );
         }
-        return prevFilters.filter((filter) => filter.id !== id);
+        return prevFilters?.filter((filter) => filter?.id !== id);
       }
 
       return [...prevFilters, { id, value }];
     });
   };
 
-  const setStatusFilter = (status: 'opened' | 'closed') => {
+  const form = useForm<{
+    title: string;
+    categoryId: string;
+    description: string;
+  }>({
+    defaultValues: {
+      title: '',
+      categoryId: '',
+      description: '',
+    },
+  });
+
+  const setStatusFilter = (status: 'open' | 'closed') => {
     updateFilter('status', status);
   };
 
@@ -311,80 +283,131 @@ export function TicketPage() {
     updateFilter('title', title);
   };
 
-  const handleRowOnClick = (row: Ticket) => {
+  const handleRowOnClick = (row: Tickets) => {
     setSelectedRow(row);
     setOpenSelectedTicket(true);
   };
 
+  const { mutate, isPending } = useMutation<
+    ApiResponse<unknown>,
+    Error,
+    NewTicket
+  >({
+    mutationFn: ticketApi.create,
+    onSuccess: () => {
+      toast({
+        title: t('Success'),
+        description: t('Your password was changed successfully'),
+        duration: 3000,
+      });
+      setOpenDialog(false);
+    },
+    onError: (error) => {
+      // setServerError(
+      //   t('Your password reset request has expired, please request a new one'),
+      // );
+      console.error(error);
+    },
+  });
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleSubmit: SubmitHandler<NewTicket> = (data) => {
+    mutate(data);
+    console.log(data.title);
+  };
+
   return (
-    <div className="w-full">
-      <div className="rounded-md border">
-        <div className="flex items-center justify-between p-4">
-          <div className={'flex items-center gap-12'}>
-            <SearchBar
-              filterValue={
-                (columnFilters.find((filter) => filter.id === 'title')
-                  ?.value as string) || ''
-              }
-              handleFilterChange={setTitleFilter}
-            />
-            <OpenClosedTickets
-              numberOfClosedTickets={
-                data.filter(
-                  (ticket) => ticket.status.toLowerCase() === 'closed',
-                ).length
-              }
-              numberOfOpenedTickets={
-                data.filter(
-                  (ticket) => ticket.status.toLowerCase() === 'opened',
-                ).length
-              }
-              selectedStatus={
-                (columnFilters.find((f) => f.id === 'status')?.value as
-                  | 'opened'
-                  | 'closed') || 'opened'
-              }
-              onFilterChange={setStatusFilter}
-            />
-          </div>
-          <Dialog open={openDialog}>
-            <DialogTrigger asChild>
-              <Button size="sm">{t('New Ticket')}</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{t('Create New Ticket')}</DialogTitle>
-              </DialogHeader>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  console.log('Ticket created');
-                  setOpenDialog(false);
-                }}
-              >
-                <div className="space-y-4">
-                  {[
-                    { label: t('Title'), type: 'text' },
-                    { label: t('Category'), type: 'text' },
-                    { label: t('Description'), type: 'textarea' },
-                  ].map(({ label, type }) => (
-                    <div key={label} className="space-y-1">
-                      <span>{label}</span>
-                      {type === 'textarea' ? (
-                        <Textarea
-                          className="w-full p-2 border rounded"
-                          required
-                        />
-                      ) : (
-                        <Input
-                          type={type}
-                          className="w-full p-2 border rounded"
-                          required
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
+    <div className="w-full flex-col rounded-md border">
+      <div className={'w-full flex justify-between p-4'}>
+        <div className={'w-1/4 flex items-center gap-12'}>
+          <SearchBar
+            filterValue={
+              (columnFilters.find((filter) => filter?.id === 'title')
+                ?.value as string) || ''
+            }
+            handleFilterChange={setTitleFilter}
+          />
+          <OpenClosedTickets
+            numberOfClosedTickets={
+              filteredData?.filter(
+                (ticket) => ticket?.status.toLowerCase() === 'closed',
+              ).length
+            }
+            numberOfOpenedTickets={
+              filteredData?.filter(
+                (ticket) => ticket?.status.toLowerCase() === 'open',
+              ).length
+            }
+            selectedStatus={
+              (columnFilters.find((f) => f.id === 'status')?.value as
+                | 'open'
+                | 'closed') || 'open'
+            }
+            onFilterChange={setStatusFilter}
+          />
+        </div>
+        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+          <DialogTrigger asChild>
+            <Button size="sm">{t('New Ticket')}</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{t('Create New Ticket')}</DialogTitle>
+            </DialogHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)}>
+                <FormField
+                  name={'title'}
+                  control={form.control}
+                  render={({ field }) => (
+                    <>
+                      <Label htmlFor="title">{t('Title')}</Label>
+                      <Input
+                        {...field}
+                        required
+                        id="title"
+                        type="text"
+                        className="rounded-sm"
+                        ref={inputRef}
+                        onChange={(e) => field.onChange(e)}
+                      />
+                    </>
+                  )}
+                />
+                <FormField
+                  name={'categoryId'}
+                  control={form.control}
+                  render={({ field }) => (
+                    <>
+                      <Label htmlFor="categoryId">{t('Category')}</Label>
+                      <Input
+                        {...field}
+                        required
+                        id="categoryId"
+                        type="dropdown" // TODO: need to add a dropdown type
+                        className="rounded-sm"
+                        ref={inputRef}
+                        onChange={(e) => field.onChange(e)}
+                      />
+                    </>
+                  )}
+                />
+                <FormField
+                  name={'description'}
+                  control={form.control}
+                  render={({ field }) => (
+                    <>
+                      <Label htmlFor="description">{t('Description')}</Label>
+                      <Textarea
+                        {...field}
+                        required
+                        id="description"
+                        className="rounded-sm"
+                        onChange={(e) => field.onChange(e)}
+                      />
+                    </>
+                  )}
+                />
+
                 <DialogFooter>
                   <DialogClose asChild>
                     <Button variant="ghost">{t('Cancel')}</Button>
@@ -392,116 +415,27 @@ export function TicketPage() {
                   <Button type="submit">{t('Submit')}</Button>
                 </DialogFooter>
               </form>
-            </DialogContent>
-          </Dialog>
-        </div>
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className={'bg-gray-100'}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => handleRowOnClick(row.original)}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  {t('No results.')}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        {selectedRow && (
-          <TicketDetails
-            open={openSelectedTicket}
-            handleClose={() => setOpenSelectedTicket(false)}
-            customerName={selectedRow.username}
-            customerRole={''}
-            ticketId={selectedRow.ticketId}
-            category={selectedRow.category}
-            status={selectedRow.status}
-          />
-        )}
-        <div className="flex items-center justify-between space-x-2 p-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                {t('Columns')} <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {t('Previous')}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {t('Next')}
-            </Button>
-          </div>
-        </div>
+            </Form>
+          </DialogContent>
+        </Dialog>
       </div>
+      <DataTable
+        columns={columns}
+        page={data?.data}
+        isLoading={isLoading}
+        onRowClick={handleRowOnClick}
+      />
+      {selectedRow && (
+        <TicketDetails
+          open={openSelectedTicket}
+          handleClose={() => setOpenSelectedTicket(false)}
+          customerName={selectedRow.raisedById}
+          customerRole={''}
+          ticketId={selectedRow.id}
+          category={selectedRow.categoryId}
+          status={selectedRow.status}
+        />
+      )}
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import { EntitySchema } from 'typeorm'
 import { BaseColumnSchemaPart } from '../database/database-common'
-import { School, Ticket, TicketCategory, User } from '@pickup/shared'
+import { School, Tickets, TicketCategory, User } from '@pickup/shared'
 
 export type TicketCategorySchema = TicketCategory & {
-    tickets: Ticket[]
+    tickets: Tickets[]
 }
 
 export const TicketCategoriesEntity = new EntitySchema<TicketCategorySchema>({
@@ -24,7 +24,7 @@ export const TicketCategoriesEntity = new EntitySchema<TicketCategorySchema>({
     },
 })
 
-export type TicketSchema = Ticket & {
+export type TicketSchema = Tickets & {
     category: TicketCategory
     raisedBy: User
     school: School

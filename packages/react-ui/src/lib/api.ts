@@ -59,7 +59,7 @@ function request<TResponse>(
   const unAuthenticated = disallowedRoutes.some((route) =>
     url.startsWith(route),
   );
-  const Token = 'TODO ADD IT';
+  const Token = localStorage.getItem('token');
   return axiosInstance({
     url: resolvedUrl,
     ...config,

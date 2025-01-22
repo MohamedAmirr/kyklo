@@ -6,6 +6,7 @@ import {SchoolEntity} from "../../school/school.entity";
 import {userService} from "../../user/user.service";
 import { StudentEntity } from '../../student/student.entity';
 import { ClassroomEntity } from '../../classroom/classroom.entity';
+import {seedDevTickets} from "../../tickets/ticket.seeder";
 
 const DEV_DATA_SEEDED_FLAG = 'DEV_DATA_SEEDED'
 
@@ -82,6 +83,7 @@ export const seedDevData = async (): Promise<void> => {
         return
     }
 
+    await seedDevTickets()
     await seedDevUser()
     await setDevDataSeededFlag()
 }

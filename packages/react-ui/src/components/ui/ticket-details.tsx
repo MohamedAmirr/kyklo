@@ -22,7 +22,7 @@ type Props = {
   customerRole: string;
   ticketId: string;
   category: string;
-  status: 'opened' | 'closed';
+  status: 'open' | 'closed';
 };
 
 const TicketDetails = ({
@@ -38,12 +38,11 @@ const TicketDetails = ({
     ({ label, value }: { label: string; value: string }) => (
       <div className="flex flex-col justify-center items-start gap-1">
         <h2 className="text-gray-400 text-lg font-semibold">{t(label)}</h2>
-        {value.toLowerCase() === 'opened' ||
-        value.toLowerCase() === 'closed' ? (
+        {value.toLowerCase() === 'open' || value.toLowerCase() === 'closed' ? (
           <h2
             className={cn(
               `text-lg capitalize px-2 rounded-3xl`,
-              value.toLowerCase() === 'opened'
+              value.toLowerCase() === 'open'
                 ? 'bg-success-100 text-success-300'
                 : value.toLowerCase() === 'closed'
                 ? 'bg-destructive-100 text-destructive-300'

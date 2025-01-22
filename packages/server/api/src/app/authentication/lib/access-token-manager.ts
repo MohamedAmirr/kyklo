@@ -17,6 +17,7 @@ export const accessTokenManager = {
 
     async verifyPrincipal(token: string): Promise<Principal> {
         const secret = await jwtUtils.getJwtSecret()
+        console.log(token)
 
         try {
             const decoded = await jwtUtils.decodeAndVerify<Principal>({
