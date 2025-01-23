@@ -1,10 +1,11 @@
-import { School, User } from '@pickup/shared'
-import { EntitySchema } from 'typeorm'
-import { BaseColumnSchemaPart } from '../database/database-common'
+import { School, User, Event } from '@pickup/shared';
+import { EntitySchema } from 'typeorm';
+import { BaseColumnSchemaPart } from '../database/database-common';
 
 export type UserSchema = User & {
-    school: School,
-}
+    school: School;
+    supervisedEvents: Event[];
+};
 
 export const UserEntity = new EntitySchema<UserSchema>({
     name: 'user',
@@ -48,5 +49,10 @@ export const UserEntity = new EntitySchema<UserSchema>({
                 name: 'schoolId',
             },
         },
+        supervisedEvents: {
+            type: 'many-to-many',
+            target: 'event',
+            inverseSide: 'supervisors',
+        },
     },
-})
+});

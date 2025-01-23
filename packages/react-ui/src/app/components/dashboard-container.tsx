@@ -21,7 +21,7 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
       icon: Home,
     },
     {
-      to: '/events',
+      to: '/events/list/1',
       label: t('Events'),
       icon: CalendarRange,
     },

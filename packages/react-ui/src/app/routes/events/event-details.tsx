@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { Event } from '../../../../../shared/src/lib/event';
 
 const fetchEventData = async (id: string): Promise<Event> => {
-    const response = await fetch(`/api/events/${id}`);
+    const response = await fetch(`http://localhost:3000/api/v1/events/${id}`);
     if (!response.ok) {
         throw new Error('Failed to fetch event data');
     }

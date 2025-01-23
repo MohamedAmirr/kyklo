@@ -1,10 +1,10 @@
-import { Event, PaymentMethod, User} from '@pickup/shared';
+import { Event, PaymentMethod, User } from '@pickup/shared';
 import { EntitySchema } from 'typeorm';
 import { BaseColumnSchemaPart } from '../database/database-common';
 
 export type EventSchema = Event & {
-    supervisors: User[]
-}
+    supervisors: User[];
+};
 
 export const EventEntity = new EntitySchema<EventSchema>({
     name: 'event',
@@ -42,6 +42,19 @@ export const EventEntity = new EntitySchema<EventSchema>({
         supervisors: {
             type: 'many-to-many',
             target: 'user',
+            inverseSide: 'supervisedEvents',
+            joinTable: {
+                name: 'event_supervisors',
+                joinColumn: {
+                    name: 'eventId',
+                    referencedColumnName: 'id'
+                },
+                inverseJoinColumn: {
+                    name: 'userId',
+                    referencedColumnName: 'id'
+                }
+            },
+            cascade: true
         },
     },
 });

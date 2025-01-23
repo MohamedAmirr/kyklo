@@ -14,6 +14,7 @@ import { classroomModule } from './classroom/classroom.module'
 import { studentModule } from './student/student.module'
 import { setupGlobalErrorHandler } from './core/response/exception-handler'
 import addGlobalResponseFormat from './core/response/response-hook'
+import { eventModule } from './event/event.module'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
@@ -64,6 +65,7 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
     await app.register(authenticationModule)
     await app.register(classroomModule)
     await app.register(studentModule)
+    await app.register(eventModule)
 
     app.get(
         '/redirect',

@@ -47,7 +47,7 @@ const routes = [
     ),
   },
   {
-    path: '/events',
+    path: '/events/list/:page',
     element: (
         <DashboardContainer>
             <PageTitle title="Events">

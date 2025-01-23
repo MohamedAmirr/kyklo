@@ -14,6 +14,7 @@ import {UserEntity} from "../user/user.entity";
 import {SchoolEntity} from "../school/school.entity";
 import {ClassroomEntity} from "../classroom/classroom.entity";
 import {StudentEntity} from "../student/student.entity";
+import { EventEntity } from '../event/event.entity'
 
 function getEntities(): EntitySchema<unknown>[] {
     const edition = system.getEdition()
@@ -24,6 +25,7 @@ function getEntities(): EntitySchema<unknown>[] {
         SchoolEntity,
         ClassroomEntity,
         StudentEntity,
+        EventEntity,
     ]
 
     switch (edition) {

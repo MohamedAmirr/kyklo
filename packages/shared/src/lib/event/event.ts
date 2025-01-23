@@ -1,5 +1,5 @@
 import {Static, Type} from "@sinclair/typebox";
-import {BaseModelSchema} from "@pickup/shared";
+import { BaseModelSchema } from "../common/base-model";
 
 export enum PaymentMethod {
     CARD = 'Card',

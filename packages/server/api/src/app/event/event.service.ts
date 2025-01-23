@@ -46,23 +46,27 @@ export class EventService {
     //
     //     return eventRepo().findOneByOrFail({ id });
     // }
-    //
-    // async list(page: number = 1, limit: number = 10): Promise<SeekPage<Event>> {
-    //     const [events, total] = await eventRepo().findAndCount({
-    //         skip: (page - 1) * limit,
-    //         take: limit,
-    //     });
-    //
-    //     return {
-    //         data: events,
-    //         next: total > page * limit ? (page + 1).toString() : null, // Convert to string
-    //         previous: page > 1 ? (page - 1).toString() : null, // Convert to string
-    //     };
-    // }
-    //
-    // async get(id: string): Promise<Event | null> {
-    //     return eventRepo().findOneBy({ id });
-    // }
+    
+    async list(page: number = 1, limit: number = 8): Promise<SeekPage<Event>> {
+        const skip = (page - 1) * limit;
+    
+        const [events, total] = await eventRepo().findAndCount({
+            relations: ['supervisors'],
+            skip,
+            take: limit
+        });
+    
+        return {
+            data: events,
+            next: total > page * limit ? (page + 1).toString() : null,
+            previous: page > 1 ? (page - 1).toString() : null,
+            total
+        };
+    }
+    
+    async get(id: string): Promise<Event | null> {
+        return eventRepo().findOneBy({ id });
+    }
     //
     // async getOneOrFail(id: string): Promise<Event> {
     //     const event = await eventRepo().findOneBy({ id });
