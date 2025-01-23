@@ -1,14 +1,7 @@
 import {Static, Type} from "@sinclair/typebox";
-import {BaseModelSchema} from "@pickup/shared";
+import {PaymentMethod} from "@pickup/shared";
 
-export enum PaymentMethod {
-    CARD = 'Card',
-    WALLET = 'Wallet',
-    Cash = 'Cash',
-}
-
-export const Event = Type.Object({
-    ...BaseModelSchema,
+export const CreateEventRequestBody = Type.Object({
     title: Type.String(),
     startDate: Type.Date(),
     imageUrls: Type.Array(Type.String()),
@@ -20,4 +13,4 @@ export const Event = Type.Object({
     supervisorsIds: Type.Array(Type.String()),
 });
 
-export type Event = Static<typeof Event>
+export type CreateEventRequestBody = Static<typeof CreateEventRequestBody>

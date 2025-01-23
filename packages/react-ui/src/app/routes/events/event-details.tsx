@@ -1,46 +1,45 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom'; // For web
+import { useQuery } from '@tanstack/react-query';
 
 // Type Imports
 import type { Event } from '../../../../../shared/src/lib/event';
-import {useQuery} from "@tanstack/react-query";
+
+const fetchEventData = async (id: string): Promise<Event> => {
+    const response = await fetch(`/api/events/${id}`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch event data');
+    }
+    return response.json();
+};
 
 const EventDetails = () => {
     // Get the event ID from the URL
     const { id } = useParams<{ id: string }>();
 
-    // State to store the fetched event data
-    const [event, setEvent] = useState<Event | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    // Use useQuery to fetch the event data
+    const {
+        data: event,
+        isLoading,
+        isError,
+        error,
+    } = useQuery<Event, Error>({
+        queryKey: ['event', id], // Unique query key
+        queryFn: () => fetchEventData(id!), // Query function
+        enabled: !!id, // Only run the query if the id is available
+    });
 
-    useQuery(() => {
-        const fetchEventData = async () => {
-            try {
-                const response = await fetch(`/api/events/${id}`); // Replace with your API endpoint
-                if (!response.ok) {
-                    throw new Error('Failed to fetch event data');
-                }
-                const data = await response.json();
-                setEvent(data);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'An error occurred');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchEventData();
-    }, [id]);
-
-    if (loading) {
+    // Loading state
+    if (isLoading) {
         return <div className="p-6 text-center">Loading...</div>;
     }
 
-    if (error) {
-        return <div className="p-6 text-center text-red-600">Error: {error}</div>;
+    // Error state
+    if (isError) {
+        return <div className="p-6 text-center text-red-600">Error: {error?.message}</div>;
     }
 
+    // Event not found state
     if (!event) {
         return <div className="p-6 text-center">Event not found</div>;
     }
@@ -51,11 +50,11 @@ const EventDetails = () => {
                 <div>
                     <h1 className="text-2xl font-bold">{event.title}</h1>
                     <p className="text-gray-600">
-                        Prof. <span className="font-medium text-gray-900">{event.instructor}</span>
+                        Prof. <span className="font-medium text-gray-900">{event.price}</span>
                     </p>
                 </div>
                 <div className="flex items-center gap-4">
-                    <span className="px-2 py-1 bg-red-100 text-red-800 text-sm rounded-full">{event.category}</span>
+                    <span className="px-2 py-1 bg-red-100 text-red-800 text-sm rounded-full">{event.price}</span>
                     <i className="fas fa-share cursor-pointer text-gray-600" />
                     <i className="fas fa-bookmark cursor-pointer text-gray-600" />
                 </div>
@@ -63,16 +62,12 @@ const EventDetails = () => {
             <div className="p-6">
                 <div className="border rounded-lg">
                     <div className="m-2 overflow-hidden rounded-lg">
-                        <img
-                            src={event.image}
-                            alt='Course Thumbnail'
-                            className="w-full h-64 object-cover bg-gray-200"
-                        />
+
                     </div>
                     <div className="flex flex-col gap-6 p-5">
                         <div className="flex flex-col gap-4">
                             <h2 className="text-xl font-bold">About this course</h2>
-                            <p className="text-gray-700">{event.about}</p>
+                            <p className="text-gray-700">{event.price}</p>
                         </div>
                         <hr className="my-4" />
                         <div className="flex flex-col gap-4">
@@ -81,29 +76,29 @@ const EventDetails = () => {
                                 <ul className="flex flex-col gap-2">
                                     <li className="flex items-center gap-2">
                                         <i className="fas fa-check text-gray-600" />
-                                        <span>Skill level: {event.skillLevel}</span>
+                                        <span>Skill level: {event.price}</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <i className="fas fa-users text-gray-600" />
-                                        <span>Students: {event.totalStudents.toLocaleString()}</span>
+                                        <span>Students: {event.price}</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <i className="fas fa-globe text-gray-600" />
-                                        <span>Languages: {event.language}</span>
+                                        <span>Languages: {event.price}</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <i className="fas fa-file text-gray-600" />
-                                        <span>Captions: {event.isCaptions ? 'Yes' : 'No'}</span>
+                                        <span>Captions: {event.price ? 'Yes' : 'No'}</span>
                                     </li>
                                 </ul>
                                 <ul className="flex flex-col gap-2">
                                     <li className="flex items-center gap-2">
                                         <i className="fas fa-video text-gray-600" />
-                                        <span>Lectures: {event.totalLectures}</span>
+                                        <span>Lectures: {event.price}</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <i className="fas fa-clock text-gray-600" />
-                                        <span>Video: {event.length}</span>
+                                        <span>Video: {event.price}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -111,23 +106,12 @@ const EventDetails = () => {
                         <hr className="my-4" />
                         <div className="flex flex-col gap-4">
                             <h2 className="text-xl font-bold">Description</h2>
-                            {event.description.map((value, index) => (
-                                <p key={index} className="text-gray-700">{value}</p>
-                            ))}
                         </div>
                         <hr className="my-4" />
                         <div className="flex flex-col gap-4">
                             <h2 className="text-xl font-bold">Instructor</h2>
                             <div className="flex items-center gap-4">
-                                <img
-                                    src={event.instructorAvatar}
-                                    alt="Instructor"
-                                    className="w-10 h-10 rounded-full"
-                                />
-                                <div className="flex flex-col gap-1">
-                                    <p className="font-medium text-gray-900">{event.instructor}</p>
-                                    <p className="text-sm text-gray-600">{event.instructorPosition}</p>
-                                </div>
+
                             </div>
                         </div>
                     </div>
