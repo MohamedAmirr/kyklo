@@ -1,7 +1,6 @@
 import { Static, Type } from '@sinclair/typebox'
 import { BaseModelSchema } from '../common/base-model'
 import { PuId } from '../common/id-generator'
-import { ClassroomMemberRole } from '../classroom/classroom-member'
 
 export type UserId = PuId
 
@@ -10,6 +9,12 @@ export enum UserStatus {
     ACTIVE = 'ACTIVE',
     /* user account deactivated */
     INACTIVE = 'INACTIVE',
+}
+
+export enum UserType {
+    STAFF = 'STAFF',
+    STUDENT = 'STUDENT',
+    PARENT = 'PARENT',
 }
 
 export const EmailType = Type.String({
@@ -27,23 +32,21 @@ export const User = Type.Object({
     firstName: Type.String(),
     lastName: Type.String(),
     password: Type.String(),
-    verified: Type.Boolean(),
+    type: Type.Enum(UserType),
     status: Type.Enum(UserStatus),
-    schoolId: Type.Union([PuId, Type.Null()]),
-    tokenVersion: Type.Optional(Type.String()),
+    schoolId: PuId,
 })
 
 export type User = Static<typeof User>
 
 export const UserMeta = Type.Object({
-    id: Type.String(),
+    ...BaseModelSchema,
     email: Type.String(),
     firstName: Type.String(),
     lastName: Type.String(),
+    type: Type.Enum(UserType),
     status: Type.Enum(UserStatus),
-    schoolId: Type.Union([PuId, Type.Null()]),
-    created: Type.String(),
-    updated: Type.String(),
+    schoolId: PuId,
 })
 
 export type UserMeta = Static<typeof UserMeta>

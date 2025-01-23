@@ -1,6 +1,4 @@
-import { ActiveClassroom, ApplicationEventName, AuthenticationEvent, Classroom, ClassroomRoleEvent, isNil, PuEdition, PuEnvironment } from '@pickup/shared'
-import { AppSystemProp, logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
-import swagger from '@fastify/swagger'
+import { logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
 import { FastifyInstance, FastifyRequest, HTTPMethods } from 'fastify'
 import fastifySocketIO from 'fastify-socket.io'
 import { Socket } from 'socket.io'
@@ -10,45 +8,18 @@ import { websocketService } from './websockets/websockets.service'
 import { openapiModule } from './helper/openapi/openapi.module'
 import { validateEnvPropsOnStartup } from './helper/system-validator'
 import { flagModule } from './flags/flag.module'
+import { PuEdition, PuEnvironment } from '@pickup/shared'
+import { authenticationModule } from './authentication/authentication.module'
+import { classroomModule } from './classroom/classroom.module'
+import { studentModule } from './student/student.module'
+import { setupGlobalErrorHandler } from './core/response/exception-handler'
+import addGlobalResponseFormat from './core/response/response-hook'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
-    await app.register(swagger, {
-        hideUntagged: true,
-        openapi: {
-            servers: [
-                {
-                    url: 'http://localhost:3000/api',
-                    description: 'Production Server',
-                },
-            ],
-            components: {
-                securitySchemes: {
-                    apiKey: {
-                        type: 'http',
-                        description: 'Use your api key generated from the admin console',
-                        scheme: 'bearer',
-                    },
-                },
-                schemas: {
-                    [ApplicationEventName.USER_SIGNED_IN]: AuthenticationEvent,
-                    [ApplicationEventName.USER_PASSWORD_RESET]: AuthenticationEvent,
-                    [ApplicationEventName.USER_EMAIL_VERIFIED]: AuthenticationEvent,
-                    [ApplicationEventName.CLASSROOM_ROLE_CREATED]: ClassroomRoleEvent,
-                    [ApplicationEventName.CLASSROOM_ROLE_DELETED]: ClassroomRoleEvent,
-                    [ApplicationEventName.CLASSROOM_ROLE_UPDATED]: ClassroomRoleEvent,
-                },
-            },
-            info: {
-                title: 'Pickup Documentation',
-                version: '0.0.0',
-            },
-            externalDocs: {
-                url: 'https://www.pickup.edu/docs',
-                description: 'Find more info here',
-            },
-        },
-    })
+    setupGlobalErrorHandler(app)
+    app.decorateReply('responseCode')
+    addGlobalResponseFormat(app);
 
     await app.register(fastifySocketIO, {
         cors: {
@@ -87,8 +58,12 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
     })
 
     app.addHook('preHandler', securityHandlerChain)
+
     await app.register(openapiModule)
     await app.register(flagModule)
+    await app.register(authenticationModule)
+    await app.register(classroomModule)
+    await app.register(studentModule)
 
     app.get(
         '/redirect',
@@ -152,12 +127,4 @@ export async function appPostBoot(): Promise<void> {
             `[WARNING]: The application is running in ${environment} mode.`,
         )
     }
-    // const oldestPlatform = await platformService.getOldestPlatform()
-    // const key = system.get<string>(AppSystemProp.LICENSE_KEY)
-    // if (!isNil(oldestPlatform) && !isNil(key)) {
-    //     await platformService.update({
-    //         id: oldestPlatform.id,
-    //         licenseKey: key,
-    //     })
-    // }
 }

@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "nx serve react-ui",
-    "build": "nx build react-ui",
-    "lint": "nx lint react-ui"
+    "build": "nx build react-ui"
   }
 }

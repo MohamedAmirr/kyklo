@@ -1,12 +1,8 @@
 import { t } from 'i18next';
 import { Home, Logs, Wrench, CalendarRange } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
+import { BookOpen } from 'lucide-react';
 
-import { isNil } from '@pickup/shared';
-
-import { authenticationSession } from '../../lib/authentication-session';
-
-import { AllowOnlyLoggedInUserOnlyGuard } from './allow-logged-in-user-only-guard';
 import { Sidebar, SidebarLink } from './sidebar';
 
 type DashboardContainerProps = {
@@ -14,7 +10,7 @@ type DashboardContainerProps = {
 };
 
 export function DashboardContainer({ children }: DashboardContainerProps) {
-  const currentClassroomId = authenticationSession.getClassroomId();
+  // const currentClassroomId = authenticationSession.getClassroomId();
   // if (isNil(currentClassroomId) || currentClassroomId === '') {
   //   return <Navigate to="/sign-in" replace />;
   // }
@@ -30,20 +26,22 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
       icon: CalendarRange,
     },
     {
+      to: '/materials',
+      label: t('Materials'),
+      icon: BookOpen,
+    },
+    {
       to: '/settings',
       label: t('Settings'),
       icon: Wrench,
     },
-  ]
+  ];
 
   return (
     // <AllowOnlyLoggedInUserOnlyGuard>
-      <Sidebar
-        isHomeDashboard={true}
-        links={links}
-      >
-        {children}
-      </Sidebar>
+    <Sidebar isHomeDashboard={true} links={links}>
+      {children}
+    </Sidebar>
     // </AllowOnlyLoggedInUserOnlyGuard>
   );
 }

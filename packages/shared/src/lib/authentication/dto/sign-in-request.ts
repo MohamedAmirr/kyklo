@@ -1,5 +1,5 @@
 import { Static, Type } from '@sinclair/typebox'
-import { EmailType, PasswordType } from '../../user/user'
+import { EmailType, PasswordType } from '../../user'
 
 export const SignInRequest = Type.Object({
     email: EmailType,

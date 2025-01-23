@@ -1,26 +1,27 @@
 import { typeboxResolver } from '@hookform/resolvers/typebox';
+import {
+  ApiResponse,
+  AuthenticationResponse,
+  ErrorCode,
+  PuEdition,
+  PuFlagId,
+  SignInRequest,
+} from '@pickup/shared';
 import { Static, Type } from '@sinclair/typebox';
 import { useMutation } from '@tanstack/react-query';
-import { HttpStatusCode } from 'axios';
 import { t } from 'i18next';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { flagsHooks } from '@/hooks/flags-hooks';
-import { HttpError, api } from '@/lib/api';
 import { authenticationApi } from '@/lib/authentication-api';
 import { authenticationSession } from '@/lib/authentication-session';
 import { formatUtils } from '@/lib/utils';
-import {
-  AuthenticationResponse,
-  PuEdition,
-  PuFlagId,
-  SignInRequest,
-} from '@pickup/shared';
+import { HttpError } from '@/lib/api';
 
 const SignInSchema = Type.Object({
   email: Type.String({
@@ -50,36 +51,34 @@ const SignInForm: React.FC = () => {
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation<
-    AuthenticationResponse,
-    HttpError,
-    SignInRequest
-  >({
-    mutationFn: authenticationApi.signIn,
-    onSuccess: (data) => {
-      authenticationSession.saveResponse(data);
-      navigate('/home');
-    },
-    onError: (error) => {
-      if (api.isError(error)) {
-        switch (error.response?.status) {
-          case HttpStatusCode.Unauthorized:
-          case HttpStatusCode.BadRequest: {
-            form.setError('root.serverError', {
-              message: t('Invalid email or password'),
-            });
-            break;
-          }
-          default: {
-            form.setError('root.serverError', {
-              message: t('Something went wrong, please try again later'),
-            });
-            break;
-          }
+  ApiResponse<AuthenticationResponse>,
+  HttpError,
+  SignInRequest
+>({
+  mutationFn: authenticationApi.signIn,
+  onSuccess: (data) => {
+    authenticationSession.saveResponse(data);
+    navigate('/home');
+  },
+  onError: (error: any) => {
+    if (error.response) {
+      switch (error.response.data.code) {
+        case ErrorCode.INVALID_CREDENTIALS: {
+          form.setError('root.serverError', {
+            message: t('Invalid email or password'),
+          });
+          break;
         }
-        return;
+        default: {
+          form.setError('root.serverError', {
+            message: t('Something went wrong, please try again later'),
+          });
+          break;
+        }
       }
-    },
-  });
+    }
+  },
+});
 
   const onSubmit: SubmitHandler<SignInRequest> = (data) => {
     form.setError('root.serverError', {

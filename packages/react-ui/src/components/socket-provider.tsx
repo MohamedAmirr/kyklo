@@ -3,7 +3,6 @@ import { useEffectOnce } from 'react-use';
 import { io } from 'socket.io-client';
 
 import { API_BASE_URL } from '@/lib/api';
-import { authenticationSession } from '@/lib/authentication-session';
 
 const socket = io(API_BASE_URL, {
   transports: ['websocket'],
@@ -14,7 +13,7 @@ const socket = io(API_BASE_URL, {
 const SocketContext = React.createContext<typeof socket>(socket);
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-  const token = authenticationSession.getToken();
+  const token = 'TODO ADD IT';
   useEffectOnce(() => {
     if (token) {
       socket.auth = { token };

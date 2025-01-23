@@ -1,6 +1,9 @@
-import { assertNotNullOrUndefined, ErrorCode, PickUpError, SchoolId, Principal, PrincipalType } from '@pickup/shared'
+import { assertNotNullOrUndefined, ErrorCode, PickUpError, Principal } from '@pickup/shared'
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { jwtUtils } from '../../helper/jwt-utils'
+
+dayjs.extend(duration);
 
 export const accessTokenManager = {
     async generateToken(principal: Principal, expiresInSeconds: number = dayjs.duration(7, 'day').asSeconds()): Promise<string> {
@@ -21,7 +24,6 @@ export const accessTokenManager = {
                 key: secret,
             })
             assertNotNullOrUndefined(decoded.type, 'decoded.type')
-            await assertUserSession(decoded)
             return decoded
         }
         catch (e) {
@@ -37,26 +39,3 @@ export const accessTokenManager = {
         }
     },
 }
-
-async function assertUserSession(decoded: Principal): Promise<void> {
-    if (decoded.type !== PrincipalType.USER) return
-    
-    // const user = await userService.getOneOrFail({ id: decoded.id })
-    // const identity = await userIdentityService(system.globalLogger()).getOneOrFail({ id: user.identityId })
-    // const isExpired = (identity.tokenVersion ?? null) !== (decoded.tokenVersion ?? null)
-    // if (isExpired || user.status === UserStatus.INACTIVE || !identity.verified) {
-    //     throw new ActivepiecesError({
-    //         code: ErrorCode.SESSION_EXPIRED,
-    //         params: {
-    //             message: 'The session has expired or the user is not verified.',
-    //         },
-    //     })
-    // }
-}
-
-// type GenerateEngineTokenParams = {
-//     projectId: ProjectId
-//     queueToken?: string
-//     jobId?: string
-//     platformId: PlatformId
-// }

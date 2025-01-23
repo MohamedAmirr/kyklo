@@ -1,7 +1,7 @@
+import { PuFlagId } from '@pickup/shared';
 import { usePrefetchQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 import { flagsApi, FlagsMap } from '@/lib/flags-api';
-import { PuFlagId } from '@pickup/shared';
 
 type WebsiteBrand = {
   websiteName: string;
@@ -37,16 +37,16 @@ export const flagsHooks = {
   },
   useWebsiteBranding: () => {
     const { data: theme } = flagsHooks.useFlag<WebsiteBrand>(PuFlagId.THEME);
-    return theme!;
+    return theme;
   },
   useFlag: <T>(flagId: PuFlagId) => {
     const data = useSuspenseQuery<FlagsMap, Error>({
       queryKey: ['flags'],
       queryFn: flagsApi.getAll,
       staleTime: Infinity,
-    }).data?.[flagId] as T | null;
+    }).data.data as Record<PuFlagId, T>;
     return {
-      data,
+      data: data[flagId],
     };
   },
 };

@@ -1,32 +1,29 @@
-import {useEffect, useMemo} from 'react';
+import { useMemo } from 'react';
 import {
-    Navigate,
-    RouterProvider,
-    createBrowserRouter,
-    createMemoryRouter,
-    useLocation,
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+  useLocation,
 } from 'react-router-dom';
 
-import {PageTitle} from '@/app/components/page-title';
-import ClassroomSettingsLayout from '@/app/components/classroom-settings-layout';
-import {RedirectPage} from '@/app/routes/redirect';
-import {VerifyEmail} from '@/features/authentication/components/verify-email';
+import { AllowOnlyLoggedInUserOnlyGuard } from '@/app/components/allow-logged-in-user-only-guard';
+import { PageTitle } from '@/app/components/page-title';
+import { RedirectPage } from '@/app/routes/redirect';
+import { VerifyEmail } from '@/features/authentication/components/verify-email';
 
-import {AllowOnlyLoggedInUserOnlyGuard} from '../components/allow-logged-in-user-only-guard';
-import {DashboardContainer} from '../components/dashboard-container';
+import { DashboardContainer } from '../components/dashboard-container';
+import MaterialsPageLayout from '../components/page-layout/materials/layout';
 import NotFoundPage from '../routes/404-page';
 import AuthenticatePage from '../routes/authenticate';
-import {ChangePasswordPage} from '../routes/change-password';
-import {ResetPasswordPage} from '../routes/forget-password';
-import AppearancePage from '../routes/settings/appearance';
-import GeneralPage from '../routes/settings/general';
-import {SignInPage} from '../routes/sign-in';
-import {SignUpPage} from '../routes/sign-up';
-
-import {ProjectRouterWrapper} from './classroom-route-wrapper';
+import { ChangePasswordPage } from '../routes/change-password';
+import { ResetPasswordPage } from '../routes/forget-password';
 import HomePage from '../routes/home';
-import EventsPage from "@/app/routes/events";
-import EventDetails from "@/app/routes/events/event-details";
+import { SignInPage } from '../routes/sign-in';
+import { SignUpPage } from '../routes/sign-up';
+
+import { ProjectRouterWrapper } from './classroom-route-wrapper';
+import EventsPage from '../routes/events';
+import EventDetails from '../routes/events/event-details';
 
 const SettingsRerouter = () => {
     const {hash} = useLocation();
@@ -39,139 +36,125 @@ const SettingsRerouter = () => {
 };
 
 const routes = [
-    {
-        path: '/home',
-        element: (
-            <DashboardContainer>
-                <PageTitle title="Home">
-                    <HomePage/>
-                </PageTitle>
-            </DashboardContainer>
-        ),
-    },
-    {
-        path: '/events',
-        element: (
-            <DashboardContainer>
-                <PageTitle title="Events">
-                    <EventsPage/>
-                </PageTitle>
-            </DashboardContainer>
-        ),
-    },
-    {
-        path: '/events/:id',
-        element: (
-            <DashboardContainer>
-                <PageTitle title="Event Details">
-                    <EventDetails/>
-                </PageTitle>
-            </DashboardContainer>
-        ),
-    },
-    {
-        path: '/authenticate',
-        element: <AuthenticatePage/>,
-    },
-    ...ProjectRouterWrapper({
-        path: '/settings',
-        element: (
-            <DashboardContainer>
-                <SettingsRerouter></SettingsRerouter>
-            </DashboardContainer>
-        ),
-    }),
-    {
-        path: '/forget-password',
-        element: (
-            <PageTitle title="Forget Password">
-                <ResetPasswordPage/>
+  {
+    path: '/home',
+    element: (
+      <AllowOnlyLoggedInUserOnlyGuard>
+        <DashboardContainer>
+          <PageTitle title="Home">
+            <HomePage />
+          </PageTitle>
+        </DashboardContainer>
+      </AllowOnlyLoggedInUserOnlyGuard>
+    ),
+  },
+  {
+    path: '/events',
+    element: (
+        <DashboardContainer>
+            <PageTitle title="Events">
+                <EventsPage/>
             </PageTitle>
-        ),
-    },
-    {
-        path: '/reset-password',
-        element: (
-            <PageTitle title="Reset Password">
-                <ChangePasswordPage/>
+        </DashboardContainer>
+    ),
+},
+{
+    path: '/events/:id',
+    element: (
+        <DashboardContainer>
+            <PageTitle title="Event Details">
+                <EventDetails/>
             </PageTitle>
-        ),
-    },
-    {
-        path: '/sign-in',
-        element: (
-            <PageTitle title="Sign In">
-                <SignInPage/>
-            </PageTitle>
-        ),
-    },
-    {
-        path: '/verify-email',
-        element: (
-            <PageTitle title="Verify Email">
-                <VerifyEmail/>
-            </PageTitle>
-        ),
-    },
-    {
-        path: '/sign-up',
-        element: (
-            <PageTitle title="Sign Up">
-                <SignUpPage/>
-            </PageTitle>
-        ),
-    },
-    ...ProjectRouterWrapper({
-        path: '/settings/appearance',
-        element: (
-            <DashboardContainer>
-                <ClassroomSettingsLayout>
-                    <PageTitle title="Appearance">
-                        <AppearancePage/>
-                    </PageTitle>
-                </ClassroomSettingsLayout>
-            </DashboardContainer>
-        ),
-    }),
-    ...ProjectRouterWrapper({
-        path: '/settings/general',
-        element: (
-            <DashboardContainer>
-                <ClassroomSettingsLayout>
-                    <PageTitle title="General">
-                        <GeneralPage/>
-                    </PageTitle>
-                </ClassroomSettingsLayout>
-            </DashboardContainer>
-        ),
-    }),
-    {
-        path: '/404',
-        element: (
-            <PageTitle title="Not Found">
-                <NotFoundPage/>
-            </PageTitle>
-        ),
-    },
-    {
-        path: '/redirect',
-        element: <RedirectPage></RedirectPage>,
-    },
-    {
-        path: '/*',
-        element: (
-            <PageTitle title="Redirect">
-                <Navigate to="/home" replace/>
-            </PageTitle>
-        ),
-    },
+        </DashboardContainer>
+    ),
+},
+  {
+    path: '/materials',
+    element: (
+      <DashboardContainer>
+        <MaterialsPageLayout />
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: '/authenticate',
+    element: <AuthenticatePage />,
+  },
+  ...ProjectRouterWrapper({
+    path: '/settings',
+    element: (
+      <DashboardContainer>
+        <SettingsRerouter></SettingsRerouter>
+      </DashboardContainer>
+    ),
+  }),
+  {
+    path: '/forget-password',
+    element: (
+      <PageTitle title="Forget Password">
+        <ResetPasswordPage />
+      </PageTitle>
+    ),
+  },
+  {
+    path: '/reset-password',
+    element: (
+      <PageTitle title="Reset Password">
+        <ChangePasswordPage />
+      </PageTitle>
+    ),
+  },
+  {
+    path: '/sign-in',
+    element: (
+      <PageTitle title="Sign In">
+        <SignInPage />
+      </PageTitle>
+    ),
+  },
+  {
+    path: '/verify-email',
+    element: (
+      <PageTitle title="Verify Email">
+        <VerifyEmail />
+      </PageTitle>
+    ),
+  },
+  {
+    path: '/sign-up',
+    element: (
+      <PageTitle title="Sign Up">
+        <SignUpPage />
+      </PageTitle>
+    ),
+  },
+  {
+    path: '/404',
+    element: (
+      <PageTitle title="Not Found">
+        <NotFoundPage />
+      </PageTitle>
+    ),
+  },
+  {
+    path: '/redirect',
+    element: <RedirectPage></RedirectPage>,
+  },
+  {
+    path: '/*',
+    element: (
+      <PageTitle title="Redirect">
+        <Navigate to="/home" replace />
+      </PageTitle>
+    ),
+  },
 ];
-const ApRouter = () => {
-    const router = useMemo(() => {
-        return createBrowserRouter(routes);
-    }, []);
+const PuRouter = () => {
+  const router = useMemo(() => {
+    return createBrowserRouter(routes);
+  }, []);
 
     return <RouterProvider router={router}></RouterProvider>;
 };
 
-export {ApRouter};
+export { PuRouter };

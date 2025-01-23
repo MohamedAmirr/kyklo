@@ -1,21 +1,15 @@
+import { ApiResponse, AuthenticationResponse, isNil } from '@pickup/shared';
 import { jwtDecode } from 'jwt-decode';
-
-import { classroomApi } from '@/lib/classroom-api';
-import {
-  AuthenticationResponse,
-  isNil,
-  ClassroomMemberRole,
-} from '@pickup/shared';
 
 const tokenKey = 'token';
 const currentUserKey = 'currentUser';
 export const authenticationSession = {
-  saveResponse(response: AuthenticationResponse) {
-    localStorage.setItem(tokenKey, response.token);
+  saveResponse(response: ApiResponse<AuthenticationResponse>) {
+    localStorage.setItem(tokenKey, response.data.token);
     localStorage.setItem(
       currentUserKey,
       JSON.stringify({
-        ...response,
+        ...response.data,
         token: undefined,
       }),
     );
@@ -24,32 +18,20 @@ export const authenticationSession = {
   getToken(): string | null {
     return localStorage.getItem(tokenKey) ?? null;
   },
-  getClassroomId(): string | null {
+  getProjectId(): string | null {
     const token = this.getToken();
     if (isNil(token)) {
       return null;
     }
-    const decodedJwt = jwtDecode<{ classroomId: string }>(token);
-    return decodedJwt.classroomId;
+    const decodedJwt = jwtDecode<{ projectId: string }>(token);
+    return decodedJwt.projectId;
   },
-  getPlatformId(): string | null {
-    return this.getCurrentUser()?.platformId ?? null;
-  },
-  getUserClassroomRole(): ClassroomMemberRole | null {
-    return this.getCurrentUser()?.classroomRole ?? null;
-  },
-  async switchToSession(classroomId: string) {
-    const result = await classroomApi.getTokenForClassroom(classroomId);
-    localStorage.setItem(tokenKey, result.token);
-    localStorage.setItem(
-      currentUserKey,
-      JSON.stringify({
-        ...this.getCurrentUser(),
-        classroomId,
-        classroomRole: result.classroomRole,
-      }),
-    );
-    window.dispatchEvent(new Event('storage'));
+  appendProjectRoutePrefix(path: string): string {
+    const projectId = this.getProjectId();
+    if (isNil(projectId)) {
+      return path;
+    }
+    return `/projects/${projectId}${path.startsWith('/') ? path : `/${path}`}`;
   },
   isLoggedIn(): boolean {
     return !!this.getToken() && !!this.getCurrentUser();

@@ -1,5 +1,6 @@
-import { flagsHooks } from '@/hooks/flags-hooks';
 import { PuFlagId } from '@pickup/shared';
+
+import { flagsHooks } from '@/hooks/flags-hooks';
 
 type FlagGuardProps = {
   children: React.ReactNode;
