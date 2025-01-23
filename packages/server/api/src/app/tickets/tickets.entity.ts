@@ -1,9 +1,9 @@
 import { EntitySchema } from 'typeorm'
 import { BaseColumnSchemaPart } from '../database/database-common'
-import { School, Tickets, TicketCategory, User } from '@pickup/shared'
+import { School, Ticket, TicketCategory, TicketStatus, User } from '@pickup/shared'
 
 export type TicketCategorySchema = TicketCategory & {
-    tickets: Tickets[]
+    tickets: Ticket[]
 }
 
 export const TicketCategoriesEntity = new EntitySchema<TicketCategorySchema>({
@@ -24,12 +24,11 @@ export const TicketCategoriesEntity = new EntitySchema<TicketCategorySchema>({
     },
 })
 
-export type TicketSchema = Tickets & {
+export type TicketSchema = Ticket & {
     category: TicketCategory
-    raisedBy: User
+    reporter: User
     school: School
 }
-
 
 export const TicketsEntity = new EntitySchema<TicketSchema>({
     name: 'ticket',
@@ -37,23 +36,33 @@ export const TicketsEntity = new EntitySchema<TicketSchema>({
         ...BaseColumnSchemaPart,
         title: {
             type: String,
+            nullable: false,
         },
         status: {
             type: 'enum',
-            enum: ['open', 'closed'],
-            default: 'open',
+            enum: TicketStatus,
+            default: TicketStatus.OPEN,
+            nullable: false,
+        },
+        number: {
+            type: Number,
+            nullable: false,
         },
         categoryId: {
             type: String,
+            nullable: false,
         },
-        raisedById: {
+        reporterId: {
             type: String,
+            nullable: false,
         },
         description: {
             type: String,
+            nullable: true,
         },
         schoolId: {
             type: String,
+            nullable: false,
         },
     },
     relations: {
@@ -62,15 +71,17 @@ export const TicketsEntity = new EntitySchema<TicketSchema>({
             target: 'ticket_categories',
             inverseSide: 'tickets',
             joinColumn: {
-                name: 'category_id',
+                name: 'categoryId',
+                foreignKeyConstraintName: 'fk_ticket_category_id',
             },
         },
-        raisedBy: {
+        reporter: {
             type: 'many-to-one',
             target: 'user',
             inverseSide: 'tickets',
             joinColumn: {
-                name: 'raised_by_id',
+                name: 'reporterId',
+                foreignKeyConstraintName: 'fk_ticket_reporter_id',
             },
         },
         school: {
@@ -78,7 +89,8 @@ export const TicketsEntity = new EntitySchema<TicketSchema>({
             target: 'school',
             inverseSide: 'tickets',
             joinColumn: {
-                name: 'school_id',
+                name: 'schoolId',
+                foreignKeyConstraintName: 'fk_ticket_school_id',
             },
         },
     },

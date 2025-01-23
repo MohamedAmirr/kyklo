@@ -17,7 +17,6 @@ export const authenticationService = {
         const user = await userService.getSingleUserByEmail({
             email: request.email,
         })
-
         assertUserIsAllowedToSignIn(user)
 
         await assertPasswordMatches({
@@ -80,8 +79,6 @@ const assertPasswordMatches = async ({
         requestPassword,
         userPassword,
     )
-
-    console.log('passwordMatches', passwordMatches)
 
     if (!passwordMatches) {
         throw new PickUpError({

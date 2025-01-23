@@ -1,2 +1,2 @@
-export * from './tickets'
-export * from './operations'
+export * from './ticket'
+export * from './ticket.request'

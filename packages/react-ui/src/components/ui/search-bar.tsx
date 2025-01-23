@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import { SearchIcon } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 
 import { Badge } from './badge';

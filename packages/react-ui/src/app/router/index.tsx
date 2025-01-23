@@ -136,10 +136,3 @@ const PuRouter = () => {
 };
 
 export { PuRouter };
-<AllowOnlyLoggedInUserOnlyGuard>
-  <DashboardContainer>
-    <PageTitle title="Home">
-      <HomePage />
-    </PageTitle>
-  </DashboardContainer>
-</AllowOnlyLoggedInUserOnlyGuard>;

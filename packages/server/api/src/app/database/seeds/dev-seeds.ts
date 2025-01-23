@@ -55,7 +55,6 @@ const seedDevUser = async (): Promise<void> => {
         lastName: 'User',
         schoolId: school.id,
         type: UserType.STAFF,
-        tokenVersion: puId(),
     });
 
     const user = await userService.create({
@@ -65,7 +64,6 @@ const seedDevUser = async (): Promise<void> => {
         lastName: 'User',
         schoolId: school.id,
         type: UserType.STUDENT,
-        tokenVersion: puId(),
     });
 
     const classroom = classroomRepo.create({

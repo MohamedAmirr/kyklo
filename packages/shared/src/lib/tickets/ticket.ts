@@ -1,7 +1,14 @@
-import {BaseModelSchema, PuId, SchoolGrades, SchoolSemesters} from "@pickup/shared";
+import {BaseModelSchema, PuId} from "@pickup/shared";
 import {Static, Type} from "@sinclair/typebox";
 
+
+export type TicketId = PuId
 export type TicketCategoryId = PuId
+
+export enum TicketStatus {
+    OPEN = 'OPEN',
+    CLOSED = 'CLOSED',
+}
 
 export const TicketCategory = Type.Object({
     ...BaseModelSchema,
@@ -10,16 +17,15 @@ export const TicketCategory = Type.Object({
 
 export type TicketCategory = Static<typeof TicketCategory>
 
-export type TicketId = PuId
 
-export const Tickets = Type.Object({
+export const Ticket = Type.Object({
     ...BaseModelSchema,
     title: Type.String(),
-    status: Type.Enum({ open: 'open', closed: 'closed' }),
+    status: Type.Enum(TicketStatus),
+    number: Type.Number(),
     categoryId: Type.String(),
-    raisedById: Type.String(),
+    reporterId: Type.String(),
     description: Type.String(),
     schoolId: Type.String(),
 })
-
-export type Tickets = Static<typeof Tickets>
+export type Ticket = Static<typeof Ticket>

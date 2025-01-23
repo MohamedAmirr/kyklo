@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { EndpointScope, Permission, Principal, PrincipalType } from '@activepieces/shared' // TODO: change it to pickup
+import { EndpointScope, Permission, Principal, PrincipalType } from '@pickup/shared'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import fastify from 'fastify'
 

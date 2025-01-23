@@ -1,4 +1,4 @@
-import { ApiResponse, NewTicket, Tickets } from '@pickup/shared';
+import { ApiResponse, Ticket, TicketStatus } from '@pickup/shared';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ColumnDef, ColumnFiltersState } from '@tanstack/react-table';
 import { t } from 'i18next';
@@ -40,7 +40,7 @@ import TicketDetails from '@/components/ui/ticket-details';
 import { toast } from '@/components/ui/use-toast';
 import { ticketApi } from '@/lib/ticket-api';
 
-export const columns: ColumnDef<RowDataWithActions<Tickets>>[] = [
+export const columns: ColumnDef<RowDataWithActions<Ticket>>[] = [
   {
     accessorKey: 'id',
     enableSorting: true,
@@ -60,8 +60,8 @@ export const columns: ColumnDef<RowDataWithActions<Tickets>>[] = [
       </div>
     ),
     cell: ({ row }) => (
-      <div className="capitalize text-blue-500 cursor-pointer">
-        {row.getValue('id')}
+      <div className="cursor-pointer">
+        #{row.original.number}
       </div>
     ),
   },
@@ -202,7 +202,7 @@ export function TicketPage() {
     { id: 'status', value: 'open' },
   ]);
   const [openSelectedTicket, setOpenSelectedTicket] = React.useState(false);
-  const [selectedRow, setSelectedRow] = React.useState<Tickets | null>(null);
+  const [selectedRow, setSelectedRow] = React.useState<Ticket | null>(null);
 
   const [searchParams] = useSearchParams();
 
@@ -211,12 +211,12 @@ export function TicketPage() {
     staleTime: 0,
     gcTime: 0,
     queryFn: () => {
-      const cursor = searchParams.get(CURSOR_QUERY_PARAM);
+      const cursor = searchParams.get(CURSOR_QUERY_PARAM) ?? undefined;
       const limit = searchParams.get(LIMIT_QUERY_PARAM)
         ? parseInt(searchParams.get(LIMIT_QUERY_PARAM)!)
         : 10;
       return ticketApi.list({
-        cursor: cursor ?? undefined,
+        cursor,
         limit,
       });
     },
@@ -225,26 +225,26 @@ export function TicketPage() {
   const filteredData = React.useMemo(() => {
     let result = data?.data ?? [];
 
-    columnFilters.forEach((filter) => {
-      if (filter?.id === 'title' && filter?.value) {
-        result = result?.filter((ticket) =>
-          ticket?.title
-            .toLowerCase()
-            .includes((filter?.value as string).toLowerCase()),
-        );
-      } else if (filter?.id === 'status' && filter?.value) {
-        result = result?.filter(
-          (ticket) =>
-            ticket?.status.toLowerCase() ===
-            (filter?.value as string).toLowerCase(),
-        );
-      }
-    });
+    // columnFilters.forEach((filter) => {
+    //   if (filter?.id === 'title' && filter?.value) {
+    //     result = result?.filter((ticket) =>
+    //       ticket?.title
+    //         .toLowerCase()
+    //         .includes((filter?.value as string).toLowerCase()),
+    //     );
+    //   } else if (filter?.id === 'status' && filter?.value) {
+    //     result = result?.filter(
+    //       (ticket) =>
+    //         ticket?.status.toLowerCase() ===
+    //         (filter?.value as string).toLowerCase(),
+    //     );
+    //   }
+    // });
 
     return result;
   }, [columnFilters]);
 
-  const updateFilter = (id: string, value: string | undefined) => {
+  const updateFilter = (id: string, value: TicketStatus | undefined) => {
     setColumnFilters((prevFilters) => {
       const existingFilterIndex = prevFilters.findIndex(
         (filter) => filter?.id === id,
@@ -275,7 +275,7 @@ export function TicketPage() {
     },
   });
 
-  const setStatusFilter = (status: 'open' | 'closed') => {
+  const setStatusFilter = (status: TicketStatus) => {
     updateFilter('status', status);
   };
 
@@ -283,16 +283,12 @@ export function TicketPage() {
     updateFilter('title', title);
   };
 
-  const handleRowOnClick = (row: Tickets) => {
+  const handleRowOnClick = (row: Ticket) => {
     setSelectedRow(row);
     setOpenSelectedTicket(true);
   };
 
-  const { mutate, isPending } = useMutation<
-    ApiResponse<unknown>,
-    Error,
-    NewTicket
-  >({
+  const { mutate } = useMutation({
     mutationFn: ticketApi.create,
     onSuccess: () => {
       toast({
@@ -307,7 +303,7 @@ export function TicketPage() {
     },
   });
   const inputRef = useRef<HTMLInputElement>(null);
-  const handleSubmit: SubmitHandler<NewTicket> = (data) => {
+  const handleSubmit: SubmitHandler<Ticket> = (data) => {
     mutate(data);
   };
 
@@ -425,7 +421,7 @@ export function TicketPage() {
         <TicketDetails
           open={openSelectedTicket}
           handleClose={() => setOpenSelectedTicket(false)}
-          customerName={selectedRow.raisedById}
+          customerName={selectedRow.reporterId}
           customerRole={''}
           ticketId={selectedRow.id}
           category={selectedRow.categoryId}

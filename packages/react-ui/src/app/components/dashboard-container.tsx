@@ -13,11 +13,10 @@ type DashboardContainerProps = {
 };
 
 export function DashboardContainer({ children }: DashboardContainerProps) {
-  //TODO: This when remove the comment cause infinite loop, need to check the logic
-  // const currentClassroomId = authenticationSession.getClassroomId();
-  // if (isNil(currentClassroomId) || currentClassroomId === '') {
-  //   return <Navigate to="/sign-in" replace />;
-  // }
+  const currentClassroomId = authenticationSession.getClassroomId();
+  if (isNil(currentClassroomId) || currentClassroomId === '') {
+    return <Navigate to="/sign-in" replace />;
+  }
   const links: SidebarLink[] = [
     {
       to: '/home',

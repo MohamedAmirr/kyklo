@@ -1,59 +1,74 @@
-import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { FastifyRequest } from "fastify";
+import { FastifyPluginAsyncTypebox, Type } from "@fastify/type-provider-typebox";
 import { ticketsService } from "./tickets.service";
 import {
-  EndpointScope,
-  ListTicketsRequest,
-  NewTicket,
+  CreateTicketRequestBody,
   PrincipalType,
+  ListTicketsRequestQuery,
+  UpdateTicketRequestBody,
 } from "@pickup/shared";
 
+const DEFAULT_PAGING_LIMIT = 10
+
 export const ticketsController: FastifyPluginAsyncTypebox = async (app) => {
-  app.get("", ListTicketsParams, async (request) => {
-      const schoolId = request.principal.schoolId;
+
+  app.get('/', ListTicketsParams, async (request) => {
+      const schoolId = request.principal.school.id;
       return await ticketsService.list({
-      schoolId,
-      request: request.query,
-    });
+        schoolId,
+        cursor: request.query.cursor ?? null,
+        limit: request.query.limit ?? DEFAULT_PAGING_LIMIT,
+      });
   });
-  app.post(
-    "",
-    {
-      schema: {
-        body: NewTicket,
-      },
-    },
-    async (request: FastifyRequest<{ Body: NewTicket }>) => {
-      await ticketsService.create(
-        request.body,
-        request.principal.userId,
-        request.principal.schoolId
-      );
+
+  app.post('/', CreateTicketParams, async (request) => {
+      await ticketsService.create({
+        title: request.body.title,
+        description: request.body.description,
+        categoryId: request.body.categoryId,
+        schoolId: request.principal.school.id,
+      });
       return { message: "Ticket created" };
-    }
-  );
-  app.patch<{ Params: { id: string } }>(
-    "/:id/close",
-    async (request: FastifyRequest<{ Params: { id: string } }>) => {
-      await ticketsService.closeTicket(request.params.id);
-      return { message: "Ticket closed" };
-    }
-  );
-  app.patch<{ Params: { id: string } }>(
-    "/:id/open",
-    async (request: FastifyRequest<{ Params: { id: string } }>) => {
-      await ticketsService.openTicket(request.params.id);
-      return { message: "Ticket opened" };
-    }
-  );
+  });
+
+  app.post('/:id', UpdateTicketParams, async (request) => {
+    await ticketsService.update({
+      id: request.params.id,
+      schoolId: request.principal.school.id,
+      status: request.body.status,
+      categoryId: request.body.categoryId,
+    });
+    
+    return { message: "Ticket updated" };
+  });
+
 };
 
 const ListTicketsParams = {
   config: {
-    allowedPrincipals: [PrincipalType.USER],
-    scope: EndpointScope.PLATFORM,
+    allowedPrincipals: [PrincipalType.USER, PrincipalType.SERVICE],
   },
   schema: {
-    querystring: ListTicketsRequest,
+    querystring: ListTicketsRequestQuery,
+  },
+};
+
+const CreateTicketParams = {
+  config: {
+    allowedPrincipals: [PrincipalType.USER, PrincipalType.SERVICE],
+  },
+  schema: {
+    body: CreateTicketRequestBody,
+  },
+};
+
+const UpdateTicketParams = {
+  config: {
+    allowedPrincipals: [PrincipalType.USER, PrincipalType.SERVICE],
+  },
+  schema: {
+    params: Type.Object({
+      id: Type.String(),
+    }),
+    body: UpdateTicketRequestBody,
   },
 };

@@ -1,24 +1,22 @@
-import { ApiResponse, NewTicket, SeekPage, Tickets } from '@pickup/shared';
+import { ApiResponse, CreateTicketRequestBody, SeekPage, Ticket, TicketId, UpdateTicketRequestBody } from '@pickup/shared';
 
 import { api } from '@/lib/api';
 
 export const ticketApi = {
-  get(request: { ticketId: string }): Promise<ApiResponse<Tickets>> {
+  get(request: { ticketId: string }): Promise<ApiResponse<Ticket>> {
     return api.get(`/v1/tickets`, request);
   },
   list(request?: {
     cursor?: string;
     limit?: number;
-  }): Promise<ApiResponse<SeekPage<Tickets>>> {
+  }): Promise<ApiResponse<SeekPage<Ticket[]>>> {
     return api.get(`/v1/tickets`, request);
   },
-  create(data: NewTicket): Promise<ApiResponse<unknown>> {
+  create(data: CreateTicketRequestBody): Promise<ApiResponse<Ticket>> {
     return api.post('/v1/tickets', data);
   },
-  close(request: { id: string }) {
-    return api.patch(`/v1/tickets/${request.id}/close`);
+  update(id: TicketId, data: UpdateTicketRequestBody): Promise<ApiResponse<Ticket>> {
+    return api.post(`/v1/tickets/${id}`, data);
   },
-  open(request: { id: string }) {
-    return api.patch(`/v1/tickets/${request.id}/open`);
-  },
+
 };

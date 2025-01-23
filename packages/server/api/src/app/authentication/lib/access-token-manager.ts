@@ -46,7 +46,6 @@ async function assertUserSession(decoded: Principal): Promise<void> {
     if (decoded.type !== PrincipalType.USER) return
     
     const user = await userService.getOneOrFail({ id: decoded.id })
-    //TODO: isExpired is always true
     const isExpired = (user.tokenVersion ?? null) !== (decoded.tokenVersion ?? null)
 
     if (isExpired || user.status === UserStatus.INACTIVE) {

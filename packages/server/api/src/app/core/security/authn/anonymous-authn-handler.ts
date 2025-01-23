@@ -20,7 +20,7 @@ export class AnonymousAuthnHandler extends BaseSecurityHandler {
                 id: `ANONYMOUS_${puId()}`,
                 type: PrincipalType.UNKNOWN,
                 classroomId: `ANONYMOUS_${puId()}`,
-                platform: {
+                school: {
                     id: `ANONYMOUS_${puId()}`,
                 },
             }

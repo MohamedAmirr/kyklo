@@ -26,6 +26,7 @@ export const studentAuthenticationServiceHooks: AuthenticationServiceHooks = {
                 id: user.schoolId,
             },
             classroomId: student.classroom.id,
+            tokenVersion: user.tokenVersion,
         })
         return {
             user,

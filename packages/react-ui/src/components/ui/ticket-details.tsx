@@ -14,6 +14,7 @@ import {
 import { cn } from '@/lib/utils';
 
 import { Separator } from './seperator';
+import { TicketStatus } from '@pickup/shared';
 
 type Props = {
   open: boolean;
@@ -22,10 +23,10 @@ type Props = {
   customerRole: string;
   ticketId: string;
   category: string;
-  status: 'open' | 'closed';
+  status: TicketStatus;
 };
 
-const TicketDetails = ({
+export const TicketDetails = ({
   open,
   handleClose,
   customerName,
@@ -57,8 +58,6 @@ const TicketDetails = ({
       </div>
     ),
   );
-
-  TicketDetail.displayName = 'TicketDetail';
 
   return (
     <Sheet open={open} onOpenChange={handleClose}>
