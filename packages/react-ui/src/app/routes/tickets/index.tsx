@@ -1,208 +1,49 @@
-import { ApiResponse, Ticket, TicketStatus } from '@pickup/shared';
+import { Ticket, TicketCategory, TicketStatus } from '@pickup/shared';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { ColumnDef, ColumnFiltersState } from '@tanstack/react-table';
+import { ColumnDef } from '@tanstack/react-table';
 import { t } from 'i18next';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
-import * as React from 'react';
-import { useRef } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { CheckIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { Button } from '@/components/ui/button';
 import {
+  BulkAction,
   CURSOR_QUERY_PARAM,
   DataTable,
   LIMIT_QUERY_PARAM,
   RowDataWithActions,
 } from '@/components/ui/data-table';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { FormField, Form } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import OpenClosedTickets from '@/components/ui/open-closed-tickets';
-import { SearchBar } from '@/components/ui/search-bar';
-import { Textarea } from '@/components/ui/textarea';
 import TicketDetails from '@/components/ui/ticket-details';
-import { toast } from '@/components/ui/use-toast';
 import { ticketApi } from '@/lib/ticket-api';
+import { formatUtils } from '@/lib/utils';
+import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
+import { CreateTicketDialog } from './create-ticket-dialog';
 
-export const columns: ColumnDef<RowDataWithActions<Ticket>>[] = [
+// TODO: get categories from backend
+const DEFAULT_CATEGORIES: TicketCategory[] = [
   {
-    accessorKey: 'id',
-    enableSorting: true,
-    header: ({ column }) => (
-      <div className="flex items-center">
-        {t('Ticket ID')}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          }}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="cursor-pointer">
-        #{row.original.number}
-      </div>
-    ),
+    id: '1',
+    name: 'General',
+    created: new Date().toISOString(),
+    updated: new Date().toISOString(),
   },
   {
-    accessorKey: 'title',
-    enableSorting: true,
-    header: ({ column }) => (
-      <div className="flex items-center">
-        {t('Title')}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          }}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('title')}</div>
-    ),
+    id: '2',
+    name: 'Technical',
+    created: new Date().toISOString(),
+    updated: new Date().toISOString(),
   },
   {
-    accessorKey: 'category',
-    enableSorting: true,
-    header: ({ column }) => (
-      <div className="flex items-center">
-        {t('Category')}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          }}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('category')}</div>
-    ),
-  },
-  {
-    accessorKey: 'username',
-    enableSorting: true,
-    header: ({ column }) => (
-      <div className="flex items-center">
-        {t('Username')}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          }}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('username')}</div>
-    ),
-  },
-  {
-    accessorKey: 'status',
-    header: ({ column }) => (
-      <div className="flex items-center">
-        {t('Status')}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          }}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
-    cell: ({ row }) => {
-      const status: string = (row.getValue('status') as string).toLowerCase();
-      const bgColor =
-        status === 'open'
-          ? 'bg-success-100 text-success-300'
-          : 'bg-destructive-100 text-destructive-300';
-
-      return (
-        <div
-          className={`capitalize ${bgColor}  p-1 px-2 inline-block text-center rounded-3xl`}
-        >
-          {t(status)}
-        </div>
-      );
-    },
-    filterFn: (row, columnId, value) => {
-      const rowStatus = (row.getValue(columnId) as string).toLowerCase();
-      return rowStatus === value.toLowerCase();
-    },
-  },
-  {
-    id: 'actions',
-    header: 'Actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">{t('Open menu')}</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="center">
-            <DropdownMenuItem className="cursor-pointer p-0 px-0">
-              <Button size={'sm'} className={'w-full'}>
-                {(row.getValue('status') as string).toLowerCase() === 'closed'
-                  ? 'Re-open Ticket'
-                  : 'Close Ticket'}
-              </Button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    id: '3',
+    name: 'Account',
+    created: new Date().toISOString(),
+    updated: new Date().toISOString(),
   },
 ];
 
 export function TicketPage() {
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([
-    { id: 'status', value: 'open' },
-  ]);
-  const [openSelectedTicket, setOpenSelectedTicket] = React.useState(false);
-  const [selectedRow, setSelectedRow] = React.useState<Ticket | null>(null);
+  const [openSelectedTicket, setOpenSelectedTicket] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<Ticket | null>(null);
 
   const [searchParams] = useSearchParams();
 
@@ -222,198 +63,123 @@ export function TicketPage() {
     },
   });
 
-  const filteredData = React.useMemo(() => {
-    let result = data?.data ?? [];
-
-    // columnFilters.forEach((filter) => {
-    //   if (filter?.id === 'title' && filter?.value) {
-    //     result = result?.filter((ticket) =>
-    //       ticket?.title
-    //         .toLowerCase()
-    //         .includes((filter?.value as string).toLowerCase()),
-    //     );
-    //   } else if (filter?.id === 'status' && filter?.value) {
-    //     result = result?.filter(
-    //       (ticket) =>
-    //         ticket?.status.toLowerCase() ===
-    //         (filter?.value as string).toLowerCase(),
-    //     );
-    //   }
-    // });
-
-    return result;
-  }, [columnFilters]);
-
-  const updateFilter = (id: string, value: TicketStatus | undefined) => {
-    setColumnFilters((prevFilters) => {
-      const existingFilterIndex = prevFilters.findIndex(
-        (filter) => filter?.id === id,
-      );
-
-      if (existingFilterIndex > -1) {
-        if (value) {
-          return prevFilters.map((filter, index) =>
-            index === existingFilterIndex ? { id, value } : filter,
-          );
-        }
-        return prevFilters?.filter((filter) => filter?.id !== id);
-      }
-
-      return [...prevFilters, { id, value }];
-    });
-  };
-
-  const form = useForm<{
-    title: string;
-    categoryId: string;
-    description: string;
-  }>({
-    defaultValues: {
-      title: '',
-      categoryId: '',
-      description: '',
+  const columns: ColumnDef<RowDataWithActions<Ticket>>[] = [
+    {
+      accessorKey: 'id',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('Ticket ID')} />
+      ),
+      cell: ({ row }) => (
+        <div className="text-left font-medium min-w-[150px]">
+          #{row.original.number}
+        </div>
+      ),
     },
-  });
+    {
+      accessorKey: 'title',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('Title')} />
+      ),
+      cell: ({ row }) => (
+        <div className="text-left font-medium min-w-[150px]">
+          {row.getValue('title')}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'username',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('Username')} />
+      ),
+      cell: ({ row }) => (
+        <div className="text-left font-medium min-w-[150px]">
+          {row.getValue('username')}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'status',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('Status')} />
+      ),
+      cell: ({ row }) => {
+        const status: string = (row.getValue('status') as string).toLowerCase();
+        const bgColor =
+          status === 'open'
+            ? 'bg-success-100 text-success-300'
+            : 'bg-destructive-100 text-destructive-300';
+  
+        return (
+          <div
+            className={`capitalize ${bgColor}  p-1 px-2 inline-block text-center rounded-3xl`}
+          >
+            {t(status)}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'category',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('Category')} />
+      ),
+      cell: ({ row }) => (
+        <div className="text-left font-medium min-w-[150px]">
+          {row.getValue('category')}
+        </div>
+      ),
+    },
+  
+  ];
 
-  const setStatusFilter = (status: TicketStatus) => {
-    updateFilter('status', status);
-  };
-
-  const setTitleFilter = (title: string) => {
-    updateFilter('title', title);
-  };
+  const bulkActions: BulkAction<Ticket>[] = useMemo(
+    () => [
+      {
+        render: () => {
+          return (
+            <CreateTicketDialog categories={DEFAULT_CATEGORIES} />
+          );
+        },
+      },
+    ],
+    [t]
+  );
 
   const handleRowOnClick = (row: Ticket) => {
     setSelectedRow(row);
     setOpenSelectedTicket(true);
   };
 
-  const { mutate } = useMutation({
-    mutationFn: ticketApi.create,
-    onSuccess: () => {
-      toast({
-        title: t('Success'),
-        description: t('Ticket Created Successfully'),
-        duration: 3000,
-      });
-      setOpenDialog(false);
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
-  const inputRef = useRef<HTMLInputElement>(null);
-  const handleSubmit: SubmitHandler<Ticket> = (data) => {
-    mutate(data);
-  };
+  const filters = [
+    {
+      type: 'input',
+      title: t('Title'),
+      accessorKey: 'id',
+      options: [],
+      icon: CheckIcon,
+    } as const,
+    {
+      type: 'select',
+      title: t('Status'),
+      accessorKey: 'status',
+      options: Object.values(TicketStatus).map((status) => {
+        return {
+          label: formatUtils.convertEnumToHumanReadable(status),
+          value: status,
+        };
+      }),
+      icon: CheckIcon,
+    } as const,
+  ];
+
 
   return (
-    <div className="w-full flex-col rounded-md border">
-      <div className={'w-full flex justify-between p-4'}>
-        <div className={'w-1/4 flex items-center gap-12'}>
-          <SearchBar
-            filterValue={
-              (columnFilters.find((filter) => filter?.id === 'title')
-                ?.value as string) || ''
-            }
-            handleFilterChange={setTitleFilter}
-          />
-          <OpenClosedTickets
-            numberOfClosedTickets={
-              filteredData?.filter(
-                (ticket) => ticket?.status.toLowerCase() === 'closed',
-              ).length
-            }
-            numberOfOpenedTickets={
-              filteredData?.filter(
-                (ticket) => ticket?.status.toLowerCase() === 'open',
-              ).length
-            }
-            selectedStatus={
-              (columnFilters.find((f) => f.id === 'status')?.value as
-                | 'open'
-                | 'closed') || 'open'
-            }
-            onFilterChange={setStatusFilter}
-          />
-        </div>
-        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-          <DialogTrigger asChild>
-            <Button size="sm">{t('New Ticket')}</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{t('Create New Ticket')}</DialogTitle>
-            </DialogHeader>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)}>
-                <FormField
-                  name={'title'}
-                  control={form.control}
-                  render={({ field }) => (
-                    <>
-                      <Label htmlFor="title">{t('Title')}</Label>
-                      <Input
-                        {...field}
-                        required
-                        id="title"
-                        type="text"
-                        className="rounded-sm"
-                        ref={inputRef}
-                        onChange={(e) => field.onChange(e)}
-                      />
-                    </>
-                  )}
-                />
-                <FormField
-                  name={'categoryId'}
-                  control={form.control}
-                  render={({ field }) => (
-                    <>
-                      <Label htmlFor="categoryId">{t('Category')}</Label>
-                      <Input
-                        {...field}
-                        required
-                        id="categoryId"
-                        type="dropdown" // TODO: need to add a dropdown type
-                        className="rounded-sm"
-                        ref={inputRef}
-                        onChange={(e) => field.onChange(e)}
-                      />
-                    </>
-                  )}
-                />
-                <FormField
-                  name={'description'}
-                  control={form.control}
-                  render={({ field }) => (
-                    <>
-                      <Label htmlFor="description">{t('Description')}</Label>
-                      <Textarea
-                        {...field}
-                        required
-                        id="description"
-                        className="rounded-sm"
-                        onChange={(e) => field.onChange(e)}
-                      />
-                    </>
-                  )}
-                />
-
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="ghost">{t('Cancel')}</Button>
-                  </DialogClose>
-                  <Button type="submit">{t('Submit')}</Button>
-                </DialogFooter>
-              </form>
-            </Form>
-          </DialogContent>
-        </Dialog>
-      </div>
+    <div>
       <DataTable
         columns={columns}
         page={data?.data}
+        filters={filters}
+        bulkActions={bulkActions}
         isLoading={isLoading}
         onRowClick={handleRowOnClick}
       />

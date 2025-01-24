@@ -9,7 +9,7 @@ export const ticketApi = {
   list(request?: {
     cursor?: string;
     limit?: number;
-  }): Promise<ApiResponse<SeekPage<Ticket[]>>> {
+  }): Promise<ApiResponse<SeekPage<Ticket>>> {
     return api.get(`/v1/tickets`, request);
   },
   create(data: CreateTicketRequestBody): Promise<ApiResponse<Ticket>> {

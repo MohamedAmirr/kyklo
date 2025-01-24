@@ -8,9 +8,9 @@ export const MaterialsHeader = () => {
       <div className="flex h-[50px] items-center mb-5">
         <div className="flex items-center gap-2">
           <div className="w-[30px] h-[30px] p-1 flex items-center justify-center bg-red-500 text-white rounded-xs	">
-            <Notebook size={24} />
+            <Notebook size={36} />
           </div>
-          <span className="text-lg font-semibold">Class 1/11</span>
+          <span className="text-2xl font-semibold">Class 1/11</span>
         </div>
         <div className="grow"></div>
         <div className="flex items-center gap-2">

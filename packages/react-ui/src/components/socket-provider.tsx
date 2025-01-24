@@ -18,6 +18,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   useEffectOnce(() => {
     if (token) {
       socket.auth = { token };
+      console
       if (!socket.connected) {
         socket.connect();
       }

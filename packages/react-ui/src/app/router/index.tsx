@@ -12,7 +12,7 @@ import { RedirectPage } from '@/app/routes/redirect';
 import { VerifyEmail } from '@/features/authentication/components/verify-email';
 
 import { DashboardContainer } from '../components/dashboard-container';
-import MaterialsPageLayout from '../components/page-layout/materials/layout';
+import MaterialsPageLayout from '../routes/materials/materials-layout';
 import NotFoundPage from '../routes/404-page';
 import AuthenticatePage from '../routes/authenticate';
 import { ChangePasswordPage } from '../routes/change-password';
@@ -22,6 +22,7 @@ import { SignInPage } from '../routes/sign-in';
 import { TicketPage } from '../routes/tickets';
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper';
+import TicketLayout from '../routes/tickets/ticket-layout';
 
 const SettingsRerouter = () => {
   const { hash } = useLocation();
@@ -48,9 +49,7 @@ const routes = [
     path: '/tickets',
     element: (
       <DashboardContainer>
-        <PageTitle title="Tickets">
-          <TicketPage />
-        </PageTitle>
+        <TicketLayout />
       </DashboardContainer>
     ),
   },
