@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { Puzzle, Settings, SunMoon, Users } from 'lucide-react';
+import { Notebook, Puzzle, Settings, SunMoon, Users } from 'lucide-react';
 
 import SidebarLayout, {
   SideBarContent,
@@ -8,7 +8,7 @@ import SidebarLayout, {
 
 import MaterialsPage from '.';
 
-import { MaterialsHeader } from './materials-header';
+import { PageHeader } from './materials-header';
 
 const iconSize = 20;
 
@@ -57,7 +57,14 @@ export default function MaterialsPageLayout() {
 
   return (
     <div className="flex flex-col w-full">
-      <MaterialsHeader />
+      <PageHeader>
+        <div className="flex items-center gap-2">
+          <div className="w-[30px] h-[30px] p-1 flex items-center justify-center bg-red-500 text-white rounded-xs	">
+            <Notebook size={36} />
+          </div>
+          <span className="text-2xl font-semibold">Class 1/11</span>
+        </div>
+      </PageHeader>
       <SidebarLayout items={sidebarNavItems} content={sidebarNavContent} />
     </div>
   );

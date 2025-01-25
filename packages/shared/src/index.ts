@@ -16,6 +16,7 @@ export * from './lib/school'
 export * from './lib/student'
 export * from './lib/classroom'
 export * from './lib/api-response'
+export * from './lib/event'
 export * from './lib/tickets'
 export * from './lib/classroom-members'
 // Look at https://github.com/sinclairzx81/typebox/issues/350

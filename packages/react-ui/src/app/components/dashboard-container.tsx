@@ -1,6 +1,6 @@
 import { isNil } from '@pickup/shared';
 import { t } from 'i18next';
-import { BookOpen, Home, MessageCircleQuestion, Wrench } from 'lucide-react';
+import { BookOpen, CalendarRange, Home, MessageCircleQuestion, Wrench } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
 
 import { authenticationSession } from '@/lib/authentication-session';
@@ -23,10 +23,16 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
       label: t('Home'),
       icon: Home,
     },
+
     {
       to: '/materials',
       label: t('Materials'),
       icon: BookOpen,
+    },
+    {
+      to: '/events/list/1',
+      label: t('Events'),
+      icon: CalendarRange,
     },
     {
       to: '/tickets',

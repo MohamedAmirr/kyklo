@@ -12,6 +12,7 @@ import { createPostgresDataSource } from './postgres-connection'
 import { FlagEntity } from '../flags/flag.entity'
 import {ClassroomEntity} from "../classroom/classroom.entity";
 import {StudentEntity} from "../student/student.entity";
+import { EventEntity } from '../event/event.entity'
 import { UserEntity } from '../user/user.entity'
 import { SchoolEntity } from '../school/school.entity'
 import {TicketCategoriesEntity, TicketsEntity} from '../tickets/tickets.entity'
@@ -27,6 +28,7 @@ function getEntities(): EntitySchema<unknown>[] {
         ClassroomEntity,
         ClassroomMemberEntity,
         StudentEntity,
+        EventEntity,
         TicketCategoriesEntity,
         TicketsEntity
     ]

@@ -1,25 +1,13 @@
-import { Notebook, Plus } from 'lucide-react';
+import { ReactNode } from "react";
 
-import { Button } from '@/components/ui/button';
+interface PageHeaderProps {
+  children: ReactNode;
+}
 
-export const MaterialsHeader = () => {
+export const PageHeader: React.FC<PageHeaderProps> = ({ children }) => {
   return (
-    <div>
-      <div className="flex h-[50px] items-center mb-5">
-        <div className="flex items-center gap-2">
-          <div className="w-[30px] h-[30px] p-1 flex items-center justify-center bg-red-500 text-white rounded-xs	">
-            <Notebook size={36} />
-          </div>
-          <span className="text-2xl font-semibold">Class 1/11</span>
-        </div>
-        <div className="grow"></div>
-        <div className="flex items-center gap-2">
-          <Button>
-            <Plus size={16} className="mr-2" />
-            <span>New Content</span>
-          </Button>
-        </div>
-      </div>
+    <div className="flex h-[50px] items-center mb-5">
+      {children}
     </div>
   );
 };

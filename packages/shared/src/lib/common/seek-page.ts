@@ -7,6 +7,7 @@ export type SeekPage<T> = {
     next: Cursor
     previous: Cursor
     data: T[]
+    total?: number
 }
 
 export const SeekPage = (t: TSchema): TSchema => Type.Object({

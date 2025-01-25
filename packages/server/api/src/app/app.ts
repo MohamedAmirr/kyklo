@@ -14,9 +14,10 @@ import { classroomModule } from './classroom/classroom.module'
 import { studentModule } from './student/student.module'
 import { setupGlobalErrorHandler } from './core/response/exception-handler'
 import addGlobalResponseFormat from './core/response/response-hook'
+import { eventModule } from './event/event.module'
 import { userModule } from './user/user.module'
-import {ticketsModule} from "./tickets/tickets.module";
 import { classroomMemberModule } from './classroom-members/classroom-member.module'
+import { ticketsModule } from './tickets/tickets.module'
 
 export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
 
@@ -69,6 +70,7 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
     await app.register(classroomModule)
     await app.register(classroomMemberModule)
     await app.register(studentModule)
+    await app.register(eventModule)
     await app.register(userModule)
 
     app.get(

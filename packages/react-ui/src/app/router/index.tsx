@@ -1,27 +1,30 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 import {
   Navigate,
   RouterProvider,
   createBrowserRouter,
   useLocation,
-} from 'react-router-dom';
+} from "react-router-dom";
 
+import { AllowOnlyLoggedInUserOnlyGuard } from '@/app/components/allow-logged-in-user-only-guard';
 import { PageTitle } from '@/app/components/page-title';
 import { RedirectPage } from '@/app/routes/redirect';
 import { VerifyEmail } from '@/features/authentication/components/verify-email';
 
 import { DashboardContainer } from '../components/dashboard-container';
-import MaterialsPageLayout from '../routes/materials/materials-layout';
+import MaterialsPageLayout from '../routes/materials/layout';
 import NotFoundPage from '../routes/404-page';
 import AuthenticatePage from '../routes/authenticate';
 import { ChangePasswordPage } from '../routes/change-password';
 import { ResetPasswordPage } from '../routes/forget-password';
 import HomePage from '../routes/home';
 import { SignInPage } from '../routes/sign-in';
-import { TicketPage } from '../routes/tickets';
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper';
-import TicketLayout from '../routes/tickets/ticket-layout';
+import EventDetails from "../routes/events/event-details";
+import EventPageLayout from "../routes/events/layout";
+import TicketLayout from "../routes/tickets/ticket-layout";
+import AddEventPage from "../routes/events/create-event";
 
 const SettingsRerouter = () => {
   const { hash } = useLocation();
@@ -35,37 +38,73 @@ const SettingsRerouter = () => {
 
 const routes = [
   {
-    path: '/home',
+    path: "/home",
+    element: (
+      <AllowOnlyLoggedInUserOnlyGuard>
+        <DashboardContainer>
+          <PageTitle title="Home">
+            <HomePage />
+          </PageTitle>
+        </DashboardContainer>
+      </AllowOnlyLoggedInUserOnlyGuard>
+    ),
+  },
+  {
+    path: "/materials",
     element: (
       <DashboardContainer>
-        <PageTitle title="Home">
-          <HomePage />
+        <PageTitle title="Materials">
+          <MaterialsPageLayout />
         </PageTitle>
       </DashboardContainer>
     ),
   },
   {
-    path: '/tickets',
+    path: "/events/list/:page",
     element: (
       <DashboardContainer>
-        <TicketLayout />
+        <PageTitle title="Events">
+          <EventPageLayout />
+        </PageTitle>  
       </DashboardContainer>
     ),
   },
   {
-    path: '/materials',
+    path: "/events/:id",
     element: (
       <DashboardContainer>
-        <MaterialsPageLayout />
+        <PageTitle title="Event Details">
+          <EventDetails />
+        </PageTitle>
       </DashboardContainer>
     ),
   },
   {
-    path: '/authenticate',
+    path: "/events/create",
+    element: (
+      <DashboardContainer>
+        <PageTitle title="Create Event">
+          <AddEventPage />
+        </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: "/tickets",
+    element: (
+      <DashboardContainer>
+        <PageTitle title="Tickets">
+          <TicketLayout />
+        </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: "/authenticate",
     element: <AuthenticatePage />,
   },
   ...ProjectRouterWrapper({
-    path: '/settings',
+    path: "/settings",
     element: (
       <DashboardContainer>
         <SettingsRerouter></SettingsRerouter>
@@ -73,7 +112,7 @@ const routes = [
     ),
   }),
   {
-    path: '/forget-password',
+    path: "/forget-password",
     element: (
       <PageTitle title="Forget Password">
         <ResetPasswordPage />
@@ -81,7 +120,7 @@ const routes = [
     ),
   },
   {
-    path: '/reset-password',
+    path: "/reset-password",
     element: (
       <PageTitle title="Reset Password">
         <ChangePasswordPage />
@@ -89,7 +128,7 @@ const routes = [
     ),
   },
   {
-    path: '/sign-in',
+    path: "/sign-in",
     element: (
       <PageTitle title="Sign In">
         <SignInPage />
@@ -97,7 +136,7 @@ const routes = [
     ),
   },
   {
-    path: '/verify-email',
+    path: "/verify-email",
     element: (
       <PageTitle title="Verify Email">
         <VerifyEmail />
@@ -105,7 +144,7 @@ const routes = [
     ),
   },
   {
-    path: '/404',
+    path: "/404",
     element: (
       <PageTitle title="Not Found">
         <NotFoundPage />
@@ -113,11 +152,11 @@ const routes = [
     ),
   },
   {
-    path: '/redirect',
+    path: "/redirect",
     element: <RedirectPage></RedirectPage>,
   },
   {
-    path: '/*',
+    path: "/*",
     element: (
       <PageTitle title="Redirect">
         <Navigate to="/home" replace />
