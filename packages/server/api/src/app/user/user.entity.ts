@@ -3,7 +3,7 @@ import { EntitySchema } from 'typeorm'
 import { BaseColumnSchemaPart } from '../database/database-common'
 
 export type UserSchema = User & {
-    school: School,
+    school: School
 }
 
 export const UserEntity = new EntitySchema<UserSchema>({
@@ -30,6 +30,10 @@ export const UserEntity = new EntitySchema<UserSchema>({
         },
         schoolId: {
             type: String,
+        },
+        tokenVersion: {
+            type: String,
+            nullable: true,
         },
     },
     indices: [

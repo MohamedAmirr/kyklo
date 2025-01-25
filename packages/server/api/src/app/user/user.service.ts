@@ -16,6 +16,7 @@ import dayjs from 'dayjs'
 import { repoFactory } from '../core/db/repo-factory'
 import { UserEntity } from './user.entity'
 import { passwordHasher } from '../authentication/lib/password-hasher'
+import { nanoid } from 'nanoid'
 
 
 export const userRepo = repoFactory(UserEntity)
@@ -30,6 +31,7 @@ export const userService = {
             email: params.email.toLowerCase().trim(),
             status: UserStatus.ACTIVE,
             password: hashedPassword,
+            tokenVersion: nanoid(),
         }
 
         return userRepo().save(user)

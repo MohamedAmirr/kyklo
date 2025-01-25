@@ -1,5 +1,5 @@
 import { exceptionHandler } from '@pickup/server-shared'
-import { PickUpError, ErrorCode } from '@pickup/shared'
+import { ErrorCode, PickUpError } from '@pickup/shared'
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify'
 import { StatusCodes } from 'http-status-codes'
 

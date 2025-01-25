@@ -7,6 +7,8 @@ export type ClassroomId = PuId
 export const Classroom = Type.Object({
     ...BaseModelSchema,
     name: Type.String(),
+    schoolId: PuId,
+    teacherId: Type.String(),
 })
 
 export type Classroom = Static<typeof Classroom>

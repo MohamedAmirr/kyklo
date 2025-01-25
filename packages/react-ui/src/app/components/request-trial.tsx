@@ -303,7 +303,7 @@ export const RequestTrial = ({ featureKey }: RequestTrialProps) => {
             </div>
             <div className="flex flex-wrap gap-5 items-center justify-center">
               {logos.map((logo, index) => (
-                <img key={index} className="h-6" src={logo} />
+                <img key={index} className="h-6" alt={'Logo'} src={logo} />
               ))}
             </div>
           </div>

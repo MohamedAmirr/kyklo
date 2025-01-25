@@ -1,12 +1,12 @@
-import { assertNotNullOrUndefined, CreateOtpRequestBody, ALL_PRINCIPAL_TYPES } from '@pickup/shared'
+import { ALL_PRINCIPAL_TYPES, assertNotNullOrUndefined, CreateOtpRequestBody } from '@pickup/shared'
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 import { StatusCodes } from 'http-status-codes'
 import { otpService } from './otp-service'
+import { schoolService } from '../school/school.service'
 
 export const otpController: FastifyPluginAsyncTypebox = async (app) => {
     app.post('/', CreateOtpRequest, async (req, res) => {
-        // TODO: get platformId from request
-        const schoolId = 'hahah'
+        const schoolId = req.principal.school.id
         assertNotNullOrUndefined(schoolId, 'schoolId')
         await otpService.createAndSend({
             schoolId,

@@ -1,3 +1,4 @@
+import { authenticationSession } from '@/lib/authentication-session';
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -10,8 +11,8 @@ const AuthenticatePage = () => {
 
   useEffect(() => {
     if (response) {
-      // const decodedResponse = JSON.parse(response);
-      // TODO: Add authenticationSession.saveResponse(decodedResponse);
+      const decodedResponse = JSON.parse(response);
+      authenticationSession.saveResponse(decodedResponse);
       navigate('/home');
     }
   }, [response]);

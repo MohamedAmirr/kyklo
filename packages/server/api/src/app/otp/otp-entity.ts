@@ -1,8 +1,8 @@
 import { OtpModel, OtpState, OtpType, User } from '@pickup/shared'
 import { EntitySchema } from 'typeorm'
 import {
-    PuIdSchema,
     BaseColumnSchemaPart,
+    PuIdSchema,
 } from '../database/database-common'
 
 export type OtpSchema = OtpModel & {
@@ -32,23 +32,4 @@ export const OtpEntity = new EntitySchema<OtpSchema>({
             nullable: false,
         },
     },
-    // indices: [
-    //     {
-    //         name: 'idx_otp_user_id_type',
-    //         columns: ['userId', 'type'],
-    //         unique: true,
-    //     },
-    // ],
-    // relations: {
-    //     user: {
-    //         type: 'many-to-one',
-    //         target: 'user',
-    //         cascade: true,
-    //         onDelete: 'CASCADE',
-    //         joinColumn: {
-    //             name: 'userId',
-    //             foreignKeyConstraintName: 'fk_otp_user_id',
-    //         },
-    //     },
-    // },
 })

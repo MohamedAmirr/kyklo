@@ -6,22 +6,22 @@ import {
   useLocation,
 } from 'react-router-dom';
 
-import { AllowOnlyLoggedInUserOnlyGuard } from '@/app/components/allow-logged-in-user-only-guard';
 import { PageTitle } from '@/app/components/page-title';
 import { RedirectPage } from '@/app/routes/redirect';
 import { VerifyEmail } from '@/features/authentication/components/verify-email';
 
 import { DashboardContainer } from '../components/dashboard-container';
-import MaterialsPageLayout from '../components/page-layout/materials/layout';
+import MaterialsPageLayout from '../routes/materials/materials-layout';
 import NotFoundPage from '../routes/404-page';
 import AuthenticatePage from '../routes/authenticate';
 import { ChangePasswordPage } from '../routes/change-password';
 import { ResetPasswordPage } from '../routes/forget-password';
 import HomePage from '../routes/home';
 import { SignInPage } from '../routes/sign-in';
-import { SignUpPage } from '../routes/sign-up';
+import { TicketPage } from '../routes/tickets';
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper';
+import TicketLayout from '../routes/tickets/ticket-layout';
 
 const SettingsRerouter = () => {
   const { hash } = useLocation();
@@ -37,13 +37,19 @@ const routes = [
   {
     path: '/home',
     element: (
-      <AllowOnlyLoggedInUserOnlyGuard>
-        <DashboardContainer>
-          <PageTitle title="Home">
-            <HomePage />
-          </PageTitle>
-        </DashboardContainer>
-      </AllowOnlyLoggedInUserOnlyGuard>
+      <DashboardContainer>
+        <PageTitle title="Home">
+          <HomePage />
+        </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: '/tickets',
+    element: (
+      <DashboardContainer>
+        <TicketLayout />
+      </DashboardContainer>
     ),
   },
   {
@@ -95,14 +101,6 @@ const routes = [
     element: (
       <PageTitle title="Verify Email">
         <VerifyEmail />
-      </PageTitle>
-    ),
-  },
-  {
-    path: '/sign-up',
-    element: (
-      <PageTitle title="Sign Up">
-        <SignUpPage />
       </PageTitle>
     ),
   },

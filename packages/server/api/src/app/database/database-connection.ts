@@ -1,5 +1,5 @@
 import { AppSystemProp, DatabaseType, SharedSystemProp, system } from '@pickup/server-shared'
-import { PuEdition, PuEnvironment, isNil } from '@pickup/shared'
+import { isNil, PuEdition, PuEnvironment } from '@pickup/shared'
 import {
     ArrayContains,
     DataSource,
@@ -10,10 +10,12 @@ import {
 import { OtpEntity } from '../otp/otp-entity'
 import { createPostgresDataSource } from './postgres-connection'
 import { FlagEntity } from '../flags/flag.entity'
-import {UserEntity} from "../user/user.entity";
-import {SchoolEntity} from "../school/school.entity";
 import {ClassroomEntity} from "../classroom/classroom.entity";
 import {StudentEntity} from "../student/student.entity";
+import { UserEntity } from '../user/user.entity'
+import { SchoolEntity } from '../school/school.entity'
+import {TicketCategoriesEntity, TicketsEntity} from '../tickets/tickets.entity'
+import { ClassroomMemberEntity } from '../classroom-members/classroom-member.entity'
 
 function getEntities(): EntitySchema<unknown>[] {
     const edition = system.getEdition()
@@ -23,7 +25,10 @@ function getEntities(): EntitySchema<unknown>[] {
         UserEntity,
         SchoolEntity,
         ClassroomEntity,
+        ClassroomMemberEntity,
         StudentEntity,
+        TicketCategoriesEntity,
+        TicketsEntity
     ]
 
     switch (edition) {

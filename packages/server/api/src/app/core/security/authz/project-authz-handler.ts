@@ -1,4 +1,4 @@
-import { ErrorCode, PickUpError, PrincipalType } from '@pickup/shared'
+import { ErrorCode, PickUpError } from '@pickup/shared'
 import { FastifyRequest } from 'fastify'
 import { requestUtils } from '../../request/request-utils'
 import { BaseSecurityHandler } from '../security-handler'
