@@ -23,7 +23,7 @@ export default function EventPageLayout() {
 
           <Button>
             <Plus size={16} className="mr-2" />
-            <span>New Content</span>
+            <span>New Event</span>
           </Button>
         </div>
       </PgaeHeader>
