@@ -259,7 +259,7 @@ export function DataTable<
         </div>
       </DataTableToolbar>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border m-">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

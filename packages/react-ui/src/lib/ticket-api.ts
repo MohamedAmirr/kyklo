@@ -18,5 +18,4 @@ export const ticketApi = {
   update(id: TicketId, data: UpdateTicketRequestBody): Promise<ApiResponse<Ticket>> {
     return api.post(`/v1/tickets/${id}`, data);
   },
-
 };
