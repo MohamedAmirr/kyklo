@@ -29,10 +29,12 @@ export function encodeByType(type: string, value: unknown): string | null {
         }
         case 'object': {
             /**
-       * if reflection type is Object, check whether an object is a date.
-       * see: https://github.com/rbuckton/reflect-metadata/issues/84
-       */
-            if (typeof (value as Record<string, unknown>).getTime === 'function') {
+             * if reflection type is Object, check whether an object is a date.
+             * see: https://github.com/rbuckton/reflect-metadata/issues/84
+             */
+            if (
+                typeof (value as Record<string, unknown>).getTime === 'function'
+            ) {
                 return (value as Date).getTime().toString()
             }
 
@@ -47,7 +49,7 @@ export function encodeByType(type: string, value: unknown): string | null {
 
 export function decodeByType(
     type: string,
-    value: string,
+    value: string
 ): string | number | Date {
     switch (type) {
         case 'object':
@@ -56,7 +58,9 @@ export function decodeByType(
         case 'date': {
             const timestamp = parseInt(value, 10)
             if (Number.isNaN(timestamp)) {
-                throw new Error('date column in cursor should be a valid timestamp')
+                throw new Error(
+                    'date column in cursor should be a valid timestamp'
+                )
             }
             return new Date(timestamp).toISOString()
         }
@@ -65,7 +69,9 @@ export function decodeByType(
             const num = parseFloat(value)
 
             if (Number.isNaN(num)) {
-                throw new Error('number column in cursor should be a valid number')
+                throw new Error(
+                    'number column in cursor should be a valid number'
+                )
             }
 
             return num

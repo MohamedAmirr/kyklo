@@ -16,7 +16,7 @@ const AUTHZ_HANDLERS = [
 ]
 
 export const securityHandlerChain = async (
-    request: FastifyRequest,
+    request: FastifyRequest
 ): Promise<void> => {
     await executeAuthnHandlers(request)
     await executeAuthzHandlers(request)

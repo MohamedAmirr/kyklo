@@ -1,13 +1,12 @@
-import {
-    puId,
-    SchoolId,
-    SeekPage,
-    UserId,
-} from '@pickup/shared'
+import { puId, SchoolId, SeekPage, UserId } from '@pickup/shared'
 import dayjs from 'dayjs'
 import { FastifyBaseLogger } from 'fastify'
 import { Equal } from 'typeorm'
-import { ClassroomId, ClassroomMember, ClassroomMemberWithUser } from '@pickup/shared'
+import {
+    ClassroomId,
+    ClassroomMember,
+    ClassroomMemberWithUser,
+} from '@pickup/shared'
 import { ClassroomMemberEntity } from './classroom-member.entity'
 import { repoFactory } from '../core/db/repo-factory'
 import { classroomService } from '../classroom/classroom.service'
@@ -15,7 +14,7 @@ import { userService } from '../user/user.service'
 
 const repo = repoFactory(ClassroomMemberEntity)
 
-export const classroomMemberService = ({
+export const classroomMemberService = {
     async upsert({
         userId,
         classroomId,
@@ -32,13 +31,10 @@ export const classroomMemberService = ({
             updated: dayjs().toISOString(),
             userId,
             classroomId,
-            schoolId
+            schoolId,
         }
 
-        await repo().upsert(classroomMember, [
-            'classroomId',
-            'userId',
-        ])
+        await repo().upsert(classroomMember, ['classroomId', 'userId'])
 
         return repo().findOneOrFail({
             where: {
@@ -46,9 +42,7 @@ export const classroomMemberService = ({
             },
         })
     },
-    async list(
-        classroomId: ClassroomId,
-    ): Promise<ClassroomMemberWithUser[]> {
+    async list(classroomId: ClassroomId): Promise<ClassroomMemberWithUser[]> {
         const queryBuilder = repo()
             .createQueryBuilder('classroom_member')
             .where({ classroomId })
@@ -56,7 +50,9 @@ export const classroomMemberService = ({
         const data = await queryBuilder.getMany()
 
         const enrichedData = await Promise.all(
-            data.map(async (member) => await enrichClassroomMemberWithUser(member)),
+            data.map(
+                async member => await enrichClassroomMemberWithUser(member)
+            )
         )
 
         return enrichedData
@@ -70,9 +66,9 @@ export const classroomMemberService = ({
             userId,
             schoolId: Equal(schoolId),
         })
-        return members.map((member) => member.classroomId)
+        return members.map(member => member.classroomId)
     },
-})
+}
 
 type GetIdsOfClassroomsParams = {
     userId: UserId
@@ -86,9 +82,8 @@ type UpsertParams = {
 
 type NewClassroomMember = Omit<ClassroomMember, 'created'>
 
-
 async function enrichClassroomMemberWithUser(
-    classroomMember: ClassroomMember,
+    classroomMember: ClassroomMember
 ): Promise<ClassroomMemberWithUser> {
     const user = await userService.getOneOrFail({
         id: classroomMember.userId,

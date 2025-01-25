@@ -33,7 +33,9 @@ export const otpService = {
             userId: user.id,
             type,
         })
-        const otpIsNotExpired = existingOtp && dayjs().diff(existingOtp.updated, 'milliseconds') < TEN_MINUTES
+        const otpIsNotExpired =
+            existingOtp &&
+            dayjs().diff(existingOtp.updated, 'milliseconds') < TEN_MINUTES
         if (otpIsNotExpired) {
             return
         }
@@ -60,7 +62,8 @@ export const otpService = {
             type,
         })
         const otpIsPending = otp.state === OtpState.PENDING
-        const otpIsNotExpired = dayjs().diff(otp.updated, 'milliseconds') < TEN_MINUTES
+        const otpIsNotExpired =
+            dayjs().diff(otp.updated, 'milliseconds') < TEN_MINUTES
         const otpMatches = otp.value === value
         const verdict = otpIsNotExpired && otpMatches && otpIsPending
         if (verdict) {

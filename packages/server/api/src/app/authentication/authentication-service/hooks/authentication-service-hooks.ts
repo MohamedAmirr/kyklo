@@ -9,7 +9,8 @@ export type AuthenticationServiceHooks = {
 
 export const studentAuthenticationServiceHooks: AuthenticationServiceHooks = {
     async signIn({ user }: SignInParams): Promise<SignInResult> {
-        const studentRepository = databaseConnection().getRepository(StudentEntity)
+        const studentRepository =
+            databaseConnection().getRepository(StudentEntity)
         const student = await studentRepository.findOne({
             where: { userId: user.id },
             relations: ['classroom'],

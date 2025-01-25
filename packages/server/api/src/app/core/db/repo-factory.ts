@@ -1,9 +1,4 @@
-import {
-    EntityManager,
-    EntitySchema,
-    ObjectLiteral,
-    Repository,
-} from 'typeorm'
+import { EntityManager, EntitySchema, ObjectLiteral, Repository } from 'typeorm'
 import { databaseConnection } from '../../database/database-connection'
 
 /**
@@ -22,7 +17,7 @@ const instances = new Map<EntitySchema, RepoGetter>()
  * @returns A {@link RepoGetter} for the given entity.
  */
 export const repoFactory = <T extends ObjectLiteral>(
-    entity: EntitySchema<T>,
+    entity: EntitySchema<T>
 ): RepoGetter<T> => {
     if (instances.has(entity)) {
         return instances.get(entity) as RepoGetter<T>
@@ -31,7 +26,7 @@ export const repoFactory = <T extends ObjectLiteral>(
     const newInstance: RepoGetter<T> = (entityManager?: EntityManager) => {
         return (
             entityManager?.getRepository(entity) ??
-      databaseConnection().getRepository(entity)
+            databaseConnection().getRepository(entity)
         )
     }
 

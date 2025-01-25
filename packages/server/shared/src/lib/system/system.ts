@@ -1,9 +1,4 @@
-import {
-    ErrorCode,
-    isNil,
-    PickUpError,
-    PuEdition,
-} from '@pickup/shared'
+import { ErrorCode, isNil, PickUpError, PuEdition } from '@pickup/shared'
 import { AppSystemProp, SharedSystemProp, SystemProp } from './system-prop'
 
 export enum RedisType {
@@ -50,11 +45,10 @@ export const system = {
                         prop,
                     },
                 },
-                `System property PU_${prop} is not defined, please check the documentation`,
+                `System property PU_${prop} is not defined, please check the documentation`
             )
         }
         return value
-
     },
     getNumber(prop: SystemProp): number | null {
         const stringNumber = getEnvVar(prop)
@@ -87,7 +81,7 @@ export const system = {
         if (isNil(values)) {
             return []
         }
-        return values.split(',').map((value) => value.trim())
+        return values.split(',').map(value => value.trim())
     },
 
     getOrThrow<T extends string = string>(prop: SystemProp): T {
@@ -101,7 +95,7 @@ export const system = {
                         prop,
                     },
                 },
-                `System property PU_${prop} is not defined, please check the documentation`,
+                `System property PU_${prop} is not defined, please check the documentation`
             )
         }
 

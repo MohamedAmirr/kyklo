@@ -1,10 +1,10 @@
-import { BaseModel, PuId } from '@pickup/shared';
+import { BaseModel, PuId } from '@pickup/shared'
 
-export type FlagId = PuId;
+export type FlagId = PuId
 
 export type Flag = {
-    value: unknown;
-} & BaseModel<FlagId>;
+    value: unknown
+} & BaseModel<FlagId>
 
 export enum PuEnvironment {
     PRODUCTION = 'prod',

@@ -7,9 +7,9 @@ import {
     UserStatus,
     SignInRequest,
 } from '@pickup/shared'
-import {passwordHasher} from '../lib/password-hasher'
-import {authenticationServiceHooks as hooks} from './hooks'
-import {userService} from '../../user/user.service'
+import { passwordHasher } from '../lib/password-hasher'
+import { authenticationServiceHooks as hooks } from './hooks'
+import { userService } from '../../user/user.service'
 import { authenticationUtils } from '../authentication.utils'
 
 export const authenticationService = {
@@ -29,13 +29,15 @@ export const authenticationService = {
         })
     },
     async signInResponse({
-                             user,
-                         }: SignInResponseParams): Promise<AuthenticationResponse> {
+        user,
+    }: SignInResponseParams): Promise<AuthenticationResponse> {
         const authnResponse = await hooks.get(user.type).signIn({
             user,
         })
 
-        const userWithoutPassword = removePasswordPropFromUser(authnResponse.user)
+        const userWithoutPassword = removePasswordPropFromUser(
+            authnResponse.user
+        )
 
         return {
             ...userWithoutPassword,
@@ -43,7 +45,9 @@ export const authenticationService = {
             classroomId: authnResponse.classroomId,
         }
     },
-    async switchClassroom(params: SwitchClassroomParams): Promise<AuthenticationResponse> {
+    async switchClassroom(
+        params: SwitchClassroomParams
+    ): Promise<AuthenticationResponse> {
         return authenticationUtils.getClassroomAndToken({
             userId: params.userId,
             schoolId: params.schoolId,
@@ -72,12 +76,12 @@ const assertUserIsAllowedToSignIn: (
 }
 
 const assertPasswordMatches = async ({
-                                         requestPassword,
-                                         userPassword,
-                                     }: AssertPasswordsMatchParams): Promise<void> => {
+    requestPassword,
+    userPassword,
+}: AssertPasswordsMatchParams): Promise<void> => {
     const passwordMatches = await passwordHasher.compare(
         requestPassword,
-        userPassword,
+        userPassword
     )
 
     if (!passwordMatches) {
@@ -89,7 +93,7 @@ const assertPasswordMatches = async ({
 }
 
 const removePasswordPropFromUser = (user: User): Omit<User, 'password'> => {
-    const {password: _, ...filteredUser} = user
+    const { password: _, ...filteredUser } = user
     return filteredUser
 }
 

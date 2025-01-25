@@ -4,14 +4,21 @@ export function isString(str: unknown): str is string {
     return str != null && typeof str === 'string'
 }
 
-export function isNil<T>(value: T | null | undefined): value is null | undefined {
+export function isNil<T>(
+    value: T | null | undefined
+): value is null | undefined {
     return value === null || value === undefined
 }
 
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function setAtPath<T, K extends keyof any>(obj: T, path: K | K[], value: any): void {
-    const pathArray = Array.isArray(path) ? path : (path as string).match(/([^[.\]])+/g) as unknown as K[]
+export function setAtPath<T, K extends keyof any>(
+    obj: T,
+    path: K | K[],
+    value: any
+): void {
+    const pathArray = Array.isArray(path)
+        ? path
+        : ((path as string).match(/([^[.\]])+/g) as unknown as K[])
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     pathArray.reduce((acc: any, key: K, i: number) => {
@@ -21,8 +28,10 @@ export function setAtPath<T, K extends keyof any>(obj: T, path: K | K[], value: 
     }, obj)
 }
 
-
-export function debounce<T>(func: (...args: T[]) => void, wait: number): (...args: T[]) => void {
+export function debounce<T>(
+    func: (...args: T[]) => void,
+    wait: number
+): (...args: T[]) => void {
     let timeout: NodeJS.Timeout
 
     return function (...args: T[]) {
@@ -36,25 +45,27 @@ export function debounce<T>(func: (...args: T[]) => void, wait: number): (...arg
     }
 }
 
-
 type DeepPartial<T> = {
-    [P in keyof T]?: T[P] extends Record<string, unknown> ? DeepPartial<T[P]> : T[P];
+    [P in keyof T]?: T[P] extends Record<string, unknown>
+        ? DeepPartial<T[P]>
+        : T[P]
 }
 
-export function deepMergeAndCast<T>(target: DeepPartial<T>, source: DeepPartial<T>): T {
+export function deepMergeAndCast<T>(
+    target: DeepPartial<T>,
+    source: DeepPartial<T>
+): T {
     return deepmerge(target as Partial<T>, source as Partial<T>) as T
 }
-
 
 export function kebabCase(str: string): string {
     return str
         .replace(/([a-z])([A-Z])/g, '$1-$2') // Handle camelCase by adding hyphen between lowercase and uppercase letters
-        .replace(/\s+/g, '-')                // Replace spaces with hyphens
-        .replace(/_/g, '-')                  // Replace underscores with hyphens
-        .toLowerCase()                       // Convert to lowercase
-        .replace(/^-+|-+$/g, '')            // Remove leading and trailing hyphens
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/_/g, '-') // Replace underscores with hyphens
+        .toLowerCase() // Convert to lowercase
+        .replace(/^-+|-+$/g, '') // Remove leading and trailing hyphens
 }
-
 
 export function isEmpty<T>(value: T | null | undefined): boolean {
     if (value == null) {
@@ -82,18 +93,14 @@ export function startCase(str: string): string {
 }
 
 export function camelCase(str: string): string {
-    return str
-        .replace(/([-_][a-z])/g, group => group.toUpperCase()
-            .replace('-', '')
-            .replace('_', ''))
+    return str.replace(/([-_][a-z])/g, group =>
+        group.toUpperCase().replace('-', '').replace('_', '')
+    )
 }
-
-
-
 
 export function pickBy<T extends Record<string, unknown>>(
     object: T,
-    predicate: (value: T[keyof T], key: keyof T) => boolean,
+    predicate: (value: T[keyof T], key: keyof T) => boolean
 ): Partial<T> {
     return Object.keys(object).reduce((result: Partial<T>, key: keyof T) => {
         if (predicate(object[key], key)) {

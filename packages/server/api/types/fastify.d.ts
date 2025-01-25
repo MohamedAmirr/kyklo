@@ -1,5 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { EndpointScope, Permission, Principal, PrincipalType } from '@pickup/shared'
+import {
+    EndpointScope,
+    Permission,
+    Principal,
+    PrincipalType,
+} from '@pickup/shared'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import fastify from 'fastify'
 
@@ -18,7 +23,7 @@ declare module 'fastify' {
 
     // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     export interface FastifyReply {
-        responseCode?: string;
+        responseCode?: string
     }
 
     // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

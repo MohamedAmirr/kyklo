@@ -1,6 +1,6 @@
-import { Classroom, ClassroomMember, User } from "@pickup/shared"
-import { EntitySchema } from "typeorm"
-import { BaseColumnSchemaPart, PuIdSchema } from "../database/database-common"
+import { Classroom, ClassroomMember, User } from '@pickup/shared'
+import { EntitySchema } from 'typeorm'
+import { BaseColumnSchemaPart, PuIdSchema } from '../database/database-common'
 
 export type ClassroomMemberSchema = ClassroomMember & {
     user: User

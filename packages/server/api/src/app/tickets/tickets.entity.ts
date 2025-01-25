@@ -1,6 +1,12 @@
 import { EntitySchema } from 'typeorm'
 import { BaseColumnSchemaPart } from '../database/database-common'
-import { School, Ticket, TicketCategory, TicketStatus, User } from '@pickup/shared'
+import {
+    School,
+    Ticket,
+    TicketCategory,
+    TicketStatus,
+    User,
+} from '@pickup/shared'
 
 export type TicketCategorySchema = TicketCategory & {
     tickets: Ticket[]

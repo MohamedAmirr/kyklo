@@ -1,42 +1,42 @@
 import {
-  AuthenticationResponse,
-  ApiResponse,
-  SignInRequest,
-  SignUpRequest,
-  CreateOtpRequestBody,
-  ResetPasswordRequestBody,
-  VerifyEmailRequestBody,
-  SwitchClassroomRequest,
-} from '@pickup/shared';
+    AuthenticationResponse,
+    ApiResponse,
+    SignInRequest,
+    SignUpRequest,
+    CreateOtpRequestBody,
+    ResetPasswordRequestBody,
+    VerifyEmailRequestBody,
+    SwitchClassroomRequest,
+} from '@pickup/shared'
 
-import { api } from '@/lib/api';
+import { api } from '@/lib/api'
 
 export const authenticationApi = {
-  signIn(request: SignInRequest) {
-    return api.post<ApiResponse<AuthenticationResponse>>(
-      '/v1/authentication/sign-in',
-      request,
-    );
-  },
-  signUp(request: SignUpRequest) {
-    return api.post<ApiResponse<AuthenticationResponse>>(
-      '/v1/authentication/sign-up',
-      request,
-    );
-  },
-  sendOtpEmail(request: CreateOtpRequestBody) {
-    return api.post<void>('/v1/otp', request);
-  },
-  resetPassword(request: ResetPasswordRequestBody) {
-    return api.post<void>('/v1/authn/local/reset-password', request);
-  },
-  verifyEmail(request: VerifyEmailRequestBody) {
-    return api.post<void>('/v1/authn/local/verify-email', request);
-  },
-  switchClassroom(request: SwitchClassroomRequest) {
-    return api.post<AuthenticationResponse>(
-      `/v1/authentication/switch-classroom`,
-      request,
-    );
-  },
-};
+    signIn(request: SignInRequest) {
+        return api.post<ApiResponse<AuthenticationResponse>>(
+            '/v1/authentication/sign-in',
+            request
+        )
+    },
+    signUp(request: SignUpRequest) {
+        return api.post<ApiResponse<AuthenticationResponse>>(
+            '/v1/authentication/sign-up',
+            request
+        )
+    },
+    sendOtpEmail(request: CreateOtpRequestBody) {
+        return api.post<void>('/v1/otp', request)
+    },
+    resetPassword(request: ResetPasswordRequestBody) {
+        return api.post<void>('/v1/authn/local/reset-password', request)
+    },
+    verifyEmail(request: VerifyEmailRequestBody) {
+        return api.post<void>('/v1/authn/local/verify-email', request)
+    },
+    switchClassroom(request: SwitchClassroomRequest) {
+        return api.post<AuthenticationResponse>(
+            `/v1/authentication/switch-classroom`,
+            request
+        )
+    },
+}

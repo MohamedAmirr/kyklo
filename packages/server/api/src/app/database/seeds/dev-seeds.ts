@@ -1,13 +1,20 @@
 import { logger, SharedSystemProp, system } from '@pickup/server-shared'
-import {PuEnvironment, puId, SchoolGrades, SchoolSemesters, UserStatus, UserType} from '@pickup/shared'
+import {
+    PuEnvironment,
+    puId,
+    SchoolGrades,
+    SchoolSemesters,
+    UserStatus,
+    UserType,
+} from '@pickup/shared'
 import { databaseConnection } from '../database-connection'
 import { FlagEntity } from '../../flags/flag.entity'
-import {SchoolEntity} from "../../school/school.entity";
-import {userService} from "../../user/user.service";
-import { StudentEntity } from '../../student/student.entity';
-import { ClassroomEntity } from '../../classroom/classroom.entity';
-import { ClassroomMemberEntity } from '../../classroom-members/classroom-member.entity';
-import {seedDevTickets} from "../../tickets/ticket.seeder";
+import { SchoolEntity } from '../../school/school.entity'
+import { userService } from '../../user/user.service'
+import { StudentEntity } from '../../student/student.entity'
+import { ClassroomEntity } from '../../classroom/classroom.entity'
+import { ClassroomMemberEntity } from '../../classroom-members/classroom-member.entity'
+import { seedDevTickets } from '../../tickets/ticket.seeder'
 
 const DEV_DATA_SEEDED_FLAG = 'DEV_DATA_SEEDED'
 
@@ -32,21 +39,23 @@ const setDevDataSeededFlag = async (): Promise<void> => {
 }
 
 const seedDevUser = async (): Promise<void> => {
-    const USER_DEV_EMAIL = 'user@pu.com';
-    const USER_DEV_PASSWORD = '12345678';
-    const TEACHER_DEV_EMAIL = 'teacher@pu.com';
-    const TEACHER_DEV_PASSWORD = '12345678';
+    const USER_DEV_EMAIL = 'user@pu.com'
+    const USER_DEV_PASSWORD = '12345678'
+    const TEACHER_DEV_EMAIL = 'teacher@pu.com'
+    const TEACHER_DEV_PASSWORD = '12345678'
 
-    const schoolRepo = databaseConnection().getRepository(SchoolEntity);
+    const schoolRepo = databaseConnection().getRepository(SchoolEntity)
     const studentRepo = databaseConnection().getRepository(StudentEntity)
     const classroomRepo = databaseConnection().getRepository(ClassroomEntity)
-    const classroomMemberRepo = databaseConnection().getRepository(ClassroomMemberEntity)
+    const classroomMemberRepo = databaseConnection().getRepository(
+        ClassroomMemberEntity
+    )
 
     const school = schoolRepo.create({
         id: puId(),
         name: 'Dev School',
-    });
-    await schoolRepo.save(school);
+    })
+    await schoolRepo.save(school)
 
     const teacher = await userService.create({
         email: TEACHER_DEV_EMAIL,
@@ -55,7 +64,7 @@ const seedDevUser = async (): Promise<void> => {
         lastName: 'User',
         schoolId: school.id,
         type: UserType.STAFF,
-    });
+    })
 
     const user = await userService.create({
         email: USER_DEV_EMAIL,
@@ -64,7 +73,7 @@ const seedDevUser = async (): Promise<void> => {
         lastName: 'User',
         schoolId: school.id,
         type: UserType.STUDENT,
-    });
+    })
 
     const classroom = classroomRepo.create({
         id: puId(),
@@ -99,13 +108,22 @@ const seedDevUser = async (): Promise<void> => {
     })
     await classroomMemberRepo.save(classroomMemberTeacher)
 
-    logger.info({ name: 'seedDevStudentUser' }, `email=${USER_DEV_EMAIL} pass=${USER_DEV_PASSWORD}`);
-    logger.info({ name: 'seedDevTeacherUser' }, `email=${TEACHER_DEV_EMAIL} pass=${TEACHER_DEV_PASSWORD}`);
-};
+    logger.info(
+        { name: 'seedDevStudentUser' },
+        `email=${USER_DEV_EMAIL} pass=${USER_DEV_PASSWORD}`
+    )
+    logger.info(
+        { name: 'seedDevTeacherUser' },
+        `email=${TEACHER_DEV_EMAIL} pass=${TEACHER_DEV_PASSWORD}`
+    )
+}
 
 export const seedDevData = async (): Promise<void> => {
     if (currentEnvIsNotDev()) {
-        logger.info({ name: 'seedDevData' }, 'skip: not in development environment')
+        logger.info(
+            { name: 'seedDevData' },
+            'skip: not in development environment'
+        )
         return
     }
 
@@ -118,4 +136,3 @@ export const seedDevData = async (): Promise<void> => {
     await seedDevTickets()
     await setDevDataSeededFlag()
 }
-

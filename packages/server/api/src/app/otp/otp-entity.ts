@@ -1,9 +1,6 @@
 import { OtpModel, OtpState, OtpType, User } from '@pickup/shared'
 import { EntitySchema } from 'typeorm'
-import {
-    BaseColumnSchemaPart,
-    PuIdSchema,
-} from '../database/database-common'
+import { BaseColumnSchemaPart, PuIdSchema } from '../database/database-common'
 
 export type OtpSchema = OtpModel & {
     user: User

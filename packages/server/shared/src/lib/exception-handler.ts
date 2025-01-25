@@ -10,12 +10,15 @@ export const exceptionHandler = {
         sentryInitialized = true
         Sentry.init({
             dsn: sentryDsn,
-            beforeSend: (event) => {
+            beforeSend: event => {
                 if (event?.exception?.values?.[0].type === 'AxiosError') {
                     return null
                 }
                 const value = event?.exception?.values?.[0]?.value
-                if (value && ['EXECUTION_TIMEOUT', 'ENTITY_NOT_FOUND'].includes(value)) {
+                if (
+                    value &&
+                    ['EXECUTION_TIMEOUT', 'ENTITY_NOT_FOUND'].includes(value)
+                ) {
                     return null
                 }
                 return event
@@ -29,15 +32,11 @@ export const exceptionHandler = {
     },
 }
 
-
-
 export const enrichErrorContext = ({
     error,
     key,
     value,
 }: EnrichErrorContextParams): unknown => {
-
-
     if (error instanceof Error) {
         if ('context' in error && error.context instanceof Object) {
             const enrichedError = Object.assign(error, {
@@ -46,8 +45,7 @@ export const enrichErrorContext = ({
             })
 
             return enrichedError
-        }
-        else {
+        } else {
             const enrichedError = Object.assign(error, {
                 context: {
                     [key]: value,

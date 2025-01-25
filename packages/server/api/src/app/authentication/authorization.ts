@@ -1,8 +1,4 @@
-import {
-    ErrorCode,
-    isObject,
-    PickUpError,
-} from '@pickup/shared'
+import { ErrorCode, isObject, PickUpError } from '@pickup/shared'
 import { preSerializationHookHandler } from 'fastify'
 
 export function extractResourceName(url: string): string | undefined {
@@ -19,27 +15,30 @@ export function extractResourceName(url: string): string | undefined {
  * Otherwise, does nothing.
  */
 export const entitiesMustBeOwnedByCurrentClassroom: preSerializationHookHandler<
-Payload | null
+    Payload | null
 > = (request, _response, payload, done) => {
     request.log.trace(
         { payload, principal: request.principal, route: request.routeConfig },
-        'entitiesMustBeOwnedByCurrentClassroom',
+        'entitiesMustBeOwnedByCurrentClassroom'
     )
 
     if (isObject(payload)) {
         const principalClassroomId = request.principal.classroomId
         let verdict: AuthzVerdict = 'ALLOW'
 
-
         if ('classroomId' in payload) {
             if (payload.classroomId !== principalClassroomId) {
                 verdict = 'DENY'
             }
-        }
-        else if ('data' in payload && Array.isArray(payload.data)) {
-            const someEntityNotOwnedByCurrentClassroom = payload.data.some((entity) => {
-                return 'classroomId' in entity && entity.classroomId !== principalClassroomId
-            })
+        } else if ('data' in payload && Array.isArray(payload.data)) {
+            const someEntityNotOwnedByCurrentClassroom = payload.data.some(
+                entity => {
+                    return (
+                        'classroomId' in entity &&
+                        entity.classroomId !== principalClassroomId
+                    )
+                }
+            )
 
             if (someEntityNotOwnedByCurrentClassroom) {
                 verdict = 'DENY'

@@ -68,7 +68,10 @@ export function generateTheme({
 export const defaultTheme = generateTheme({
     primaryColor: '#0C4ADD',
     websiteName: 'Pickup',
-    fullLogoUrl: 'https://t3.ftcdn.net/jpg/04/75/27/54/360_F_475275443_DDUSHFWRuBsgEhK5n40s6MfTh60E3sV3.jpg',
-    favIconUrl: 'https://t3.ftcdn.net/jpg/04/75/27/54/360_F_475275443_DDUSHFWRuBsgEhK5n40s6MfTh60E3sV3.jpg',
-    logoIconUrl: 'https://t3.ftcdn.net/jpg/04/75/27/54/360_F_475275443_DDUSHFWRuBsgEhK5n40s6MfTh60E3sV3.jpg',
+    fullLogoUrl:
+        'https://t3.ftcdn.net/jpg/04/75/27/54/360_F_475275443_DDUSHFWRuBsgEhK5n40s6MfTh60E3sV3.jpg',
+    favIconUrl:
+        'https://t3.ftcdn.net/jpg/04/75/27/54/360_F_475275443_DDUSHFWRuBsgEhK5n40s6MfTh60E3sV3.jpg',
+    logoIconUrl:
+        'https://t3.ftcdn.net/jpg/04/75/27/54/360_F_475275443_DDUSHFWRuBsgEhK5n40s6MfTh60E3sV3.jpg',
 })

@@ -14,8 +14,7 @@ const start = async (app: FastifyInstance): Promise<void> => {
         if (system.isApp()) {
             await appPostBoot()
         }
-    }
-    catch (err) {
+    } catch (err) {
         logger.error(err)
         process.exit(1)
     }
@@ -24,7 +23,6 @@ const start = async (app: FastifyInstance): Promise<void> => {
 // This might be needed as it can be called twice
 let shuttingDown = false
 
-
 const stop = async (app: FastifyInstance): Promise<void> => {
     if (shuttingDown) return
     shuttingDown = true
@@ -32,8 +30,7 @@ const stop = async (app: FastifyInstance): Promise<void> => {
     try {
         await app.close()
         process.exit(0)
-    }
-    catch (err) {
+    } catch (err) {
         logger.error('Error stopping server')
         logger.error(err)
         process.exit(1)
@@ -47,7 +44,6 @@ function setupTimeZone(): void {
     process.env.TZ = 'UTC'
 }
 
-
 const main = async (): Promise<void> => {
     setupTimeZone()
     if (system.isApp()) {
@@ -58,18 +54,17 @@ const main = async (): Promise<void> => {
     const app = await setupServer()
 
     process.on('SIGINT', () => {
-        stop(app).catch((e) => logger.error(e, '[Main#stop]'))
+        stop(app).catch(e => logger.error(e, '[Main#stop]'))
     })
 
     process.on('SIGTERM', () => {
-        stop(app).catch((e) => logger.error(e, '[Main#stop]'))
+        stop(app).catch(e => logger.error(e, '[Main#stop]'))
     })
 
     await start(app)
 }
 
-main().catch((e) => {
+main().catch(e => {
     logger.error(e, '[Main#main]')
     process.exit(1)
 })
-

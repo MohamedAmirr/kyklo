@@ -1,5 +1,3 @@
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 
-export const schoolController: FastifyPluginAsyncTypebox = async (app) => {
-    
-}
+export const schoolController: FastifyPluginAsyncTypebox = async app => {}

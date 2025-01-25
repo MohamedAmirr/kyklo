@@ -5,13 +5,14 @@ import {
     SeekPage,
     Event,
     PaymentMethod,
-    User, CreateEventRequestBody,
-} from '@pickup/shared';
-import dayjs from 'dayjs';
-import { repoFactory } from '../core/db/repo-factory';
-import { EventEntity } from './event.entity';
+    User,
+    CreateEventRequestBody,
+} from '@pickup/shared'
+import dayjs from 'dayjs'
+import { repoFactory } from '../core/db/repo-factory'
+import { EventEntity } from './event.entity'
 
-export const eventRepo = repoFactory(EventEntity);
+export const eventRepo = repoFactory(EventEntity)
 
 export class EventService {
     async create(params: CreateEventRequestBody): Promise<Event> {
@@ -20,9 +21,9 @@ export class EventService {
             created: dayjs().toISOString(),
             updated: dayjs().toISOString(),
             ...params,
-        };
+        }
 
-        return eventRepo().save(event);
+        return eventRepo().save(event)
     }
 
     // async update(id: string, params: UpdateParams): Promise<Event> {
@@ -46,26 +47,26 @@ export class EventService {
     //
     //     return eventRepo().findOneByOrFail({ id });
     // }
-    
+
     async list(page: number = 1, limit: number = 8): Promise<SeekPage<Event>> {
-        const skip = (page - 1) * limit;
-    
+        const skip = (page - 1) * limit
+
         const [events, total] = await eventRepo().findAndCount({
             relations: ['supervisors'],
             skip,
-            take: limit
-        });
-    
+            take: limit,
+        })
+
         return {
             data: events,
             next: total > page * limit ? (page + 1).toString() : null,
             previous: page > 1 ? (page - 1).toString() : null,
-            total
-        };
+            total,
+        }
     }
-    
+
     async get(id: string): Promise<Event | null> {
-        return eventRepo().findOneBy({ id });
+        return eventRepo().findOneBy({ id })
     }
     //
     // async getOneOrFail(id: string): Promise<Event> {

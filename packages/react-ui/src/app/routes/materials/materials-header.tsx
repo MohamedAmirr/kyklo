@@ -1,13 +1,9 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react'
 
 interface PageHeaderProps {
-  children: ReactNode;
+    children: ReactNode
 }
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ children }) => {
-  return (
-    <div className="flex h-[50px] items-center mb-5">
-      {children}
-    </div>
-  );
-};
+    return <div className="flex h-[50px] items-center mb-5">{children}</div>
+}

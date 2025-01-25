@@ -1,23 +1,23 @@
-import { authenticationSession } from '@/lib/authentication-session';
-import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { authenticationSession } from '@/lib/authentication-session'
+import { useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const AuthenticatePage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+    const navigate = useNavigate()
+    const location = useLocation()
 
-  const searchParams = new URLSearchParams(location.search);
-  const response = searchParams.get('response');
+    const searchParams = new URLSearchParams(location.search)
+    const response = searchParams.get('response')
 
-  useEffect(() => {
-    if (response) {
-      const decodedResponse = JSON.parse(response);
-      authenticationSession.saveResponse(decodedResponse);
-      navigate('/home');
-    }
-  }, [response]);
+    useEffect(() => {
+        if (response) {
+            const decodedResponse = JSON.parse(response)
+            authenticationSession.saveResponse(decodedResponse)
+            navigate('/home')
+        }
+    }, [response])
 
-  return <>Please wait...</>;
-};
+    return <>Please wait...</>
+}
 
-export default AuthenticatePage;
+export default AuthenticatePage

@@ -9,14 +9,12 @@ import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 import { StatusCodes } from 'http-status-codes'
 import { classroomMemberService } from './classroom-member-service'
 
-export const classroomMemberController: FastifyPluginAsyncTypebox = async (app) => {
-    app.get('/', ListClassroomMembersRequestQueryOptions, async (request) => {
-        return classroomMemberService.list(
-            request.principal.classroomId,
-        )
-    })
-
-}
+export const classroomMemberController: FastifyPluginAsyncTypebox =
+    async app => {
+        app.get('/', ListClassroomMembersRequestQueryOptions, async request => {
+            return classroomMemberService.list(request.principal.classroomId)
+        })
+    }
 
 const ListClassroomMembersRequestQueryOptions = {
     config: {

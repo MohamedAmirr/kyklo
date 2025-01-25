@@ -7,8 +7,7 @@ class MutexLockWrapper {
     constructor(timeout?: number) {
         if (timeout) {
             this.lock = withTimeout(new Mutex(), timeout)
-        }
-        else {
+        } else {
             this.lock = new Mutex()
         }
     }
@@ -21,8 +20,6 @@ class MutexLockWrapper {
         this.lock.release()
     }
 }
-
-
 
 export const memoryLock = {
     acquire: async (key: string, timeout?: number): Promise<ApLock> => {

@@ -41,7 +41,6 @@ async function setupBaseApp(): Promise<FastifyInstance> {
         },
     })
 
-
     await app.register(fastifyFavicon)
     await app.register(fastifyMultipart, {
         attachFieldsToBody: 'keyValues',
@@ -50,9 +49,9 @@ async function setupBaseApp(): Promise<FastifyInstance> {
                 filename: part.filename,
                 data: await part.toBuffer(),
                 type: 'file',
-            };
+            }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (part as any).value = puFile
+            ;(part as any).value = puFile
         },
     })
 
@@ -64,7 +63,7 @@ async function setupBaseApp(): Promise<FastifyInstance> {
         routes: [],
     })
 
-    await app.register(formBody, { parser: (str) => qs.parse(str) })
+    await app.register(formBody, { parser: str => qs.parse(str) })
     app.setErrorHandler(errorHandler)
     await app.register(cors, {
         origin: '*',
@@ -75,9 +74,8 @@ async function setupBaseApp(): Promise<FastifyInstance> {
     app.addContentTypeParser(
         'application/vnd.surveymonkey.response.v1+json',
         { parseAs: 'string' },
-        app.getDefaultJsonParser('ignore', 'ignore'),
+        app.getDefaultJsonParser('ignore', 'ignore')
     )
 
     return app
 }
-

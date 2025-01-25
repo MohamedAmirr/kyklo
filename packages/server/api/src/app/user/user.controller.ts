@@ -2,7 +2,7 @@ import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 import { FastifyRequest } from 'fastify'
 import { userService } from './user.service'
 
-export const usersController: FastifyPluginAsyncTypebox = async (app) => {
+export const usersController: FastifyPluginAsyncTypebox = async app => {
     app.get('/me', async (request: FastifyRequest) => {
         const user = await userService.getMetaInfo({
             id: request.principal.id,

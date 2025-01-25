@@ -12,7 +12,7 @@ export class ProjectAuthzHandler extends BaseSecurityHandler {
 
     protected canHandle(request: FastifyRequest): Promise<boolean> {
         const requestMatches = !ProjectAuthzHandler.IGNORED_ROUTES.includes(
-            request.routerPath,
+            request.routerPath
         )
         return Promise.resolve(requestMatches)
     }

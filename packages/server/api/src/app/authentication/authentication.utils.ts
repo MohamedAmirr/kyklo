@@ -1,16 +1,27 @@
-import { AuthenticationResponse, ErrorCode, isNil, PickUpError, PrincipalType, UserStatus } from '@pickup/shared'
+import {
+    AuthenticationResponse,
+    ErrorCode,
+    isNil,
+    PickUpError,
+    PrincipalType,
+    UserStatus,
+} from '@pickup/shared'
 import { accessTokenManager } from './lib/access-token-manager'
 import { classroomService } from '../classroom/classroom.service'
 import { userService } from '../user/user.service'
 
 export const authenticationUtils = {
-    async getClassroomAndToken(params: GetClassroomAndTokenParams): Promise<AuthenticationResponse> {
+    async getClassroomAndToken(
+        params: GetClassroomAndTokenParams
+    ): Promise<AuthenticationResponse> {
         const user = await userService.getOneOrFail({ id: params.userId })
         const classrooms = await classroomService.getAllForUser({
             schoolId: params.schoolId,
             userId: params.userId,
         })
-        const classroom = classrooms.find((classroom) => classroom.id === params.classroomId)
+        const classroom = classrooms.find(
+            classroom => classroom.id === params.classroomId
+        )
         if (isNil(classroom)) {
             throw new PickUpError({
                 code: ErrorCode.INVITATION_ONLY_SIGN_UP,

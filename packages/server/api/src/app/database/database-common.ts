@@ -5,19 +5,19 @@ import { EntitySchemaColumnOptions } from 'typeorm'
 const databaseType = system.get(AppSystemProp.DB_TYPE)
 
 export const JSON_COLUMN_TYPE =
-  databaseType === DatabaseType.SQLITE3 ? 'simple-json' : 'json'
+    databaseType === DatabaseType.SQLITE3 ? 'simple-json' : 'json'
 export const JSONB_COLUMN_TYPE =
-  databaseType === DatabaseType.SQLITE3 ? 'simple-json' : 'jsonb'
+    databaseType === DatabaseType.SQLITE3 ? 'simple-json' : 'jsonb'
 export const BLOB_COLUMN_TYPE =
-  databaseType === DatabaseType.SQLITE3 ? 'blob' : 'bytea'
+    databaseType === DatabaseType.SQLITE3 ? 'blob' : 'bytea'
 export const ARRAY_COLUMN_TYPE =
-  databaseType === DatabaseType.SQLITE3 ? 'simple-array' : String
+    databaseType === DatabaseType.SQLITE3 ? 'simple-array' : String
 export const TIMESTAMP_COLUMN_TYPE =
-  databaseType === DatabaseType.SQLITE3
-      ? 'datetime'
-      : 'timestamp with time zone'
+    databaseType === DatabaseType.SQLITE3
+        ? 'datetime'
+        : 'timestamp with time zone'
 export const COLLATION =
-  databaseType === DatabaseType.SQLITE3 ? undefined : 'en_natural'
+    databaseType === DatabaseType.SQLITE3 ? undefined : 'en_natural'
 
 export function isPostgres(): boolean {
     return databaseType === DatabaseType.POSTGRES

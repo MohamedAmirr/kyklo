@@ -1,6 +1,6 @@
-const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
-const { join } = require('path');
-const { fontFamily } = require('tailwindcss/defaultTheme');
+const { createGlobPatternsForDependencies } = require('@nx/react/tailwind')
+const { join } = require('path')
+const { fontFamily } = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
     content: [
         join(
             __dirname,
-            '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}',
+            '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'
         ),
         ...createGlobPatternsForDependencies(__dirname),
     ],
@@ -89,7 +89,7 @@ module.exports = {
                 sans: ['var(--font-sans)', ...fontFamily.sans],
             },
             fontSize: {
-                'xss': '0.65rem',
+                xss: '0.65rem',
                 '3xl': '1.75rem',
                 '4xl': '2rem',
             },
@@ -111,56 +111,56 @@ module.exports = {
                     },
                 },
                 typing: {
-                    "0%": {
-                        width: "0%",
-                        visibility: "hidden",
-                    },
-                    "100%": {
-                        width: "100%",
-                    }
-                },
-                'ask-ai-background':{
                     '0%': {
-                        backgroundPosition: '0%'
-                    },
-                    '50%': {
-                        backgroundPosition: '100%'
+                        width: '0%',
+                        visibility: 'hidden',
                     },
                     '100%': {
-                        backgroundPosition: '0%'
-                    }
+                        width: '100%',
+                    },
                 },
-                'slideInTop': {
-                    from: { transform: "translateY(-100%)" },
-                    to: { transform: "translateY(0)" },
+                'ask-ai-background': {
+                    '0%': {
+                        backgroundPosition: '0%',
+                    },
+                    '50%': {
+                        backgroundPosition: '100%',
+                    },
+                    '100%': {
+                        backgroundPosition: '0%',
+                    },
                 },
-                'slideOutTop': {
-                    from: { transform: "translateY(0)" },
-                    to: { transform: "translateY(-100%)" },
+                slideInTop: {
+                    from: { transform: 'translateY(-100%)' },
+                    to: { transform: 'translateY(0)' },
                 },
-                'slideInBottom': {
-                    from: { transform: "translateY(100%)" },
-                    to: { transform: "translateY(0)" },
+                slideOutTop: {
+                    from: { transform: 'translateY(0)' },
+                    to: { transform: 'translateY(-100%)' },
                 },
-                'slideOutBottom': {
-                    from: { transform: "translateY(0)" },
-                    to: { transform: "translateY(100%)" },
+                slideInBottom: {
+                    from: { transform: 'translateY(100%)' },
+                    to: { transform: 'translateY(0)' },
                 },
-                'slideInLeft': {
-                    from: { transform: "translateX(-100%)" },
-                    to: { transform: "translateX(0)" },
+                slideOutBottom: {
+                    from: { transform: 'translateY(0)' },
+                    to: { transform: 'translateY(100%)' },
                 },
-                'slideOutLeft': {
-                    from: { transform: "translateX(0)" },
-                    to: { transform: "translateX(-100%)" },
+                slideInLeft: {
+                    from: { transform: 'translateX(-100%)' },
+                    to: { transform: 'translateX(0)' },
                 },
-                'slideInRight': {
-                    from: { transform: "translateX(100%)" },
-                    to: { transform: "translateX(0)" },
+                slideOutLeft: {
+                    from: { transform: 'translateX(0)' },
+                    to: { transform: 'translateX(-100%)' },
                 },
-                'slideOutRight': {
-                    from: { transform: "translateX(0)" },
-                    to: { transform: "translateX(100%)" },
+                slideInRight: {
+                    from: { transform: 'translateX(100%)' },
+                    to: { transform: 'translateX(0)' },
+                },
+                slideOutRight: {
+                    from: { transform: 'translateX(0)' },
+                    to: { transform: 'translateX(100%)' },
                 },
             },
             animation: {
@@ -169,15 +169,16 @@ module.exports = {
                 fade: 'fade 0.2s ease-out',
                 typing: 'typing 0.7s steps(7) alternate',
                 'typing-sm': 'typing 0.5s steps(5) alternate',
-                'ask-ai-background' : 'ask-ai-background 4s ease-in-out infinite',
-                slideInTop: "slideInTop 0.3s ease-in-out",
-                slideOutTop: "slideOutTop 0.3s ease-in-out",
-                slideInBottom: "slideInBottom 0.3s ease-in-out",
-                slideOutBottom: "slideOutBottom 0.3s ease-in-out",
-                slideInLeft: "slideInLeft 0.3s ease-in-out",
-                slideOutLeft: "slideOutLeft 0.3s ease-in-out",
-                slideInRight: "slideInRight 0.3s ease-in-out",
-                slideOutRight: "slideOutRight 0.3s ease-in-out",
+                'ask-ai-background':
+                    'ask-ai-background 4s ease-in-out infinite',
+                slideInTop: 'slideInTop 0.3s ease-in-out',
+                slideOutTop: 'slideOutTop 0.3s ease-in-out',
+                slideInBottom: 'slideInBottom 0.3s ease-in-out',
+                slideOutBottom: 'slideOutBottom 0.3s ease-in-out',
+                slideInLeft: 'slideInLeft 0.3s ease-in-out',
+                slideOutLeft: 'slideOutLeft 0.3s ease-in-out',
+                slideInRight: 'slideInRight 0.3s ease-in-out',
+                slideOutRight: 'slideOutRight 0.3s ease-in-out',
             },
             boxShadow: {
                 'step-container': '0px 0px 22px hsl(var(--border) / 0.4)',
@@ -186,4 +187,4 @@ module.exports = {
         },
     },
     plugins: [require('tailwindcss-animate')],
-};
+}

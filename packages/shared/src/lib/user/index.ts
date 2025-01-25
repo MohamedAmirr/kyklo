@@ -9,4 +9,3 @@ export const UpdateUserRequestBody = Type.Object({
 })
 
 export type UpdateUserRequestBody = Static<typeof UpdateUserRequestBody>
-

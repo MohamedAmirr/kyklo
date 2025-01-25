@@ -18,7 +18,6 @@ import { UserEntity } from './user.entity'
 import { passwordHasher } from '../authentication/lib/password-hasher'
 import { nanoid } from 'nanoid'
 
-
 export const userRepo = repoFactory(UserEntity)
 
 export const userService = {
@@ -37,12 +36,14 @@ export const userService = {
         return userRepo().save(user)
     },
     async update({ id, status }: UpdateParams): Promise<User> {
-
-        const updateResult = await userRepo().update({
-            id,
-        }, {
-            ...spreadIfDefined('status', status),
-        })
+        const updateResult = await userRepo().update(
+            {
+                id,
+            },
+            {
+                ...spreadIfDefined('status', status),
+            }
+        )
 
         if (updateResult.affected !== 1) {
             throw new PickUpError({
@@ -101,7 +102,9 @@ export const userService = {
             id,
         })
     },
-    async getBasicInformation(id: string): Promise<Pick<User, 'email' | 'firstName' | 'lastName'>> {
+    async getBasicInformation(
+        id: string
+    ): Promise<Pick<User, 'email' | 'firstName' | 'lastName'>> {
         const user = await userRepo().findOneByOrFail({ id })
         return {
             email: user.email,
@@ -109,7 +112,11 @@ export const userService = {
             lastName: user.lastName,
         }
     },
-    async getSingleUserByEmail({ email }: { email: string }): Promise<User | null> {
+    async getSingleUserByEmail({
+        email,
+    }: {
+        email: string
+    }): Promise<User | null> {
         return userRepo()
             .createQueryBuilder()
             .andWhere('LOWER(email) = LOWER(:email)', { email })
@@ -142,11 +149,9 @@ type DeleteParams = {
     id: UserId
 }
 
-
 type ListParams = {
     schoolId: SchoolId
 }
-
 
 type UpdateParams = {
     id: UserId

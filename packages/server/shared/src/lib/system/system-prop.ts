@@ -29,7 +29,7 @@ export enum AppSystemProp {
     SHOW_PLATFORM_DEMO = 'SHOW_PLATFORM_DEMO',
 }
 
-export enum SharedSystemProp  {
+export enum SharedSystemProp {
     LOG_LEVEL = 'LOG_LEVEL',
     LOG_PRETTY = 'LOG_PRETTY',
     ENVIRONMENT = 'ENVIRONMENT',
@@ -41,5 +41,4 @@ export enum SharedSystemProp  {
     LOKI_PASSWORD = 'LOKI_PASSWORD',
     LOKI_URL = 'LOKI_URL',
     LOKI_USERNAME = 'LOKI_USERNAME',
-
 }

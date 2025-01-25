@@ -1,10 +1,5 @@
 import { AppSystemProp, system } from '@pickup/server-shared'
-import {
-    ErrorCode,
-    isNil,
-    PickUpError,
-    spreadIfDefined,
-} from '@pickup/shared'
+import { ErrorCode, isNil, PickUpError, spreadIfDefined } from '@pickup/shared'
 import jwtLibrary, {
     DecodeOptions,
     SignOptions,
@@ -37,7 +32,7 @@ const getSecret = async (): Promise<string> => {
                     prop: AppSystemProp.JWT_SECRET,
                 },
             },
-            `System property PICKUP_${AppSystemProp.JWT_SECRET} must be defined`,
+            `System property PICKUP_${AppSystemProp.JWT_SECRET} must be defined`
         )
     }
     return secret
@@ -68,7 +63,7 @@ export const jwtUtils = {
                         new PickUpError({
                             code: ErrorCode.INVALID_BEARER_TOKEN,
                             params: {},
-                        }),
+                        })
                     )
                 }
 

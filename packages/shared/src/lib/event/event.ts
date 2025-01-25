@@ -1,5 +1,5 @@
-import {Static, Type} from "@sinclair/typebox";
-import { BaseModelSchema } from "../common/base-model";
+import { Static, Type } from '@sinclair/typebox'
+import { BaseModelSchema } from '../common/base-model'
 
 export enum PaymentMethod {
     CARD = 'Card',
@@ -18,6 +18,6 @@ export const Event = Type.Object({
     details: Type.Any(),
     grades: Type.Array(Type.String()),
     supervisorsIds: Type.Array(Type.String()),
-});
+})
 
 export type Event = Static<typeof Event>

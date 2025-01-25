@@ -1,4 +1,7 @@
-import { AuthenticationServiceHooks, studentAuthenticationServiceHooks } from './authentication-service-hooks'
+import {
+    AuthenticationServiceHooks,
+    studentAuthenticationServiceHooks,
+} from './authentication-service-hooks'
 import { UserType } from '@pickup/shared'
 
 export const authenticationServiceHooks = {

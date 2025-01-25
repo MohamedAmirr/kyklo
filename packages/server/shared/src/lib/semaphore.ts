@@ -11,7 +11,7 @@ export class ApSemaphore {
 
     async acquire() {
         if (this.currentConcurrent >= this.maxConcurrent) {
-            await new Promise<void>((resolve) => this.queue.push(resolve))
+            await new Promise<void>(resolve => this.queue.push(resolve))
         }
         this.currentConcurrent++
     }

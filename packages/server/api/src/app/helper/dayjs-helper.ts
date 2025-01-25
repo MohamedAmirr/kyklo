@@ -8,7 +8,7 @@ dayjs.extend(timezone)
 dayjs.extend(duration)
 
 export function pickupDayjs(
-    time: undefined | number | string = undefined,
+    time: undefined | number | string = undefined
 ): dayjs.Dayjs {
     if (time === undefined) {
         return dayjs()

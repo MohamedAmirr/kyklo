@@ -1,6 +1,6 @@
-import { Static, Type } from '@sinclair/typebox';
-import { BaseModelSchema, PuId } from '@pickup/shared';
-import { OtpType } from './otp-type';
+import { Static, Type } from '@sinclair/typebox'
+import { BaseModelSchema, PuId } from '@pickup/shared'
+import { OtpType } from './otp-type'
 
 export enum OtpState {
     PENDING = 'PENDING',
@@ -13,6 +13,6 @@ export const OtpModel = Type.Object({
     userId: PuId,
     value: Type.String(),
     state: Type.Enum(OtpState),
-});
+})
 
-export type OtpModel = Static<typeof OtpModel>;
+export type OtpModel = Static<typeof OtpModel>

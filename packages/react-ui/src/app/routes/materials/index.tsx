@@ -1,5 +1,5 @@
 const MaterialsPage = () => {
-  return <div>hahaha</div>;
-};
+    return <div>hahaha</div>
+}
 
-export default MaterialsPage;
+export default MaterialsPage

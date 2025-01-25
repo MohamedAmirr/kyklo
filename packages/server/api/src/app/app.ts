@@ -1,4 +1,9 @@
-import { logger, rejectedPromiseHandler, SharedSystemProp, system } from '@pickup/server-shared'
+import {
+    logger,
+    rejectedPromiseHandler,
+    SharedSystemProp,
+    system,
+} from '@pickup/server-shared'
 import { FastifyInstance, FastifyRequest, HTTPMethods } from 'fastify'
 import fastifySocketIO from 'fastify-socket.io'
 import { Socket } from 'socket.io'
@@ -19,11 +24,12 @@ import { userModule } from './user/user.module'
 import { classroomMemberModule } from './classroom-members/classroom-member.module'
 import { ticketsModule } from './tickets/tickets.module'
 
-export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> => {
-
+export const setupApp = async (
+    app: FastifyInstance
+): Promise<FastifyInstance> => {
     setupGlobalErrorHandler(app)
     app.decorateReply('responseCode')
-    addGlobalResponseFormat(app);
+    addGlobalResponseFormat(app)
 
     await app.register(fastifySocketIO, {
         cors: {
@@ -77,32 +83,34 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
         '/redirect',
         async (
             request: FastifyRequest<{ Querystring: { code: string } }>,
-            reply,
+            reply
         ) => {
             const params = {
                 code: request.query.code,
             }
             if (!params.code) {
                 return reply.send('The code is missing in url')
-            }
-            else {
+            } else {
                 return reply
                     .type('text/html')
                     .send(
                         `<script>if(window.opener){window.opener.postMessage({ 'code': '${encodeURIComponent(
-                            params.code,
-                        )}' },'*')}</script> <html>Redirect succuesfully, this window should close now</html>`,
+                            params.code
+                        )}' },'*')}</script> <html>Redirect succuesfully, this window should close now</html>`
                     )
             }
-        },
+        }
     )
 
     await validateEnvPropsOnStartup()
 
     const edition = system.getEdition()
-    logger.info({
-        edition,
-    }, 'Pickup Edition')
+    logger.info(
+        {
+            edition,
+        },
+        'Pickup Edition'
+    )
     switch (edition) {
         case PuEdition.COMMUNITY:
             break
@@ -116,7 +124,6 @@ export const setupApp = async (app: FastifyInstance): Promise<FastifyInstance> =
 
     return app
 }
-
 
 export async function appPostBoot(): Promise<void> {
     logger.info(`
@@ -132,7 +139,7 @@ export async function appPostBoot(): Promise<void> {
     const environment = system.get(SharedSystemProp.ENVIRONMENT)
     if (environment === PuEnvironment.DEVELOPMENT) {
         logger.warn(
-            `[WARNING]: The application is running in ${environment} mode.`,
+            `[WARNING]: The application is running in ${environment} mode.`
         )
     }
 }

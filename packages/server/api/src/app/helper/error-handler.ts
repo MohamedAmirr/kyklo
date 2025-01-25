@@ -3,11 +3,10 @@ import { ErrorCode, PickUpError } from '@pickup/shared'
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify'
 import { StatusCodes } from 'http-status-codes'
 
-
 export const errorHandler = async (
     error: FastifyError,
     request: FastifyRequest,
-    reply: FastifyReply,
+    reply: FastifyReply
 ): Promise<void> => {
     if (error instanceof PickUpError) {
         const statusCodeMap: Partial<Record<ErrorCode, StatusCodes>> = {
@@ -30,18 +29,17 @@ export const errorHandler = async (
             [ErrorCode.EMAIL_ALREADY_HAS_ACTIVATION_KEY]: StatusCodes.CONFLICT,
         }
         const statusCode =
-      statusCodeMap[error.error.code] ?? StatusCodes.BAD_REQUEST
+            statusCodeMap[error.error.code] ?? StatusCodes.BAD_REQUEST
 
         await reply.status(statusCode).send({
             code: error.error.code,
             params: error.error.params,
         })
-    }
-    else {
+    } else {
         request.log.error('[errorHandler]: ' + JSON.stringify(error))
         if (
             !error.statusCode ||
-      error.statusCode === StatusCodes.INTERNAL_SERVER_ERROR.valueOf()
+            error.statusCode === StatusCodes.INTERNAL_SERVER_ERROR.valueOf()
         ) {
             exceptionHandler.handle(error)
         }

@@ -1,7 +1,7 @@
-import { Static, Type } from '@sinclair/typebox';
-import { BaseModelSchema, PuId } from '@pickup/shared';
+import { Static, Type } from '@sinclair/typebox'
+import { BaseModelSchema, PuId } from '@pickup/shared'
 
-export type FileId = PuId;
+export type FileId = PuId
 
 export enum FileType {
     UNKNOWN = 'UNKNOWN',
@@ -35,5 +35,5 @@ export const File = Type.Object({
 })
 
 export type File = Static<typeof File> & {
-    data: Buffer;
-};
+    data: Buffer
+}

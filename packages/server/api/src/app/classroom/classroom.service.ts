@@ -1,5 +1,12 @@
 import { In, IsNull } from 'typeorm'
-import { assertNotNullOrUndefined, Classroom, ClassroomId, ErrorCode, isNil, PickUpError } from '@pickup/shared'
+import {
+    assertNotNullOrUndefined,
+    Classroom,
+    ClassroomId,
+    ErrorCode,
+    isNil,
+    PickUpError,
+} from '@pickup/shared'
 import { repoFactory } from '../core/db/repo-factory'
 import { ClassroomEntity } from './classroom.entity'
 import { FindOptionsWhere } from 'typeorm'
@@ -9,8 +16,9 @@ import { classroomMemberService } from '../classroom-members/classroom-member-se
 export const classroomRepo = repoFactory(ClassroomEntity)
 
 export const classroomService = {
-    
-    async getOne(classroomId: ClassroomId | undefined): Promise<Classroom | null> {
+    async getOne(
+        classroomId: ClassroomId | undefined
+    ): Promise<Classroom | null> {
         if (isNil(classroomId)) {
             return null
         }

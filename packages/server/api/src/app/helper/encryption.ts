@@ -6,10 +6,12 @@ let secret: string | null
 const algorithm = 'aes-256-cbc'
 const ivLength = 16
 
-export const EncryptedObject = Type.Composite([Type.Object({
-    iv: Type.String(),
-    data: Type.String(),
-})])
+export const EncryptedObject = Type.Composite([
+    Type.Object({
+        iv: Type.String(),
+        data: Type.String(),
+    }),
+])
 export type EncryptedObject = Static<typeof EncryptedObject>
 
 function encryptString(inputString: string): EncryptedObject {

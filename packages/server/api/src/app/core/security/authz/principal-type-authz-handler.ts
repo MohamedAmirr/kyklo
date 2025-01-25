@@ -1,8 +1,4 @@
-import {
-    ErrorCode,
-    PickUpError,
-    PrincipalType,
-} from '@pickup/shared'
+import { ErrorCode, PickUpError, PrincipalType } from '@pickup/shared'
 import { FastifyRequest } from 'fastify'
 import { BaseSecurityHandler } from '../security-handler'
 
@@ -21,8 +17,9 @@ export class PrincipalTypeAuthzHandler extends BaseSecurityHandler {
 
     protected canHandle(request: FastifyRequest): Promise<boolean> {
         const requestMatches =
-      !PrincipalTypeAuthzHandler.IGNORED_ROUTES.includes(request.routerPath) &&
-      !request.routerPath.startsWith('/ui')
+            !PrincipalTypeAuthzHandler.IGNORED_ROUTES.includes(
+                request.routerPath
+            ) && !request.routerPath.startsWith('/ui')
 
         return Promise.resolve(requestMatches)
     }
@@ -31,9 +28,10 @@ export class PrincipalTypeAuthzHandler extends BaseSecurityHandler {
         const principalType = request.principal.type
         const configuredPrincipals = request.routeConfig.allowedPrincipals
         const defaultPrincipals =
-      PrincipalTypeAuthzHandler.DEFAULT_ALLOWED_PRINCIPAL_TYPES
+            PrincipalTypeAuthzHandler.DEFAULT_ALLOWED_PRINCIPAL_TYPES
         const allowedPrincipals = configuredPrincipals ?? defaultPrincipals
-        const principalTypeNotAllowed = !allowedPrincipals.includes(principalType)
+        const principalTypeNotAllowed =
+            !allowedPrincipals.includes(principalType)
 
         if (principalTypeNotAllowed) {
             throw new PickUpError({

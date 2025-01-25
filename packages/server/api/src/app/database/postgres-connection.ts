@@ -9,7 +9,9 @@ const getSslConfig = (): boolean | TlsOptions => {
 
     if (useSsl === 'true') {
         return {
-            ca: system.get(AppSystemProp.POSTGRES_SSL_CA)?.replace(/\\n/g, '\n'),
+            ca: system
+                .get(AppSystemProp.POSTGRES_SSL_CA)
+                ?.replace(/\\n/g, '\n'),
         }
     }
 

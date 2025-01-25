@@ -1,7 +1,6 @@
 import { ClassroomId } from '../classroom/classroom'
 import { UserId } from '../user/user'
 
-
 type SignedUp = {
     userId: UserId
     email: string
@@ -75,15 +74,33 @@ type BaseTelemetryEvent<T, P> = {
 }
 
 export type TelemetryEvent =
-  | BaseTelemetryEvent<TelemetryEventName.SIGNED_UP, SignedUp>
-  | BaseTelemetryEvent<TelemetryEventName.REFERRAL, Referral>
-  | BaseTelemetryEvent<TelemetryEventName.REQUEST_TRIAL_CLICKED, RequestTrialClicked>
-  | BaseTelemetryEvent<TelemetryEventName.KEY_ACTIVIATED, KeyActiviated>
-  | BaseTelemetryEvent<TelemetryEventName.REQUEST_TRIAL_SUBMITTED, RequestTrialSubmitted>
-  | BaseTelemetryEvent<TelemetryEventName.UPGRADE_CLICKED, UpgradeClicked>
-  | BaseTelemetryEvent<TelemetryEventName.UPGRADE_POPUP, UpgradePopup>
-  | BaseTelemetryEvent<TelemetryEventName.REFERRAL_LINK_COPIED, ReferralLinkCopied>
-  | BaseTelemetryEvent<TelemetryEventName.DEMO_IMPORTED, Record<string, never>>
-  | BaseTelemetryEvent<TelemetryEventName.OPENED_PRICING_FROM_DASHBOARD, OpenedFromDasahboard>
-  | BaseTelemetryEvent<TelemetryEventName.REWARDS_OPENED, RewardButtonClicked>
-  | BaseTelemetryEvent<TelemetryEventName.REWARDS_INSTRUCTION_CLICKED, RewardInstructionsClicked>
+    | BaseTelemetryEvent<TelemetryEventName.SIGNED_UP, SignedUp>
+    | BaseTelemetryEvent<TelemetryEventName.REFERRAL, Referral>
+    | BaseTelemetryEvent<
+          TelemetryEventName.REQUEST_TRIAL_CLICKED,
+          RequestTrialClicked
+      >
+    | BaseTelemetryEvent<TelemetryEventName.KEY_ACTIVIATED, KeyActiviated>
+    | BaseTelemetryEvent<
+          TelemetryEventName.REQUEST_TRIAL_SUBMITTED,
+          RequestTrialSubmitted
+      >
+    | BaseTelemetryEvent<TelemetryEventName.UPGRADE_CLICKED, UpgradeClicked>
+    | BaseTelemetryEvent<TelemetryEventName.UPGRADE_POPUP, UpgradePopup>
+    | BaseTelemetryEvent<
+          TelemetryEventName.REFERRAL_LINK_COPIED,
+          ReferralLinkCopied
+      >
+    | BaseTelemetryEvent<
+          TelemetryEventName.DEMO_IMPORTED,
+          Record<string, never>
+      >
+    | BaseTelemetryEvent<
+          TelemetryEventName.OPENED_PRICING_FROM_DASHBOARD,
+          OpenedFromDasahboard
+      >
+    | BaseTelemetryEvent<TelemetryEventName.REWARDS_OPENED, RewardButtonClicked>
+    | BaseTelemetryEvent<
+          TelemetryEventName.REWARDS_INSTRUCTION_CLICKED,
+          RewardInstructionsClicked
+      >

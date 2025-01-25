@@ -3,6 +3,4 @@ import { StudentEntity } from './student.entity'
 
 export const studentRepo = repoFactory(StudentEntity)
 
-export const studentService = {
-   
-}
+export const studentService = {}

@@ -42,12 +42,12 @@ const initLogger = (): Logger => {
                 interval: 5,
                 host: lokiUrl,
                 basicAuth:
-          lokiPassword && lokiPassword
-              ? {
-                  username: lokiUsername,
-                  password: lokiPassword,
-              }
-              : undefined,
+                    lokiPassword && lokiPassword
+                        ? {
+                              username: lokiUsername,
+                              password: lokiPassword,
+                          }
+                        : undefined,
             },
         })
     }

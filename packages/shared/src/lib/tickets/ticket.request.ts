@@ -1,5 +1,5 @@
-import { Static, Type } from "@sinclair/typebox";
-import { TicketStatus } from "./ticket";
+import { Static, Type } from '@sinclair/typebox'
+import { TicketStatus } from './ticket'
 
 export const ListTicketsRequestQuery = Type.Object({
     limit: Type.Optional(Type.Number()),

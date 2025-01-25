@@ -1,5 +1,5 @@
-import {Static, Type} from "@sinclair/typebox";
-import { PaymentMethod } from "./event";
+import { Static, Type } from '@sinclair/typebox'
+import { PaymentMethod } from './event'
 
 export const CreateEventRequestBody = Type.Object({
     title: Type.String(),
@@ -11,13 +11,12 @@ export const CreateEventRequestBody = Type.Object({
     details: Type.Any(),
     grades: Type.Array(Type.String()),
     supervisorsIds: Type.Array(Type.String()),
-});
+})
 
 export type CreateEventRequestBody = Static<typeof CreateEventRequestBody>
 
-
 export const GetEventRequestBody = Type.Object({
     id: Type.String(),
-});
+})
 
 export type GetEventRequestBody = Static<typeof GetEventRequestBody>

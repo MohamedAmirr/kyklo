@@ -10,7 +10,7 @@ export const passwordHasher = {
 
     compare: async (
         plainTextPassword: string,
-        hashedPassword: string,
+        hashedPassword: string
     ): Promise<boolean> => {
         assertNotNullOrUndefined(plainTextPassword, 'plainTextPassword')
         assertNotNullOrUndefined(hashedPassword, 'hashedPassword')

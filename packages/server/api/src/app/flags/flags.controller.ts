@@ -4,7 +4,7 @@ import { flagHooks } from './flags.hooks'
 import { ALL_PRINCIPAL_TYPES } from '@pickup/shared'
 import { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 
-export const flagController: FastifyPluginAsyncTypebox = async (app) => {
+export const flagController: FastifyPluginAsyncTypebox = async app => {
     app.get(
         '/',
         {
@@ -17,14 +17,12 @@ export const flagController: FastifyPluginAsyncTypebox = async (app) => {
             const flags = await flagService.getAll()
             const flagsMap: Record<string, unknown> = flags.reduce(
                 (map, flag) => ({ ...map, [flag.id as string]: flag.value }),
-                {},
+                {}
             )
             return flagHooks.get().modify({
                 flags: flagsMap,
                 request,
             })
-        },
+        }
     )
-    
 }
-    

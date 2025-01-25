@@ -19,11 +19,7 @@ export const flagService = {
     },
     async getAll(): Promise<Flag[]> {
         const flags = await flagRepo().findBy({
-            id: In([
-                PuFlagId.EDITION,
-                PuFlagId.FRONTEND_URL,
-                PuFlagId.THEME,
-            ]),
+            id: In([PuFlagId.EDITION, PuFlagId.FRONTEND_URL, PuFlagId.THEME]),
         })
         const now = new Date().toISOString()
         const created = now
@@ -46,15 +42,14 @@ export const flagService = {
                 value: system.get(SharedSystemProp.FRONTEND_URL),
                 created,
                 updated,
-            },
+            }
         )
 
         return flags
     },
 }
 
-export type FlagType =
-    | BaseFlagStructure<PuFlagId.FRONTEND_URL, string>
+export type FlagType = BaseFlagStructure<PuFlagId.FRONTEND_URL, string>
 
 type BaseFlagStructure<K extends PuFlagId, V> = {
     id: K

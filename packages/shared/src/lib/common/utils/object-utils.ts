@@ -1,7 +1,10 @@
 import { isNil, isString } from './utils'
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function deleteProperties(obj: Record<string, unknown>, props: string[]) {
+export function deleteProperties(
+    obj: Record<string, unknown>,
+    props: string[]
+) {
     const copy = { ...obj }
     for (const prop of props) {
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
@@ -10,8 +13,10 @@ export function deleteProperties(obj: Record<string, unknown>, props: string[]) 
     return copy
 }
 
-
-export const spreadIfDefined = <T>(key: string, value: T | undefined | null): Record<string, T> => {
+export const spreadIfDefined = <T>(
+    key: string,
+    value: T | undefined | null
+): Record<string, T> => {
     if (isNil(value)) {
         return {}
     }
@@ -20,10 +25,10 @@ export const spreadIfDefined = <T>(key: string, value: T | undefined | null): Re
     }
 }
 
-export function deleteProps<T extends Record<string, unknown>, K extends keyof T>(
-    obj: T,
-    prop: K[],
-): Omit<T, K> {
+export function deleteProps<
+    T extends Record<string, unknown>,
+    K extends keyof T
+>(obj: T, prop: K[]): Omit<T, K> {
     const newObj = { ...obj }
     for (const p of prop) {
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
@@ -33,29 +38,29 @@ export function deleteProps<T extends Record<string, unknown>, K extends keyof T
 }
 
 export function sanitizeObjectForPostgresql<T>(input: T): T {
-    return applyFunctionToValuesSync<T>(input, (str) => {
+    return applyFunctionToValuesSync<T>(input, str => {
         if (isString(str)) {
             // eslint-disable-next-line no-control-regex
             const controlCharsRegex = /\u0000/g
-            return str.replace(controlCharsRegex, '')            
+            return str.replace(controlCharsRegex, '')
         }
         return str
     })
 }
 
-export function applyFunctionToValuesSync<T>(obj: unknown, apply: (str: unknown) => unknown): T {
+export function applyFunctionToValuesSync<T>(
+    obj: unknown,
+    apply: (str: unknown) => unknown
+): T {
     if (isNil(obj)) {
         return obj as T
-    }
-    else if (isString(obj)) {
+    } else if (isString(obj)) {
         return apply(obj) as T
-    }
-    else if (Array.isArray(obj)) {
+    } else if (Array.isArray(obj)) {
         for (let i = 0; i < obj.length; ++i) {
             obj[i] = applyFunctionToValuesSync(obj[i], apply)
         }
-    }
-    else if (isObject(obj)) {
+    } else if (isObject(obj)) {
         const entries = Object.entries(obj)
         for (const entry of entries) {
             const [key, value] = entry
@@ -65,31 +70,33 @@ export function applyFunctionToValuesSync<T>(obj: unknown, apply: (str: unknown)
     return apply(obj) as T
 }
 
-
-export async function applyFunctionToValues<T>(obj: unknown, apply: (str: unknown) => Promise<unknown>): Promise<T> {
+export async function applyFunctionToValues<T>(
+    obj: unknown,
+    apply: (str: unknown) => Promise<unknown>
+): Promise<T> {
     if (isNil(obj)) {
         return obj as T
-    }
-    else if (isString(obj)) {
-        return await apply(obj) as T
-    }
-    else if (Array.isArray(obj)) {
+    } else if (isString(obj)) {
+        return (await apply(obj)) as T
+    } else if (Array.isArray(obj)) {
         for (let i = 0; i < obj.length; ++i) {
             obj[i] = await applyFunctionToValues(obj[i], apply)
         }
-    }
-    else if (isObject(obj)) {
+    } else if (isObject(obj)) {
         const entries = Object.entries(obj)
         for (const entry of entries) {
             const [key, value] = entry
             obj[key] = await applyFunctionToValues(value, apply)
         }
     }
-    return await apply(obj) as T
+    return (await apply(obj)) as T
 }
 
 export const isObject = (obj: unknown): obj is Record<string, unknown> => {
     return typeof obj === 'object' && obj !== null && !Array.isArray(obj)
 }
 
-export type MakeKeyNonNullableAndRequired<T extends object, K extends keyof T> = T & { [P in K]-?: NonNullable<T[P]> }
+export type MakeKeyNonNullableAndRequired<
+    T extends object,
+    K extends keyof T
+> = T & { [P in K]-?: NonNullable<T[P]> }

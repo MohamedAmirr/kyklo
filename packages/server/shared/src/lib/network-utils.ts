@@ -42,24 +42,26 @@ const getInternalApiUrl = (): string => {
 }
 
 const getPublicUrl = async (): Promise<string> => {
-    const environment = system.getOrThrow<PuEnvironment>(SharedSystemProp.ENVIRONMENT)
+    const environment = system.getOrThrow<PuEnvironment>(
+        SharedSystemProp.ENVIRONMENT
+    )
     let url = system.getOrThrow(SharedSystemProp.FRONTEND_URL)
-    
-    if (extractHostname(url) === 'localhost' && environment === PuEnvironment.PRODUCTION) {
+
+    if (
+        extractHostname(url) === 'localhost' &&
+        environment === PuEnvironment.PRODUCTION
+    ) {
         url = `http://${(await getPublicIp()).ip}`
     }
 
     return appendSlashAndApi(url)
 }
 
-
-
 function extractHostname(url: string): string | null {
     try {
         const hostname = new URL(url).hostname
         return hostname
-    }
-    catch (e) {
+    } catch (e) {
         return null
     }
 }

@@ -41,144 +41,180 @@ export type BaseErrorParams<T, V> = {
     params: V
 }
 
-export type InvalidClaimParams = BaseErrorParams<ErrorCode.INVALID_CLAIM, { redirectUrl: string, tokenUrl: string, clientId: string }>
-export type InvalidCloudClaimParams = BaseErrorParams<ErrorCode.INVALID_CLOUD_CLAIM, { pieceName: string }>
+export type InvalidClaimParams = BaseErrorParams<
+    ErrorCode.INVALID_CLAIM,
+    { redirectUrl: string; tokenUrl: string; clientId: string }
+>
+export type InvalidCloudClaimParams = BaseErrorParams<
+    ErrorCode.INVALID_CLOUD_CLAIM,
+    { pieceName: string }
+>
 
-export type InvalidBearerTokenParams = BaseErrorParams<ErrorCode.INVALID_BEARER_TOKEN, {
-    message?: string
-}>
+export type InvalidBearerTokenParams = BaseErrorParams<
+    ErrorCode.INVALID_BEARER_TOKEN,
+    {
+        message?: string
+    }
+>
 
-export type SessionExpiredParams = BaseErrorParams<ErrorCode.SESSION_EXPIRED, {
-    message?: string
-}>
+export type SessionExpiredParams = BaseErrorParams<
+    ErrorCode.SESSION_EXPIRED,
+    {
+        message?: string
+    }
+>
 
-export type FileNotFoundErrorParams = BaseErrorParams<ErrorCode.FILE_NOT_FOUND, { id: FileId }>
+export type FileNotFoundErrorParams = BaseErrorParams<
+    ErrorCode.FILE_NOT_FOUND,
+    { id: FileId }
+>
 
-export type EmailAuthIsDisabledParams = BaseErrorParams<ErrorCode.EMAIL_AUTH_DISABLED, Record<string, never>>
+export type EmailAuthIsDisabledParams = BaseErrorParams<
+    ErrorCode.EMAIL_AUTH_DISABLED,
+    Record<string, never>
+>
 
 export type AuthorizationErrorParams = BaseErrorParams<
-ErrorCode.AUTHORIZATION,
-Record<string, string> &
-{
-    message?: string
-}
+    ErrorCode.AUTHORIZATION,
+    Record<string, string> & {
+        message?: string
+    }
 >
 
 export type PermissionDeniedErrorParams = BaseErrorParams<
-ErrorCode.PERMISSION_DENIED,
-{
-    userId: UserId
-    classroomId: ClassroomId
-    permission: Permission | undefined
-}
+    ErrorCode.PERMISSION_DENIED,
+    {
+        userId: UserId
+        classroomId: ClassroomId
+        permission: Permission | undefined
+    }
 >
 
 export type SystemInvalidErrorParams = BaseErrorParams<
-ErrorCode.SYSTEM_PROP_INVALID,
-{
-    prop: string
-}
+    ErrorCode.SYSTEM_PROP_INVALID,
+    {
+        prop: string
+    }
 >
 
 export type InvalidCredentialsErrorParams = BaseErrorParams<
-ErrorCode.INVALID_CREDENTIALS,
-null
+    ErrorCode.INVALID_CREDENTIALS,
+    null
 >
 
 export type EmailIsNotVerifiedErrorParams = BaseErrorParams<
-ErrorCode.EMAIL_IS_NOT_VERIFIED,
-{
-    email: string
-}
+    ErrorCode.EMAIL_IS_NOT_VERIFIED,
+    {
+        email: string
+    }
 >
 
 export type UserIsInActiveErrorParams = BaseErrorParams<
-ErrorCode.USER_IS_INACTIVE,
-{
-    email: string
-}
+    ErrorCode.USER_IS_INACTIVE,
+    {
+        email: string
+    }
 >
 
 export type ExistingUserErrorParams = BaseErrorParams<
-ErrorCode.EXISTING_USER,
-{
-    email: string
-    platformId: string | null
-}
+    ErrorCode.EXISTING_USER,
+    {
+        email: string
+        platformId: string | null
+    }
 >
 
 export type SystemPropNotDefinedErrorParams = BaseErrorParams<
-ErrorCode.SYSTEM_PROP_NOT_DEFINED,
-{
-    prop: string
-}
+    ErrorCode.SYSTEM_PROP_NOT_DEFINED,
+    {
+        prop: string
+    }
 >
 
 export type InvalidJwtTokenErrorParams = BaseErrorParams<
-ErrorCode.INVALID_OR_EXPIRED_JWT_TOKEN,
-{
-    token: string
-}
+    ErrorCode.INVALID_OR_EXPIRED_JWT_TOKEN,
+    {
+        token: string
+    }
 >
 
 export type EntityNotFoundErrorParams = BaseErrorParams<
-ErrorCode.ENTITY_NOT_FOUND,
-{
-    message?: string
-    entityType?: string
-    entityId?: string
-}
+    ErrorCode.ENTITY_NOT_FOUND,
+    {
+        message?: string
+        entityType?: string
+        entityId?: string
+    }
 >
 
 export type ValidationErrorParams = BaseErrorParams<
-ErrorCode.VALIDATION,
-{
-    message: string
-}
+    ErrorCode.VALIDATION,
+    {
+        message: string
+    }
 >
 
 export type FeatureDisabledErrorParams = BaseErrorParams<
-ErrorCode.FEATURE_DISABLED,
-{
-    message: string
-}>
+    ErrorCode.FEATURE_DISABLED,
+    {
+        message: string
+    }
+>
 
 export type AuthenticationParams = BaseErrorParams<
-ErrorCode.AUTHENTICATION,
-{
-    message: string
-}
+    ErrorCode.AUTHENTICATION,
+    {
+        message: string
+    }
 >
 
 export type ExistingAlertChannelErrorParams = BaseErrorParams<
-ErrorCode.EXISTING_ALERT_CHANNEL,
-{
-    email: string
-}
+    ErrorCode.EXISTING_ALERT_CHANNEL,
+    {
+        email: string
+    }
 >
 
-export type InvalidOtpParams = BaseErrorParams<ErrorCode.INVALID_OTP, Record<string, never>>
+export type InvalidOtpParams = BaseErrorParams<
+    ErrorCode.INVALID_OTP,
+    Record<string, never>
+>
 
-export type InvalidLicenseKeyParams = BaseErrorParams<ErrorCode.INVALID_LICENSE_KEY, {
-    key: string
-}>  
+export type InvalidLicenseKeyParams = BaseErrorParams<
+    ErrorCode.INVALID_LICENSE_KEY,
+    {
+        key: string
+    }
+>
 
-export type EmailAlreadyHasActivationKey = BaseErrorParams<ErrorCode.EMAIL_ALREADY_HAS_ACTIVATION_KEY, {
-    email: string
-}>
+export type EmailAlreadyHasActivationKey = BaseErrorParams<
+    ErrorCode.EMAIL_ALREADY_HAS_ACTIVATION_KEY,
+    {
+        email: string
+    }
+>
 
-export type NoClassroomFoundErrorParams = BaseErrorParams<ErrorCode.NO_CLASSROOM_FOUND, {
-    email: string,
-    message?: string,
-}>
+export type NoClassroomFoundErrorParams = BaseErrorParams<
+    ErrorCode.NO_CLASSROOM_FOUND,
+    {
+        email: string
+        message?: string
+    }
+>
 
-export type InvalidSmtpCredentialsErrorParams = BaseErrorParams<ErrorCode.INVALID_SMTP_CREDENTIALS, {
-    message?: string,
-}>
+export type InvalidSmtpCredentialsErrorParams = BaseErrorParams<
+    ErrorCode.INVALID_SMTP_CREDENTIALS,
+    {
+        message?: string
+    }
+>
 
-export type InvitationOnlySignUpErrorParams = BaseErrorParams<ErrorCode.INVITATION_ONLY_SIGN_UP, {
-    message?: string,
-}>
+export type InvitationOnlySignUpErrorParams = BaseErrorParams<
+    ErrorCode.INVITATION_ONLY_SIGN_UP,
+    {
+        message?: string
+    }
+>
 
 export enum ErrorCode {
     AUTHENTICATION = 'AUTHENTICATION',

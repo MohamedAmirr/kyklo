@@ -1,4 +1,9 @@
-import { AppSystemProp, DatabaseType, SharedSystemProp, system } from '@pickup/server-shared'
+import {
+    AppSystemProp,
+    DatabaseType,
+    SharedSystemProp,
+    system,
+} from '@pickup/server-shared'
 import { isNil, PuEdition, PuEnvironment } from '@pickup/shared'
 import {
     ArrayContains,
@@ -10,12 +15,15 @@ import {
 import { OtpEntity } from '../otp/otp-entity'
 import { createPostgresDataSource } from './postgres-connection'
 import { FlagEntity } from '../flags/flag.entity'
-import {ClassroomEntity} from "../classroom/classroom.entity";
-import {StudentEntity} from "../student/student.entity";
+import { ClassroomEntity } from '../classroom/classroom.entity'
+import { StudentEntity } from '../student/student.entity'
 import { EventEntity } from '../event/event.entity'
 import { UserEntity } from '../user/user.entity'
 import { SchoolEntity } from '../school/school.entity'
-import {TicketCategoriesEntity, TicketsEntity} from '../tickets/tickets.entity'
+import {
+    TicketCategoriesEntity,
+    TicketsEntity,
+} from '../tickets/tickets.entity'
 import { ClassroomMemberEntity } from '../classroom-members/classroom-member.entity'
 
 function getEntities(): EntitySchema<unknown>[] {
@@ -30,14 +38,12 @@ function getEntities(): EntitySchema<unknown>[] {
         StudentEntity,
         EventEntity,
         TicketCategoriesEntity,
-        TicketsEntity
+        TicketsEntity,
     ]
 
     switch (edition) {
         case PuEdition.ENTERPRISE:
-            entities.push(
-                OtpEntity,
-            )
+            entities.push(OtpEntity)
             break
         case PuEdition.COMMUNITY:
             break
@@ -72,7 +78,7 @@ export const databaseConnection = () => {
 export function APArrayContains<T extends ObjectLiteral>(
     columnName: string,
     values: string[],
-    query: SelectQueryBuilder<T>,
+    query: SelectQueryBuilder<T>
 ): SelectQueryBuilder<T> {
     const databaseType = system.get(AppSystemProp.DB_TYPE)
     switch (databaseType) {

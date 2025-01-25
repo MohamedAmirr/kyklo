@@ -16,7 +16,7 @@ export type PaginationOptions<Entity> = {
 }
 
 export function buildPaginator<Entity extends ObjectLiteral>(
-    options: PaginationOptions<Entity>,
+    options: PaginationOptions<Entity>
 ): Paginator<Entity> {
     const {
         entity,

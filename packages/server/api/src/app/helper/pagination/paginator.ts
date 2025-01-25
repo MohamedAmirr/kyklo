@@ -44,7 +44,7 @@ export default class Paginator<Entity extends ObjectLiteral> {
 
     private orderBy: string = PAGINATION_KEY
 
-    public constructor(private readonly entity: EntitySchema) { }
+    public constructor(private readonly entity: EntitySchema) {}
 
     public setAlias(alias: string): void {
         this.alias = alias
@@ -71,7 +71,7 @@ export default class Paginator<Entity extends ObjectLiteral> {
     }
 
     public async paginate(
-        builder: SelectQueryBuilder<Entity>,
+        builder: SelectQueryBuilder<Entity>
     ): Promise<PagingResult<Entity>> {
         const entities = await this.appendPagingQuery(builder).getMany()
         const hasMore = entities.length > this.limit
@@ -107,21 +107,20 @@ export default class Paginator<Entity extends ObjectLiteral> {
     }
 
     private appendPagingQuery(
-        builder: SelectQueryBuilder<Entity>,
+        builder: SelectQueryBuilder<Entity>
     ): SelectQueryBuilder<Entity> {
         const cursors: CursorParam = {}
         const clonedBuilder = new SelectQueryBuilder<Entity>(builder)
 
         if (this.hasAfterCursor()) {
             Object.assign(cursors, this.decode(this.afterCursor!))
-        }
-        else if (this.hasBeforeCursor()) {
+        } else if (this.hasBeforeCursor()) {
             Object.assign(cursors, this.decode(this.beforeCursor!))
         }
 
         if (Object.keys(cursors).length > 0) {
             clonedBuilder.andWhere(
-                new Brackets((where) => this.buildCursorQuery(where, cursors)),
+                new Brackets(where => this.buildCursorQuery(where, cursors))
             )
         }
 
@@ -134,7 +133,7 @@ export default class Paginator<Entity extends ObjectLiteral> {
 
     private buildCursorQuery(
         where: WhereExpressionBuilder,
-        cursors: CursorParam,
+        cursors: CursorParam
     ): void {
         const dbType = system.get(AppSystemProp.DB_TYPE)
         const operator = this.getOperator()
@@ -142,11 +141,9 @@ export default class Paginator<Entity extends ObjectLiteral> {
 
         if (dbType === DatabaseType.SQLITE3) {
             queryString = `strftime('%s', ${this.alias}.${PAGINATION_KEY}) ${operator} strftime('%s', :${PAGINATION_KEY})`
-        }
-        else if (dbType === DatabaseType.POSTGRES) {
+        } else if (dbType === DatabaseType.POSTGRES) {
             queryString = `DATE_TRUNC('second', ${this.alias}.${PAGINATION_KEY}) ${operator} DATE_TRUNC('second', :${PAGINATION_KEY}::timestamp)`
-        }
-        else {
+        } else {
             throw new Error('Unsupported database type')
         }
 
@@ -197,7 +194,7 @@ export default class Paginator<Entity extends ObjectLiteral> {
     private decode(cursor: string): CursorParam {
         const cursors: CursorParam = {}
         const columns = atob(cursor).split(',')
-        columns.forEach((column) => {
+        columns.forEach(column => {
             const [key, raw] = column.split(':')
             const type = this.getEntityPropertyType(key)
             const value = decodeByType(type, raw)

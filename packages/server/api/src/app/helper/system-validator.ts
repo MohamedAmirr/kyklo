@@ -1,7 +1,14 @@
-import { AppSystemProp, ContainerType, DatabaseType, logger, SharedSystemProp, system, SystemProp } from '@pickup/server-shared'
+import {
+    AppSystemProp,
+    ContainerType,
+    DatabaseType,
+    logger,
+    SharedSystemProp,
+    system,
+    SystemProp,
+} from '@pickup/server-shared'
 import { isNil, PuEdition, PuEnvironment } from '@pickup/shared'
 import { jwtUtils } from './jwt-utils'
-
 
 function enumValidator<T extends string>(enumValues: T[]) {
     return (value: string) => {
@@ -29,8 +36,7 @@ function urlValidator(value: string) {
     try {
         new URL(value)
         return true
-    }
-    catch {
+    } catch {
         return 'Value must be a valid URL'
     }
 }
@@ -39,7 +45,13 @@ const systemPropValidators: {
     [key in SystemProp]: (value: string) => true | string
 } = {
     // SharedSystemProp
-    [SharedSystemProp.LOG_LEVEL]: enumValidator(['error', 'warn', 'info', 'debug', 'trace']),
+    [SharedSystemProp.LOG_LEVEL]: enumValidator([
+        'error',
+        'warn',
+        'info',
+        'debug',
+        'trace',
+    ]),
     [SharedSystemProp.LOG_PRETTY]: booleanValidator,
     [SharedSystemProp.ENVIRONMENT]: enumValidator(Object.values(PuEnvironment)),
     [SharedSystemProp.FRONTEND_URL]: urlValidator,
@@ -48,8 +60,9 @@ const systemPropValidators: {
     [SharedSystemProp.LOKI_URL]: urlValidator,
     [SharedSystemProp.LOKI_USERNAME]: stringValidator,
     [SharedSystemProp.EMAIL_AUTH_ENABLED]: booleanValidator,
-    [SharedSystemProp.CONTAINER_TYPE]: enumValidator(Object.values(ContainerType)),
-
+    [SharedSystemProp.CONTAINER_TYPE]: enumValidator(
+        Object.values(ContainerType)
+    ),
 
     // AppSystemProp
     [AppSystemProp.DB_TYPE]: enumValidator(Object.values(DatabaseType)),
@@ -79,10 +92,11 @@ const systemPropValidators: {
     [AppSystemProp.SHOW_PLATFORM_DEMO]: booleanValidator,
 }
 
-
-
 const validateSystemPropTypes = () => {
-    const systemProperties: SystemProp[] = [...Object.values(SharedSystemProp), ...Object.values(AppSystemProp)]
+    const systemProperties: SystemProp[] = [
+        ...Object.values(SharedSystemProp),
+        ...Object.values(AppSystemProp),
+    ]
     const errors: {
         [key in SystemProp]?: string
     } = {}
@@ -93,7 +107,9 @@ const validateSystemPropTypes = () => {
         if (onlyValidateIfValueIsSet) {
             const validationResult = systemPropValidators[prop](value)
             if (validationResult !== true) {
-                errors[prop] = `Current value: ${value}. Expected: ${validationResult}`
+                errors[
+                    prop
+                ] = `Current value: ${value}. Expected: ${validationResult}`
             }
         }
     }
@@ -103,16 +119,22 @@ const validateSystemPropTypes = () => {
 export const validateEnvPropsOnStartup = async (): Promise<void> => {
     const errors = validateSystemPropTypes()
     if (Object.keys(errors).length > 0) {
-        logger.warn({
-            errors,
-        }, '[validateEnvPropsOnStartup]')
+        logger.warn(
+            {
+                errors,
+            },
+            '[validateEnvPropsOnStartup]'
+        )
     }
 
     const jwtSecret = await jwtUtils.getJwtSecret()
     if (isNil(jwtSecret)) {
-        throw new Error(JSON.stringify({
-            message: 'PU_JWT_SECRET is undefined, please define it in the environment variables',
-            docUrl: 'https://www.activepieces.com/docs/install/configuration/environment-variables',
-        }))
+        throw new Error(
+            JSON.stringify({
+                message:
+                    'PU_JWT_SECRET is undefined, please define it in the environment variables',
+                docUrl: 'https://www.activepieces.com/docs/install/configuration/environment-variables',
+            })
+        )
     }
 }

@@ -1,18 +1,18 @@
-import { PuFlagId } from '@pickup/shared';
+import { PuFlagId } from '@pickup/shared'
 
-import { flagsHooks } from '@/hooks/flags-hooks';
+import { flagsHooks } from '@/hooks/flags-hooks'
 
 type FlagGuardProps = {
-  children: React.ReactNode;
-  flag: PuFlagId;
-};
+    children: React.ReactNode
+    flag: PuFlagId
+}
 const FlagGuard = ({ children, flag }: FlagGuardProps) => {
-  const { data: flagValue } = flagsHooks.useFlag<boolean>(flag);
-  if (!flagValue) {
-    return null;
-  }
-  return children;
-};
+    const { data: flagValue } = flagsHooks.useFlag<boolean>(flag)
+    if (!flagValue) {
+        return null
+    }
+    return children
+}
 
-FlagGuard.displayName = 'FlagGuard';
-export { FlagGuard };
+FlagGuard.displayName = 'FlagGuard'
+export { FlagGuard }

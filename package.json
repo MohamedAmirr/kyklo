@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "format": "npx prettier --write \"**/*.{ts,tsx,js,jsx}\"",
     "prepare": "husky",
     "serve:frontend": "nx serve react-ui",
     "serve:backend": "nx serve server-api",

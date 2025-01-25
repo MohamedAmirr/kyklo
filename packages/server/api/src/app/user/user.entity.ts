@@ -1,11 +1,11 @@
-import { School, User, Event } from '@pickup/shared';
-import { EntitySchema } from 'typeorm';
-import { BaseColumnSchemaPart } from '../database/database-common';
+import { School, User, Event } from '@pickup/shared'
+import { EntitySchema } from 'typeorm'
+import { BaseColumnSchemaPart } from '../database/database-common'
 
 export type UserSchema = User & {
-    school: School;
-    supervisedEvents: Event[];
-};
+    school: School
+    supervisedEvents: Event[]
+}
 
 export const UserEntity = new EntitySchema<UserSchema>({
     name: 'user',
@@ -59,4 +59,4 @@ export const UserEntity = new EntitySchema<UserSchema>({
             inverseSide: 'supervisors',
         },
     },
-});
+})

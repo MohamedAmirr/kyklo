@@ -1,6 +1,5 @@
-import {BaseModelSchema, PuId} from "@pickup/shared";
-import {Static, Type} from "@sinclair/typebox";
-
+import { BaseModelSchema, PuId } from '@pickup/shared'
+import { Static, Type } from '@sinclair/typebox'
 
 export type TicketId = PuId
 export type TicketCategoryId = PuId
@@ -16,7 +15,6 @@ export const TicketCategory = Type.Object({
 })
 
 export type TicketCategory = Static<typeof TicketCategory>
-
 
 export const Ticket = Type.Object({
     ...BaseModelSchema,
