@@ -8,7 +8,7 @@ import SidebarLayout, {
 
 import MaterialsPage from ".";
 
-import { PgaeHeader } from "../../components/page-layout/materials/header";
+import { PageHeader } from "./materials-header";
 import { Button } from "@/components/ui/button";
 
 const iconSize = 20;
@@ -58,7 +58,7 @@ export default function MaterialsPageLayout() {
 
   return (
     <div className="flex flex-col w-full">
-      <PgaeHeader>
+      <PageHeader>
         <div className="flex items-center gap-2 w-full">
           <div className="flex items-center gap-2">
             <div className="w-[30px] h-[30px] p-1 flex items-center justify-center bg-red-500 text-white rounded-xs">
@@ -74,7 +74,7 @@ export default function MaterialsPageLayout() {
             <span>Create Material</span>
           </Button>
         </div>
-      </PgaeHeader>
+      </PageHeader>
       <SidebarLayout items={sidebarNavItems} content={sidebarNavContent} />
     </div>
   );

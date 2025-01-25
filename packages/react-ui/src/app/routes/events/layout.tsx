@@ -1,15 +1,14 @@
-import { t } from "i18next";
 import { Calendar, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-import { PgaeHeader } from "@/app/components/page-layout/materials/header";
 import EventsPage from ".";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "../materials/materials-header";
 
 const iconSize = 20;
 
 export default function EventPageLayout() {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleAddEvent = () => {
     navigate("/events/create");
@@ -17,7 +16,7 @@ export default function EventPageLayout() {
 
   return (
     <div className="flex flex-col w-full">
-      <PgaeHeader>
+      <PageHeader>
         <div className="flex items-center gap-2 w-full">
           <div className="flex items-center gap-2">
             <div className="w-[30px] h-[30px] p-1 flex items-center justify-center bg-red-500 text-white rounded-xs">
@@ -33,7 +32,7 @@ export default function EventPageLayout() {
             <span>New Event</span>
           </Button>
         </div>
-      </PgaeHeader>
+      </PageHeader>
       <EventsPage />
     </div>
   );

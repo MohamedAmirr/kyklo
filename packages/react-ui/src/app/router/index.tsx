@@ -21,6 +21,10 @@ import HomePage from '../routes/home';
 import { SignInPage } from '../routes/sign-in';
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper';
+import EventDetails from "../routes/events/event-details";
+import EventPageLayout from "../routes/events/layout";
+import TicketLayout from "../routes/tickets/ticket-layout";
+import AddEventPage from "../routes/events/create-event";
 
 const SettingsRerouter = () => {
   const { hash } = useLocation();
@@ -51,6 +55,46 @@ const routes = [
       <DashboardContainer>
         <PageTitle title="Materials">
           <MaterialsPageLayout />
+        </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: "/events/list/:page",
+    element: (
+      <DashboardContainer>
+        <PageTitle title="Events">
+          <EventPageLayout />
+        </PageTitle>  
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: "/events/:id",
+    element: (
+      <DashboardContainer>
+        <PageTitle title="Event Details">
+          <EventDetails />
+        </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: "/events/create",
+    element: (
+      <DashboardContainer>
+        <PageTitle title="Create Event">
+          <AddEventPage />
+        </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: "/tickets",
+    element: (
+      <DashboardContainer>
+        <PageTitle title="Tickets">
+          <TicketLayout />
         </PageTitle>
       </DashboardContainer>
     ),
