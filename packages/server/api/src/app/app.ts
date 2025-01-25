@@ -23,6 +23,7 @@ import { eventModule } from './event/event.module'
 import { userModule } from './user/user.module'
 import { classroomMemberModule } from './classroom-members/classroom-member.module'
 import { complaintsModule } from './complaint/complaint.module'
+import { categoryModule } from './category/category.module'
 
 export const setupApp = async (
     app: FastifyInstance
@@ -78,7 +79,8 @@ export const setupApp = async (
     await app.register(studentModule)
     await app.register(eventModule)
     await app.register(userModule)
-
+    await app.register(categoryModule)
+    
     app.get(
         '/redirect',
         async (

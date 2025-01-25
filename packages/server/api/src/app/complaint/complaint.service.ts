@@ -5,9 +5,11 @@ import {
     SchoolId,
     SeekPage,
     Complaint,
-    ComplaintCategoryId,
     ComplaintStatus,
     ComplaintId,
+    UserId,
+    CategoryId,
+    ComplaintEnriched,
 } from '@pickup/shared'
 import { repoFactory } from '../core/db/repo-factory'
 import { ComplaintsEntity } from './complaint.entity'
@@ -16,6 +18,8 @@ import { buildPaginator } from '../helper/pagination/build-paginator'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { Order } from '../helper/pagination/paginator'
+import { categoriesRepo, categoryService } from '../category/category.service'
+import { userService } from '../user/user.service'
 
 dayjs.extend(duration)
 
@@ -27,6 +31,7 @@ export const complaintsService = {
         description,
         categoryId,
         schoolId,
+        reporterId,
     }: CreateParams): Promise<Complaint> {
         const number = (await complaintsRepo().count()) + 1
         const complaint = complaintsRepo().create({
@@ -36,6 +41,7 @@ export const complaintsService = {
             number,
             categoryId,
             schoolId,
+            reporterId,
             status: ComplaintStatus.OPEN,
             created: dayjs().toISOString(),
             updated: dayjs().toISOString(),
@@ -48,7 +54,7 @@ export const complaintsService = {
         limit,
         status,
         title,
-    }: ListParams): Promise<SeekPage<Complaint>> {
+    }: ListParams): Promise<SeekPage<ComplaintEnriched>> {
         const decodedCursor = paginationHelper.decodeCursor(cursor)
         const paginator = buildPaginator<Complaint>({
             entity: ComplaintsEntity,
@@ -73,7 +79,12 @@ export const complaintsService = {
         }
 
         const { data, cursor: newCursor } = await paginator.paginate(query)
-        return paginationHelper.createPage<Complaint>(data, newCursor)
+        const complaints = await Promise.all(data.map(async complaint => {
+            const category = await categoryService.getOneOrThrow({ id: complaint.categoryId })
+            const user = await userService.getMetaInfo({ id: complaint.reporterId })
+            return { ...complaint, category, user }
+        }))
+        return paginationHelper.createPage<ComplaintEnriched>(complaints, newCursor)
     },
     async update({
         id,
@@ -103,13 +114,14 @@ type ListParams = {
 type CreateParams = {
     title: string
     description: string
-    categoryId: ComplaintCategoryId
+    categoryId: CategoryId
     schoolId: SchoolId
+    reporterId: UserId
 }
 
 type UpdateParams = {
     id: ComplaintId
     schoolId: SchoolId
     status?: ComplaintStatus
-    categoryId?: ComplaintCategoryId
+    categoryId?: CategoryId
 }

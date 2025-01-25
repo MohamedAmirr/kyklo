@@ -20,11 +20,9 @@ import { StudentEntity } from '../student/student.entity'
 import { EventEntity } from '../event/event.entity'
 import { UserEntity } from '../user/user.entity'
 import { SchoolEntity } from '../school/school.entity'
-import {
-    ComplaintCategoriesEntity,
-    ComplaintsEntity,
-} from '../complaint/complaint.entity'
+import { ComplaintsEntity } from '../complaint/complaint.entity'
 import { ClassroomMemberEntity } from '../classroom-members/classroom-member.entity'
+import { CategoriesEntity } from '../category/category.entity'
 
 function getEntities(): EntitySchema<unknown>[] {
     const edition = system.getEdition()
@@ -37,7 +35,7 @@ function getEntities(): EntitySchema<unknown>[] {
         ClassroomMemberEntity,
         StudentEntity,
         EventEntity,
-        ComplaintCategoriesEntity,
+        CategoriesEntity,
         ComplaintsEntity,
     ]
 

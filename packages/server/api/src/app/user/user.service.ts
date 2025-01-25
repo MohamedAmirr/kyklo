@@ -77,12 +77,8 @@ export const userService = {
         return userRepo().findOneByOrFail({ id })
     },
 
-    async getMetaInfo({ id }: IdParams): Promise<UserMeta | null> {
-        const user = await this.get({ id })
-
-        if (isNil(user)) {
-            return null
-        }
+    async getMetaInfo({ id }: IdParams): Promise<UserMeta> {
+        const user = await this.getOneOrFail({ id })
 
         return {
             id: user.id,

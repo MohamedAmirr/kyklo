@@ -14,7 +14,7 @@ import {
 import { cn } from '@/lib/utils'
 
 import { Separator } from './seperator'
-import { TicketStatus } from '@pickup/shared'
+import { ComplaintStatus } from '@pickup/shared'
 
 type Props = {
     open: boolean
@@ -23,7 +23,7 @@ type Props = {
     customerRole: string
     ticketId: string
     category: string
-    status: TicketStatus
+    status: ComplaintStatus
 }
 
 export const TicketDetails = ({

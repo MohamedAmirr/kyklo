@@ -1,27 +1,16 @@
-import { ComplaintCategoriesEntity, ComplaintsEntity } from './complaint.entity'
 import { UserEntity } from '../user/user.entity'
 import { SchoolEntity } from '../school/school.entity'
 import { databaseConnection } from '../database/database-connection'
-import { puId, ComplaintStatus } from '@pickup/shared'
+import { complaintsService } from './complaint.service'
+import { CategoriesEntity } from '../category/category.entity'
 
 async function seedComplaints() {
-    const complaintCategoryRepo = databaseConnection().getRepository(
-        ComplaintCategoriesEntity
-    )
+    const categoryRepo = databaseConnection().getRepository(CategoriesEntity)
     const userRepo = databaseConnection().getRepository(UserEntity)
     const schoolRepo = databaseConnection().getRepository(SchoolEntity)
-    const complaintsRepo = databaseConnection().getRepository(ComplaintsEntity)
-
-    for (let i = 0; i < 5; i++) {
-        const complaintCategory = complaintCategoryRepo.create({
-            id: `sample-category-${i}`,
-            name: `Sample Category ${i}`,
-        })
-        await complaintCategoryRepo.save(complaintCategory)
-    }
 
     for (let i = 0; i < 10; i++) {
-        const randomCategory = await complaintCategoryRepo
+        const randomCategory = await categoryRepo
             .createQueryBuilder('category')
             .orderBy('RANDOM()')
             .limit(1)
@@ -47,18 +36,14 @@ async function seedComplaints() {
 
         const random = Math.floor(Math.random() * 1000)
 
-        const complaint = complaintsRepo.create({
-            id: puId(),
+        const complaint = await complaintsService.create({
             title: `Sample Complaint Title ${random}`,
-            status: i % 2 === 0 ? ComplaintStatus.OPEN : ComplaintStatus.CLOSED,
             description: `This is a sample description for complaint ${random}.`,
-            number: i + 1,
             schoolId: randomSchool.id,
             categoryId: randomCategory.id,
             reporterId: randomUser.id,
         })
 
-        await complaintsRepo.save(complaint)
         console.log(`Complaint ${random} created successfully:`, complaint)
     }
 }

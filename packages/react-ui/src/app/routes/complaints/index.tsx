@@ -1,8 +1,8 @@
-import { Complaint, ComplaintCategory, ComplaintStatus } from '@pickup/shared'
+import { CategoryType, Complaint, ComplaintEnriched, ComplaintStatus } from '@pickup/shared'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { t } from 'i18next'
-import { CheckIcon } from 'lucide-react'
+import { CheckIcon, User } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
@@ -18,28 +18,7 @@ import { formatUtils } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
 import { CreateComplaintDialog } from './create-complaint-dialog'
 import { complaintApi } from '@/lib/complaint-api'
-
-// TODO: get categories from backend
-const DEFAULT_CATEGORIES: ComplaintCategory[] = [
-    {
-        id: '1',
-        name: 'General',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString(),
-    },
-    {
-        id: '2',
-        name: 'Technical',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString(),
-    },
-    {
-        id: '3',
-        name: 'Account',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString(),
-    },
-]
+import { categoryApi } from '@/lib/category-api'
 
 export function ComplaintPage() {
     const [openSelectedTicket, setOpenSelectedTicket] = useState(false)
@@ -66,11 +45,16 @@ export function ComplaintPage() {
         },
     })
 
-    const columns: ColumnDef<RowDataWithActions<Complaint>>[] = [
+    const { data: categories, isLoading: isLoadingCategories } = useQuery({
+        queryKey: ['complaint-categories'],
+        queryFn: () => categoryApi.list({ type: CategoryType.COMPLAINT }),
+    })
+
+    const columns: ColumnDef<RowDataWithActions<ComplaintEnriched>>[] = [
         {
             accessorKey: 'id',
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title={t('       ')} />
+                <DataTableColumnHeader column={column} title={t('Complaint Id')} />
             ),
             cell: ({ row }) => (
                 <div className="text-left font-medium min-w-[150px]">
@@ -95,8 +79,9 @@ export function ComplaintPage() {
                 <DataTableColumnHeader column={column} title={t('Username')} />
             ),
             cell: ({ row }) => (
-                <div className="text-left font-medium min-w-[150px]">
-                    {row.getValue('username')}
+                <div className="flex text-left font-medium min-w-[150px] gap-2">
+                    <User className="w-4 h-4" />
+                    {row.original.user.firstName} {row.original.user.lastName}
                 </div>
             ),
         },
@@ -130,7 +115,7 @@ export function ComplaintPage() {
             ),
             cell: ({ row }) => (
                 <div className="text-left font-medium min-w-[150px]">
-                    {row.getValue('category')}
+                    {row.original.category.name}
                 </div>
             ),
         },
@@ -141,7 +126,7 @@ export function ComplaintPage() {
             {
                 render: () => {
                     return (
-                        <CreateComplaintDialog categories={DEFAULT_CATEGORIES} />
+                        <CreateComplaintDialog categories={categories?.data || []} />
                     )
                 },
             },
@@ -183,7 +168,7 @@ export function ComplaintPage() {
                 page={data?.data}
                 filters={filters}
                 bulkActions={bulkActions}
-                isLoading={isLoading}
+                isLoading={isLoading || isLoadingCategories}
                 onRowClick={handleRowOnClick}
             />
             {selectedRow && (

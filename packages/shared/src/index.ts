@@ -17,6 +17,7 @@ export * from './lib/student'
 export * from './lib/classroom'
 export * from './lib/api-response'
 export * from './lib/event'
+export * from './lib/category'
 export * from './lib/complaints'
 export * from './lib/classroom-members'
 // Look at https://github.com/sinclairzx81/typebox/issues/350

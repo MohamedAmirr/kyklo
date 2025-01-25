@@ -3,35 +3,15 @@ import { BaseColumnSchemaPart } from '../database/database-common'
 import {
     School,
     Complaint,
-    ComplaintCategory,
     ComplaintStatus,
     User,
+    Category,
 } from '@pickup/shared'
 
-export type ComplaintCategorySchema = ComplaintCategory & {
-    complaints: Complaint[]
-}
 
-export const ComplaintCategoriesEntity = new EntitySchema<ComplaintCategorySchema>({
-    name: 'complaint_categories',
-    columns: {
-        ...BaseColumnSchemaPart,
-        name: {
-            type: String,
-            unique: true,
-        },
-    },
-    relations: {
-        complaints: {
-            type: 'one-to-many',
-            target: 'complaint',
-            inverseSide: 'category',
-        },
-    },
-})
 
 export type ComplaintSchema = Complaint & {
-    category: ComplaintCategory
+    category: Category
     reporter: User
     school: School
 }
@@ -74,7 +54,7 @@ export const ComplaintsEntity = new EntitySchema<ComplaintSchema>({
     relations: {
         category: {
             type: 'many-to-one',
-            target: 'complaint_categories',
+            target: 'category',
             inverseSide: 'complaints',
             joinColumn: {
                 name: 'categoryId',

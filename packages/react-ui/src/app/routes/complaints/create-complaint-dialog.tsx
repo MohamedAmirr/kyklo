@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from '@/components/ui/use-toast'
 import { complaintApi } from '@/lib/complaint-api'
 import { useMutation } from '@tanstack/react-query'
-import { CreateComplaintRequestBody, ComplaintCategory } from '@pickup/shared'
+import { Category, CreateComplaintRequestBody } from '@pickup/shared'
 import {
     Select,
     SelectContent,
@@ -32,7 +32,7 @@ import {
 import { Plus } from 'lucide-react'
 
 type CreateComplaintDialogProps = {
-    categories: ComplaintCategory[]
+    categories: Category[]
 }
 
 export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps) {
@@ -64,6 +64,31 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
         },
     })
 
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        
+        const formData = form.getValues()
+        let hasError = false
+
+        if (!formData.title.trim()) {
+            form.setError('title', { message: t('Title is required') })
+            hasError = true
+        }
+        if (!formData.categoryId) {
+            form.setError('categoryId', { message: t('Category is required') })
+            hasError = true
+        }
+        if (!formData.description.trim()) {
+            form.setError('description', { message: t('Description is required') })
+            hasError = true
+        }
+
+        if (!hasError) {
+            form.handleSubmit(data => mutate(data))(e)
+        }
+    }
+
     return (
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
             <DialogTrigger asChild>
@@ -78,11 +103,7 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                 </DialogHeader>
                 <Form {...form}>
                     <form
-                        onSubmit={e => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            form.handleSubmit(data => mutate(data))(e)
-                        }}
+                        onSubmit={onSubmit}
                         className="flex flex-col gap-2"
                     >
                         <FormField
@@ -93,12 +114,20 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                                     <Label htmlFor="title">{t('Title')}</Label>
                                     <Input
                                         {...field}
-                                        required
                                         id="title"
                                         type="text"
                                         className="rounded-sm"
-                                        onChange={e => field.onChange(e)}
+                                        onChange={e => {
+                                            field.onChange(e)
+                                            form.clearErrors('title')
+                                        }}
+                                        placeholder={t('Enter a title')}
                                     />
+                                    {form.formState.errors.title && (
+                                        <p className="text-sm text-red-500">
+                                            {form.formState.errors.title.message}
+                                        </p>
+                                    )}
                                 </FormItem>
                             )}
                         />
@@ -107,11 +136,12 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <Label htmlFor="categoryId">
-                                        {t('Category')}
-                                    </Label>
+                                    <Label htmlFor="categoryId">{t('Category')}</Label>
                                     <Select
-                                        onValueChange={field.onChange}
+                                        onValueChange={(value) => {
+                                            field.onChange(value)
+                                            form.clearErrors('categoryId')
+                                        }}
                                         defaultValue={field.value}
                                     >
                                         <SelectTrigger>
@@ -137,6 +167,11 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
+                                    {form.formState.errors.categoryId && (
+                                        <p className="text-sm text-red-500">
+                                            {form.formState.errors.categoryId.message}
+                                        </p>
+                                    )}
                                 </FormItem>
                             )}
                         />
@@ -145,23 +180,29 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <Label htmlFor="description">
-                                        {t('Description')}
-                                    </Label>
+                                    <Label htmlFor="description">{t('Description')}</Label>
                                     <Textarea
                                         {...field}
-                                        required
                                         id="description"
                                         className="rounded-sm"
-                                        onChange={e => field.onChange(e)}
+                                        onChange={e => {
+                                            field.onChange(e)
+                                            form.clearErrors('description')
+                                        }}
+                                        placeholder={t('Enter a description')}
                                     />
+                                    {form.formState.errors.description && (
+                                        <p className="text-sm text-red-500">
+                                            {form.formState.errors.description.message}
+                                        </p>
+                                    )}
                                 </FormItem>
                             )}
                         />
 
                         <DialogFooter>
                             <DialogClose asChild>
-                                <Button variant="ghost">{t('Cancel')}</Button>
+                                <Button variant="outline">{t('Cancel')}</Button>
                             </DialogClose>
                             <Button type="submit">{t('Submit')}</Button>
                         </DialogFooter>

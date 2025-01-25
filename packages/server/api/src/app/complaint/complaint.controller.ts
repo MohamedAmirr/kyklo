@@ -12,13 +12,14 @@ const DEFAULT_PAGING_LIMIT = 10
 export const complaintsController: FastifyPluginAsyncTypebox = async app => {
     app.get('/', ListComplaintsParams, async request => {
         const schoolId = request.principal.school.id
-        return await complaintsService.list({
+        const complaints = await complaintsService.list({
             schoolId,
             cursor: request.query.cursor ?? null,
             limit: request.query.limit ?? DEFAULT_PAGING_LIMIT,
             status: request.query.status ?? null,
             title: request.query.title ?? null,
         })
+        return complaints
     })
 
     app.post('/', CreateComplaintParams, async request => {
@@ -27,8 +28,9 @@ export const complaintsController: FastifyPluginAsyncTypebox = async app => {
             description: request.body.description,
             categoryId: request.body.categoryId,
             schoolId: request.principal.school.id,
+            reporterId: request.principal.id,
         })
-        return { message: 'Ticket created' }
+        return { message: 'Complaint created' }
     })
 
     app.post('/:id', UpdateComplaintParams, async request => {
@@ -39,7 +41,7 @@ export const complaintsController: FastifyPluginAsyncTypebox = async app => {
             categoryId: request.body.categoryId,
         })
 
-        return { message: 'Ticket updated' }
+        return { message: 'Complaint updated' }
     })
 }
 

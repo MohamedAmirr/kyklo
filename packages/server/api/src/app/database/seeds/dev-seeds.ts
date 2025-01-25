@@ -1,10 +1,10 @@
 import { logger, SharedSystemProp, system } from '@pickup/server-shared'
 import {
+    CategoryType,
     PuEnvironment,
     puId,
     SchoolGrades,
     SchoolSemesters,
-    UserStatus,
     UserType,
 } from '@pickup/shared'
 import { databaseConnection } from '../database-connection'
@@ -15,6 +15,7 @@ import { StudentEntity } from '../../student/student.entity'
 import { ClassroomEntity } from '../../classroom/classroom.entity'
 import { ClassroomMemberEntity } from '../../classroom-members/classroom-member.entity'
 import { seedDevComplaints } from '../../complaint/complaint.seeder'
+import { categoryService } from '../../category/category.service'
 
 const DEV_DATA_SEEDED_FLAG = 'DEV_DATA_SEEDED'
 
@@ -107,6 +108,31 @@ const seedDevUser = async (): Promise<void> => {
         schoolId: school.id,
     })
     await classroomMemberRepo.save(classroomMemberTeacher)
+
+    const categories = [
+        {
+            name: 'Homework Issues',
+            type: CategoryType.COMPLAINT,
+            schoolId: school.id,
+        },
+        {
+            name: 'Classroom Problems',
+            type: CategoryType.COMPLAINT,
+            schoolId: school.id,
+        },
+        {
+            name: 'Bullying',
+            type: CategoryType.COMPLAINT,
+            schoolId: school.id,
+        },
+        {
+            name: 'Other',
+            type: CategoryType.COMPLAINT,
+            schoolId: school.id,
+        }
+    ];
+
+    await Promise.all(categories.map(category => categoryService.create(category)));
 
     logger.info(
         { name: 'seedDevStudentUser' },
