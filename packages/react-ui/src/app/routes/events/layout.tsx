@@ -1,5 +1,6 @@
 import { t } from "i18next";
 import { Calendar, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 import { PgaeHeader } from "@/app/components/page-layout/materials/header";
 import EventsPage from ".";
@@ -8,6 +9,12 @@ import { Button } from "@/components/ui/button";
 const iconSize = 20;
 
 export default function EventPageLayout() {
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleAddEvent = () => {
+    navigate("/events/create");
+  };
+
   return (
     <div className="flex flex-col w-full">
       <PgaeHeader>
@@ -21,7 +28,7 @@ export default function EventPageLayout() {
 
           <div className="grow"></div>
 
-          <Button>
+          <Button onClick={handleAddEvent}>
             <Plus size={16} className="mr-2" />
             <span>New Event</span>
           </Button>

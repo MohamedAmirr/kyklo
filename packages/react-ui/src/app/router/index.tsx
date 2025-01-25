@@ -25,6 +25,7 @@ import { ProjectRouterWrapper } from "./classroom-route-wrapper";
 import EventsPage from "../routes/events";
 import EventDetails from "../routes/events/event-details";
 import EventPageLayout from "../routes/events/layout";
+import CreateEventPage from "../routes/events/create-event";
 
 const SettingsRerouter = () => {
   const { hash } = useLocation();
@@ -68,10 +69,22 @@ const routes = [
     ),
   },
   {
+    path: "/events/create",
+    element: (
+      <DashboardContainer>
+        <PageTitle title="Create Event">
+          <CreateEventPage />
+        </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
     path: "/materials",
     element: (
       <DashboardContainer>
-        <MaterialsPageLayout />
+        <PageTitle title="Materials">
+          <MaterialsPageLayout />
+        </PageTitle>
       </DashboardContainer>
     ),
   },

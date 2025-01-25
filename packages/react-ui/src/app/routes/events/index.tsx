@@ -68,8 +68,7 @@ const EventsPage: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-col items-center p-4 min-h-screen w-full">
-        {/* Full-width grid container */}
+      <div className="flex flex-col items-center min-h-screen w-full">
         <div className="w-full max-w-screen-2xl mx-auto">
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {events.map((event) => (
