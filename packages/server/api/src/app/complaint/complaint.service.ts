@@ -75,7 +75,7 @@ export const complaintsService = {
         }
 
         if (title) {
-            query = query.andWhere('complaint.title ILIKE :title', { title })
+            query = query.andWhere('complaint.title ILIKE :title', { title: `%${title}%` })
         }
 
         const { data, cursor: newCursor } = await paginator.paginate(query)

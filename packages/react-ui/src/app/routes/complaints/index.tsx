@@ -48,6 +48,7 @@ export function ComplaintPage() {
     const { data: categories, isLoading: isLoadingCategories } = useQuery({
         queryKey: ['complaint-categories'],
         queryFn: () => categoryApi.list({ type: CategoryType.COMPLAINT }),
+        staleTime: 0,
     })
 
     const columns: ColumnDef<RowDataWithActions<ComplaintEnriched>>[] = [
@@ -131,7 +132,7 @@ export function ComplaintPage() {
                 },
             },
         ],
-        [t]
+        [categories]
     )
 
     const handleRowOnClick = (row: Complaint) => {
