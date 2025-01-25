@@ -1,5 +1,29 @@
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import * as React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { format } from "date-fns";
+import { Input } from "@/components/ui/input";
 
 export default function AddEventPage() {
   const navigate = useNavigate();
@@ -17,13 +41,14 @@ export default function AddEventPage() {
     console.log("Event Details:", eventDetails);
     navigate("/events"); // Navigate back to the events page
   };
+  const [date, setDate] = React.useState<Date>();
 
-//   const handleImageUpload = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       setEventDetails({ ...eventDetails, image: file });
-//     }
-//   };
+  //   const handleImageUpload = (e) => {
+  //     const file = e.target.files[0];
+  //     if (file) {
+  //       setEventDetails({ ...eventDetails, image: file });
+  //     }
+  //   };
 
   return (
     <div className="flex w-full items-center justify-center min-h-screen">
@@ -32,11 +57,13 @@ export default function AddEventPage() {
         <div className="space-y-4">
           {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium mb-1">Event Image</label>
+            <label className="block text-sm font-medium mb-1">
+              Event Image
+            </label>
             <input
               type="file"
               accept="image/*"
-            //   onChange={handleImageUpload}
+              //   onChange={handleImageUpload}
               className="w-full p-2 border rounded"
             />
             {eventDetails.image && (
@@ -51,72 +78,66 @@ export default function AddEventPage() {
           </div>
 
           {/* Title */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Title</label>
-            <input
-              type="text"
-              value={eventDetails.title}
-              onChange={(e) =>
-                setEventDetails({ ...eventDetails, title: e.target.value })
-              }
-              className="w-full p-2 border rounded"
-            />
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="title">Title</Label>
+            <Input type="text" id="title" placeholder="Title" />
           </div>
 
           {/* Date */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Date</label>
-            <input
-              type="date"
-              value={eventDetails.date}
-              onChange={(e) =>
-                setEventDetails({ ...eventDetails, date: e.target.value })
-              }
-              className="w-full p-2 border rounded"
-            />
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="date">Date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon />
+                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0" align="center">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           {/* Description */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Description</label>
-            <textarea
-              value={eventDetails.description}
-              onChange={(e) =>
-                setEventDetails({ ...eventDetails, description: e.target.value })
-              }
-              className="w-full p-2 border rounded"
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              placeholder="Type event description here."
+              id="description"
             />
           </div>
 
           {/* Payment Method Dropdown */}
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Payment Method
-            </label>
-            <select
-              value={eventDetails.paymentMethod}
-              onChange={(e) =>
-                setEventDetails({ ...eventDetails, paymentMethod: e.target.value })
-              }
-              className="w-full p-2 border rounded"
-            >
-              <option value="Cash">Cash</option>
-              <option value="Card">Card</option>
-              <option value="Wallet">Wallet</option>
-            </select>
-          </div>
+          <Select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a payment method" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Payments</SelectLabel>
+                <SelectItem value="cash">Cash</SelectItem>
+                <SelectItem value="card">Card</SelectItem>
+                <SelectItem value="wallet">Wallet</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
 
           {/* Cost */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Cost</label>
-            <input
-              type="number"
-              value={eventDetails.cost}
-              onChange={(e) =>
-                setEventDetails({ ...eventDetails, cost: e.target.value })
-              }
-              className="w-full p-2 border rounded"
-            />
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="cost">Cost</Label>
+            <Input type="number" id="cost" placeholder="Cost" />
           </div>
 
           {/* Save Button */}
