@@ -1,18 +1,18 @@
 import { FastifyPluginAsyncTypebox, Type } from '@fastify/type-provider-typebox'
-import { ticketsService } from './tickets.service'
+import { complaintsService } from './complaint.service'
 import {
-    CreateTicketRequestBody,
+    CreateComplaintRequestBody,
     PrincipalType,
-    ListTicketsRequestQuery,
-    UpdateTicketRequestBody,
+    ListComplaintsRequestQuery,
+    UpdateComplaintRequestBody,
 } from '@pickup/shared'
 
 const DEFAULT_PAGING_LIMIT = 10
 
-export const ticketsController: FastifyPluginAsyncTypebox = async app => {
-    app.get('/', ListTicketsParams, async request => {
+export const complaintsController: FastifyPluginAsyncTypebox = async app => {
+    app.get('/', ListComplaintsParams, async request => {
         const schoolId = request.principal.school.id
-        return await ticketsService.list({
+        return await complaintsService.list({
             schoolId,
             cursor: request.query.cursor ?? null,
             limit: request.query.limit ?? DEFAULT_PAGING_LIMIT,
@@ -21,8 +21,8 @@ export const ticketsController: FastifyPluginAsyncTypebox = async app => {
         })
     })
 
-    app.post('/', CreateTicketParams, async request => {
-        await ticketsService.create({
+    app.post('/', CreateComplaintParams, async request => {
+        await complaintsService.create({
             title: request.body.title,
             description: request.body.description,
             categoryId: request.body.categoryId,
@@ -31,8 +31,8 @@ export const ticketsController: FastifyPluginAsyncTypebox = async app => {
         return { message: 'Ticket created' }
     })
 
-    app.post('/:id', UpdateTicketParams, async request => {
-        await ticketsService.update({
+    app.post('/:id', UpdateComplaintParams, async request => {
+        await complaintsService.update({
             id: request.params.id,
             schoolId: request.principal.school.id,
             status: request.body.status,
@@ -43,25 +43,25 @@ export const ticketsController: FastifyPluginAsyncTypebox = async app => {
     })
 }
 
-const ListTicketsParams = {
+const ListComplaintsParams = {
     config: {
         allowedPrincipals: [PrincipalType.USER, PrincipalType.SERVICE],
     },
     schema: {
-        querystring: ListTicketsRequestQuery,
+        querystring: ListComplaintsRequestQuery,
     },
 }
 
-const CreateTicketParams = {
+const CreateComplaintParams = {
     config: {
         allowedPrincipals: [PrincipalType.USER, PrincipalType.SERVICE],
     },
     schema: {
-        body: CreateTicketRequestBody,
+        body: CreateComplaintRequestBody,
     },
 }
 
-const UpdateTicketParams = {
+const UpdateComplaintParams = {
     config: {
         allowedPrincipals: [PrincipalType.USER, PrincipalType.SERVICE],
     },
@@ -69,6 +69,6 @@ const UpdateTicketParams = {
         params: Type.Object({
             id: Type.String(),
         }),
-        body: UpdateTicketRequestBody,
+        body: UpdateComplaintRequestBody,
     },
 }

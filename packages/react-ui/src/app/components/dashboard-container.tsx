@@ -4,7 +4,7 @@ import {
     BookOpen,
     CalendarRange,
     Home,
-    MessageCircleQuestion,
+    MailWarning,
     Wrench,
 } from 'lucide-react'
 import { Navigate } from 'react-router-dom'
@@ -41,9 +41,9 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
             icon: CalendarRange,
         },
         {
-            to: '/tickets',
-            label: t('Tickets'),
-            icon: MessageCircleQuestion,
+            to: '/complaints',
+            label: t('Complaints'),
+            icon: MailWarning,
         },
         {
             to: '/settings',

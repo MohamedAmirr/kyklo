@@ -17,9 +17,9 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from '@/components/ui/use-toast'
-import { ticketApi } from '@/lib/ticket-api'
+import { complaintApi } from '@/lib/complaint-api'
 import { useMutation } from '@tanstack/react-query'
-import { CreateTicketRequestBody, TicketCategory } from '@pickup/shared'
+import { CreateComplaintRequestBody, ComplaintCategory } from '@pickup/shared'
 import {
     Select,
     SelectContent,
@@ -31,11 +31,11 @@ import {
 } from '@/components/ui/select'
 import { Plus } from 'lucide-react'
 
-type CreateTicketDialogProps = {
-    categories: TicketCategory[]
+type CreateComplaintDialogProps = {
+    categories: ComplaintCategory[]
 }
 
-export function CreateTicketDialog({ categories }: CreateTicketDialogProps) {
+export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps) {
     const [openDialog, setOpenDialog] = useState(false)
     const { t } = useTranslation()
     const form = useForm<{
@@ -50,11 +50,11 @@ export function CreateTicketDialog({ categories }: CreateTicketDialogProps) {
         },
     })
     const { mutate } = useMutation({
-        mutationFn: (data: CreateTicketRequestBody) => ticketApi.create(data),
+        mutationFn: (data: CreateComplaintRequestBody) => complaintApi.create(data),
         onSuccess: () => {
             toast({
                 title: t('Success'),
-                description: t('Ticket Created Successfully'),
+                description: t('Complaint Created Successfully'),
                 duration: 3000,
             })
             setOpenDialog(false)
@@ -69,12 +69,12 @@ export function CreateTicketDialog({ categories }: CreateTicketDialogProps) {
             <DialogTrigger asChild>
                 <Button size="sm" className="flex items-center gap-2">
                     <Plus size={16} />
-                    {t('New Ticket')}
+                    {t('New Complaint')}
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{t('Create New Ticket')}</DialogTitle>
+                    <DialogTitle>{t('Create New Complaint')}</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form

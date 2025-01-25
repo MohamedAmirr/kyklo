@@ -1,27 +1,27 @@
-import { TicketCategoriesEntity, TicketsEntity } from './tickets.entity'
+import { ComplaintCategoriesEntity, ComplaintsEntity } from './complaint.entity'
 import { UserEntity } from '../user/user.entity'
 import { SchoolEntity } from '../school/school.entity'
 import { databaseConnection } from '../database/database-connection'
-import { puId, TicketStatus } from '@pickup/shared'
+import { puId, ComplaintStatus } from '@pickup/shared'
 
-async function seedTickets() {
-    const ticketCategoryRepo = databaseConnection().getRepository(
-        TicketCategoriesEntity
+async function seedComplaints() {
+    const complaintCategoryRepo = databaseConnection().getRepository(
+        ComplaintCategoriesEntity
     )
     const userRepo = databaseConnection().getRepository(UserEntity)
     const schoolRepo = databaseConnection().getRepository(SchoolEntity)
-    const ticketsRepo = databaseConnection().getRepository(TicketsEntity)
+    const complaintsRepo = databaseConnection().getRepository(ComplaintsEntity)
 
     for (let i = 0; i < 5; i++) {
-        const ticketCategory = ticketCategoryRepo.create({
+        const complaintCategory = complaintCategoryRepo.create({
             id: `sample-category-${i}`,
             name: `Sample Category ${i}`,
         })
-        await ticketCategoryRepo.save(ticketCategory)
+        await complaintCategoryRepo.save(complaintCategory)
     }
 
     for (let i = 0; i < 10; i++) {
-        const randomCategory = await ticketCategoryRepo
+        const randomCategory = await complaintCategoryRepo
             .createQueryBuilder('category')
             .orderBy('RANDOM()')
             .limit(1)
@@ -47,26 +47,26 @@ async function seedTickets() {
 
         const random = Math.floor(Math.random() * 1000)
 
-        const ticket = ticketsRepo.create({
+        const complaint = complaintsRepo.create({
             id: puId(),
-            title: `Sample Ticket Title ${random}`,
-            status: i % 2 === 0 ? TicketStatus.OPEN : TicketStatus.CLOSED,
-            description: `This is a sample description for ticket ${random}.`,
+            title: `Sample Complaint Title ${random}`,
+            status: i % 2 === 0 ? ComplaintStatus.OPEN : ComplaintStatus.CLOSED,
+            description: `This is a sample description for complaint ${random}.`,
             number: i + 1,
             schoolId: randomSchool.id,
             categoryId: randomCategory.id,
             reporterId: randomUser.id,
         })
 
-        await ticketsRepo.save(ticket)
-        console.log(`Ticket ${random} created successfully:`, ticket)
+        await complaintsRepo.save(complaint)
+        console.log(`Complaint ${random} created successfully:`, complaint)
     }
 }
 
-export async function seedDevTickets() {
+export async function seedDevComplaints() {
     try {
-        await seedTickets()
+        await seedComplaints()
     } catch (error) {
-        console.error('Error during ticket seeding:', error)
+        console.error('Error during complaint seeding:', error)
     }
 }

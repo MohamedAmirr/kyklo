@@ -4,13 +4,13 @@ import {
     puId,
     SchoolId,
     SeekPage,
-    Ticket,
-    TicketCategoryId,
-    TicketStatus,
-    TicketId,
+    Complaint,
+    ComplaintCategoryId,
+    ComplaintStatus,
+    ComplaintId,
 } from '@pickup/shared'
 import { repoFactory } from '../core/db/repo-factory'
-import { TicketsEntity } from './tickets.entity'
+import { ComplaintsEntity } from './complaint.entity'
 import { paginationHelper } from '../helper/pagination/pagination-utils'
 import { buildPaginator } from '../helper/pagination/build-paginator'
 import dayjs from 'dayjs'
@@ -19,28 +19,28 @@ import { Order } from '../helper/pagination/paginator'
 
 dayjs.extend(duration)
 
-export const ticketsRepo = repoFactory(TicketsEntity)
+export const complaintsRepo = repoFactory(ComplaintsEntity)
 
-export const ticketsService = {
+export const complaintsService = {
     async create({
         title,
         description,
         categoryId,
         schoolId,
-    }: CreateParams): Promise<Ticket> {
-        const number = (await ticketsRepo().count()) + 1
-        const ticket = ticketsRepo().create({
+    }: CreateParams): Promise<Complaint> {
+        const number = (await complaintsRepo().count()) + 1
+        const complaint = complaintsRepo().create({
             id: puId(),
             title,
             description,
             number,
             categoryId,
             schoolId,
-            status: TicketStatus.OPEN,
+            status: ComplaintStatus.OPEN,
             created: dayjs().toISOString(),
             updated: dayjs().toISOString(),
         })
-        return ticketsRepo().save(ticket)
+        return complaintsRepo().save(complaint)
     },
     async list({
         schoolId,
@@ -48,10 +48,10 @@ export const ticketsService = {
         limit,
         status,
         title,
-    }: ListParams): Promise<SeekPage<Ticket>> {
+    }: ListParams): Promise<SeekPage<Complaint>> {
         const decodedCursor = paginationHelper.decodeCursor(cursor)
-        const paginator = buildPaginator<Ticket>({
-            entity: TicketsEntity,
+        const paginator = buildPaginator<Complaint>({
+            entity: ComplaintsEntity,
             query: {
                 limit: limit,
                 order: Order.ASC,
@@ -60,35 +60,35 @@ export const ticketsService = {
             },
         })
 
-        let query = ticketsRepo()
-            .createQueryBuilder('ticket')
+        let query = complaintsRepo()
+            .createQueryBuilder('complaint')
             .where({ schoolId })
 
         if (status) {
-            query = query.andWhere('ticket.status IN (:...status)', { status })
+            query = query.andWhere('complaint.status IN (:...status)', { status })
         }
 
         if (title) {
-            query = query.andWhere('ticket.title ILIKE :title', { title })
+            query = query.andWhere('complaint.title ILIKE :title', { title })
         }
 
         const { data, cursor: newCursor } = await paginator.paginate(query)
-        return paginationHelper.createPage<Ticket>(data, newCursor)
+        return paginationHelper.createPage<Complaint>(data, newCursor)
     },
     async update({
         id,
         schoolId,
         status,
         categoryId,
-    }: UpdateParams): Promise<Ticket> {
-        await ticketsRepo().update(
+    }: UpdateParams): Promise<Complaint> {
+        await complaintsRepo().update(
             { id, schoolId },
             {
                 ...spreadIfDefined('status', status),
                 ...spreadIfDefined('categoryId', categoryId),
             }
         )
-        return ticketsRepo().findOneByOrFail({ id, schoolId })
+        return complaintsRepo().findOneByOrFail({ id, schoolId })
     },
 }
 
@@ -96,20 +96,20 @@ type ListParams = {
     schoolId: SchoolId
     cursor: Cursor | null
     limit: number
-    status: TicketStatus[] | null
+    status: ComplaintStatus[] | null
     title: string | null
 }
 
 type CreateParams = {
     title: string
     description: string
-    categoryId: TicketCategoryId
+    categoryId: ComplaintCategoryId
     schoolId: SchoolId
 }
 
 type UpdateParams = {
-    id: TicketId
+    id: ComplaintId
     schoolId: SchoolId
-    status?: TicketStatus
-    categoryId?: TicketCategoryId
+    status?: ComplaintStatus
+    categoryId?: ComplaintCategoryId
 }

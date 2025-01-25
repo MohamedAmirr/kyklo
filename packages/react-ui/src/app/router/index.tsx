@@ -23,7 +23,7 @@ import { SignInPage } from '../routes/sign-in'
 import { ProjectRouterWrapper } from './classroom-route-wrapper'
 import EventDetails from '../routes/events/event-details'
 import EventPageLayout from '../routes/events/layout'
-import TicketLayout from '../routes/tickets/ticket-layout'
+import ComplaintLayout from '../routes/complaints/complaint-layout'
 import AddEventPage from '../routes/events/create-event'
 
 const SettingsRerouter = () => {
@@ -90,11 +90,11 @@ const routes = [
         ),
     },
     {
-        path: '/tickets',
+        path: '/complaints',
         element: (
             <DashboardContainer>
-                <PageTitle title="Tickets">
-                    <TicketLayout />
+                <PageTitle title="Complaints">
+                    <ComplaintLayout />
                 </PageTitle>
             </DashboardContainer>
         ),

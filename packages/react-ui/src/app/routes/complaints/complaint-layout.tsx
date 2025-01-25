@@ -6,39 +6,39 @@ import SidebarLayout, {
     SidebarItem,
 } from '@/app/components/sidebar-layout'
 
-import { TicketHeader } from './ticket-header'
-import { TicketPage } from '.'
+import { ComplaintHeader } from './complaint-header'
+import { ComplaintPage } from '.'
 
 const iconSize = 20
 
-export default function TicketLayout() {
+export default function ComplaintLayout() {
     const sidebarNavItems: SidebarItem[] = [
         {
-            title: t('Ticket List'),
-            href: '/tickets/list',
+            title: t('Complaint List'),
+            href: '/complaints/list',
             icon: <Settings size={iconSize} />,
         },
         {
             title: t('Support Category'),
-            href: '/tickets/category',
+            href: '/complaints/category',
             icon: <SunMoon size={iconSize} />,
         },
     ]
 
     const sidebarNavContent: SideBarContent[] = [
         {
-            href: '/tickets/list',
-            content: <TicketPage />,
+            href: '/complaints/list',
+            content: <ComplaintPage />,
         },
         {
-            href: '/tickets/category',
+            href: '/complaints/category',
             content: <div>Litsting and creating a new category</div>,
         },
     ]
 
     return (
         <div className="flex flex-col w-full">
-            <TicketHeader />
+            <ComplaintHeader />
             <SidebarLayout
                 items={sidebarNavItems}
                 content={sidebarNavContent}

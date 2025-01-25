@@ -2,18 +2,18 @@ import { EntitySchema } from 'typeorm'
 import { BaseColumnSchemaPart } from '../database/database-common'
 import {
     School,
-    Ticket,
-    TicketCategory,
-    TicketStatus,
+    Complaint,
+    ComplaintCategory,
+    ComplaintStatus,
     User,
 } from '@pickup/shared'
 
-export type TicketCategorySchema = TicketCategory & {
-    tickets: Ticket[]
+export type ComplaintCategorySchema = ComplaintCategory & {
+    complaints: Complaint[]
 }
 
-export const TicketCategoriesEntity = new EntitySchema<TicketCategorySchema>({
-    name: 'ticket_categories',
+export const ComplaintCategoriesEntity = new EntitySchema<ComplaintCategorySchema>({
+    name: 'complaint_categories',
     columns: {
         ...BaseColumnSchemaPart,
         name: {
@@ -22,22 +22,22 @@ export const TicketCategoriesEntity = new EntitySchema<TicketCategorySchema>({
         },
     },
     relations: {
-        tickets: {
+        complaints: {
             type: 'one-to-many',
-            target: 'ticket',
+            target: 'complaint',
             inverseSide: 'category',
         },
     },
 })
 
-export type TicketSchema = Ticket & {
-    category: TicketCategory
+export type ComplaintSchema = Complaint & {
+    category: ComplaintCategory
     reporter: User
     school: School
 }
 
-export const TicketsEntity = new EntitySchema<TicketSchema>({
-    name: 'ticket',
+export const ComplaintsEntity = new EntitySchema<ComplaintSchema>({
+    name: 'complaint',
     columns: {
         ...BaseColumnSchemaPart,
         title: {
@@ -46,8 +46,8 @@ export const TicketsEntity = new EntitySchema<TicketSchema>({
         },
         status: {
             type: 'enum',
-            enum: TicketStatus,
-            default: TicketStatus.OPEN,
+            enum: ComplaintStatus,
+            default: ComplaintStatus.OPEN,
             nullable: false,
         },
         number: {
@@ -74,29 +74,29 @@ export const TicketsEntity = new EntitySchema<TicketSchema>({
     relations: {
         category: {
             type: 'many-to-one',
-            target: 'ticket_categories',
-            inverseSide: 'tickets',
+            target: 'complaint_categories',
+            inverseSide: 'complaints',
             joinColumn: {
                 name: 'categoryId',
-                foreignKeyConstraintName: 'fk_ticket_category_id',
+                foreignKeyConstraintName: 'fk_complaint_category_id',
             },
         },
         reporter: {
             type: 'many-to-one',
             target: 'user',
-            inverseSide: 'tickets',
+            inverseSide: 'complaints',
             joinColumn: {
                 name: 'reporterId',
-                foreignKeyConstraintName: 'fk_ticket_reporter_id',
+                foreignKeyConstraintName: 'fk_complaint_reporter_id',
             },
         },
         school: {
             type: 'many-to-one',
             target: 'school',
-            inverseSide: 'tickets',
+            inverseSide: 'complaints',
             joinColumn: {
                 name: 'schoolId',
-                foreignKeyConstraintName: 'fk_ticket_school_id',
+                foreignKeyConstraintName: 'fk_complaint_school_id',
             },
         },
     },

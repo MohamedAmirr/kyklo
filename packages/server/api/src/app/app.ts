@@ -22,7 +22,7 @@ import addGlobalResponseFormat from './core/response/response-hook'
 import { eventModule } from './event/event.module'
 import { userModule } from './user/user.module'
 import { classroomMemberModule } from './classroom-members/classroom-member.module'
-import { ticketsModule } from './tickets/tickets.module'
+import { complaintsModule } from './complaint/complaint.module'
 
 export const setupApp = async (
     app: FastifyInstance
@@ -70,7 +70,7 @@ export const setupApp = async (
     app.addHook('preHandler', securityHandlerChain)
 
     await app.register(openapiModule)
-    await app.register(ticketsModule)
+    await app.register(complaintsModule)
     await app.register(flagModule)
     await app.register(authenticationModule)
     await app.register(classroomModule)

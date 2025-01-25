@@ -1,4 +1,4 @@
-import { Ticket, TicketCategory, TicketStatus } from '@pickup/shared'
+import { Complaint, ComplaintCategory, ComplaintStatus } from '@pickup/shared'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { t } from 'i18next'
@@ -14,13 +14,13 @@ import {
     RowDataWithActions,
 } from '@/components/ui/data-table'
 import TicketDetails from '@/components/ui/ticket-details'
-import { ticketApi } from '@/lib/ticket-api'
 import { formatUtils } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
-import { CreateTicketDialog } from './create-ticket-dialog'
+import { CreateComplaintDialog } from './create-complaint-dialog'
+import { complaintApi } from '@/lib/complaint-api'
 
 // TODO: get categories from backend
-const DEFAULT_CATEGORIES: TicketCategory[] = [
+const DEFAULT_CATEGORIES: ComplaintCategory[] = [
     {
         id: '1',
         name: 'General',
@@ -41,23 +41,23 @@ const DEFAULT_CATEGORIES: TicketCategory[] = [
     },
 ]
 
-export function TicketPage() {
+export function ComplaintPage() {
     const [openSelectedTicket, setOpenSelectedTicket] = useState(false)
-    const [selectedRow, setSelectedRow] = useState<Ticket | null>(null)
+    const [selectedRow, setSelectedRow] = useState<Complaint | null>(null)
 
     const [searchParams] = useSearchParams()
 
     const { data, isLoading } = useQuery({
-        queryKey: ['tickets', searchParams.toString()],
+        queryKey: ['complaints', searchParams.toString()],
         staleTime: 0,
         queryFn: () => {
             const cursor = searchParams.get(CURSOR_QUERY_PARAM) ?? undefined
-            const status = searchParams.getAll('status') as TicketStatus[];
+            const status = searchParams.getAll('status') as ComplaintStatus[];
             const title = searchParams.get('title') ?? undefined;
             const limit = searchParams.get(LIMIT_QUERY_PARAM)
                 ? parseInt(searchParams.get(LIMIT_QUERY_PARAM)!)
                 : 10
-            return ticketApi.list({
+            return complaintApi.list({
                 cursor,
                 limit,
                 status,
@@ -66,11 +66,11 @@ export function TicketPage() {
         },
     })
 
-    const columns: ColumnDef<RowDataWithActions<Ticket>>[] = [
+    const columns: ColumnDef<RowDataWithActions<Complaint>>[] = [
         {
             accessorKey: 'id',
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title={t('Ticket ID')} />
+                <DataTableColumnHeader column={column} title={t('       ')} />
             ),
             cell: ({ row }) => (
                 <div className="text-left font-medium min-w-[150px]">
@@ -136,12 +136,12 @@ export function TicketPage() {
         },
     ]
 
-    const bulkActions: BulkAction<Ticket>[] = useMemo(
+    const bulkActions: BulkAction<Complaint>[] = useMemo(
         () => [
             {
                 render: () => {
                     return (
-                        <CreateTicketDialog categories={DEFAULT_CATEGORIES} />
+                        <CreateComplaintDialog categories={DEFAULT_CATEGORIES} />
                     )
                 },
             },
@@ -149,7 +149,7 @@ export function TicketPage() {
         [t]
     )
 
-    const handleRowOnClick = (row: Ticket) => {
+    const handleRowOnClick = (row: Complaint) => {
         setSelectedRow(row)
         setOpenSelectedTicket(true)
     }
@@ -166,7 +166,7 @@ export function TicketPage() {
             type: 'select',
             title: t('Status'),
             accessorKey: 'status',
-            options: Object.values(TicketStatus).map(status => {
+            options: Object.values(ComplaintStatus).map(status => {
                 return {
                     label: formatUtils.convertEnumToHumanReadable(status),
                     value: status,

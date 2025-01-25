@@ -21,9 +21,9 @@ import { EventEntity } from '../event/event.entity'
 import { UserEntity } from '../user/user.entity'
 import { SchoolEntity } from '../school/school.entity'
 import {
-    TicketCategoriesEntity,
-    TicketsEntity,
-} from '../tickets/tickets.entity'
+    ComplaintCategoriesEntity,
+    ComplaintsEntity,
+} from '../complaint/complaint.entity'
 import { ClassroomMemberEntity } from '../classroom-members/classroom-member.entity'
 
 function getEntities(): EntitySchema<unknown>[] {
@@ -37,8 +37,8 @@ function getEntities(): EntitySchema<unknown>[] {
         ClassroomMemberEntity,
         StudentEntity,
         EventEntity,
-        TicketCategoriesEntity,
-        TicketsEntity,
+        ComplaintCategoriesEntity,
+        ComplaintsEntity,
     ]
 
     switch (edition) {
