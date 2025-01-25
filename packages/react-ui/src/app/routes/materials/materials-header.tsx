@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 
-interface PgaeHeaderProps {
+interface PageHeaderProps {
   children: ReactNode;
 }
 
-export const PgaeHeader: React.FC<PgaeHeaderProps> = ({ children }) => {
+export const PageHeader: React.FC<PageHeaderProps> = ({ children }) => {
   return (
     <div className="flex h-[50px] items-center mb-5">
       {children}

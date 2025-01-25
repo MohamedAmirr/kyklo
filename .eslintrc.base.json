@@ -18,18 +18,23 @@
                 }
               ]
             }
-          ]
+          ],
+            "indent": ["error",4,{"SwitchCase": 1}]
         }
       },
       {
         "files": ["*.ts", "*.tsx"],
         "extends": ["plugin:@nx/typescript"],
-        "rules": {}
+          "rules": {
+              "indent": ["error", 4, { "SwitchCase": 1 }]
+          }
       },
       {
         "files": ["*.js", "*.jsx"],
         "extends": ["plugin:@nx/javascript"],
-        "rules": {}
+          "rules": {
+              "indent": ["error", 4, { "SwitchCase": 1 }]
+          }
       }
     ]
   }

@@ -1,4 +1,4 @@
-import { User, School } from '@pickup/shared'
+import { School, User } from '@pickup/shared'
 import { EntitySchema } from 'typeorm'
 import { BaseColumnSchemaPart } from '../database/database-common'
 

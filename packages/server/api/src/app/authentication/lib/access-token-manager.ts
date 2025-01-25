@@ -1,7 +1,8 @@
-import { assertNotNullOrUndefined, ErrorCode, PickUpError, Principal } from '@pickup/shared'
+import { assertNotNullOrUndefined, ErrorCode, PickUpError, Principal, PrincipalType, UserStatus } from '@pickup/shared'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { jwtUtils } from '../../helper/jwt-utils'
+import { userService } from '../../user/user.service'
 
 dayjs.extend(duration);
 
@@ -24,6 +25,7 @@ export const accessTokenManager = {
                 key: secret,
             })
             assertNotNullOrUndefined(decoded.type, 'decoded.type')
+            await assertUserSession(decoded)
             return decoded
         }
         catch (e) {
@@ -38,4 +40,20 @@ export const accessTokenManager = {
             })
         }
     },
+}
+
+async function assertUserSession(decoded: Principal): Promise<void> {
+    if (decoded.type !== PrincipalType.USER) return
+    
+    const user = await userService.getOneOrFail({ id: decoded.id })
+    const isExpired = (user.tokenVersion ?? null) !== (decoded.tokenVersion ?? null)
+
+    if (isExpired || user.status === UserStatus.INACTIVE) {
+        throw new PickUpError({
+            code: ErrorCode.SESSION_EXPIRED,
+            params: {
+                message: 'The session has expired or the user is not verified.',
+            },
+        })
+    }
 }

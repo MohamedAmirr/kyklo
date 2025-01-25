@@ -3,7 +3,7 @@ import { EntitySchema } from 'typeorm'
 import { BaseColumnSchemaPart } from '../database/database-common'
 
 export type StudentSchema = Student & {
-    classroom: Classroom,
+    classroom: Classroom
     user: User
 }
 

@@ -1,8 +1,11 @@
+import { isNil } from '@pickup/shared';
 import { t } from 'i18next';
-import { Home, Logs, Wrench, CalendarRange } from 'lucide-react';
+import { BookOpen, CalendarRange, Home, MessageCircleQuestion, Wrench } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
-import { BookOpen } from 'lucide-react';
 
+import { authenticationSession } from '@/lib/authentication-session';
+
+import { AllowOnlyLoggedInUserOnlyGuard } from './allow-logged-in-user-only-guard';
 import { Sidebar, SidebarLink } from './sidebar';
 
 type DashboardContainerProps = {
@@ -10,15 +13,21 @@ type DashboardContainerProps = {
 };
 
 export function DashboardContainer({ children }: DashboardContainerProps) {
-  // const currentClassroomId = authenticationSession.getClassroomId();
-  // if (isNil(currentClassroomId) || currentClassroomId === '') {
-  //   return <Navigate to="/sign-in" replace />;
-  // }
+  const currentClassroomId = authenticationSession.getClassroomId();
+  if (isNil(currentClassroomId) || currentClassroomId === '') {
+    return <Navigate to="/sign-in" replace />;
+  }
   const links: SidebarLink[] = [
     {
       to: '/home',
       label: t('Home'),
       icon: Home,
+    },
+
+    {
+      to: '/materials',
+      label: t('Materials'),
+      icon: BookOpen,
     },
     {
       to: '/events/list/1',
@@ -26,9 +35,9 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
       icon: CalendarRange,
     },
     {
-      to: '/materials',
-      label: t('Materials'),
-      icon: BookOpen,
+      to: '/tickets',
+      label: t('Tickets'),
+      icon: MessageCircleQuestion,
     },
     {
       to: '/settings',
@@ -38,10 +47,10 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
   ];
 
   return (
-    // <AllowOnlyLoggedInUserOnlyGuard>
-    <Sidebar isHomeDashboard={true} links={links}>
-      {children}
-    </Sidebar>
-    // </AllowOnlyLoggedInUserOnlyGuard>
+    <AllowOnlyLoggedInUserOnlyGuard>
+      <Sidebar isHomeDashboard={true} links={links}>
+        {children}
+      </Sidebar>
+    </AllowOnlyLoggedInUserOnlyGuard>
   );
 }

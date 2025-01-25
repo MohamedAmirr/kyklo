@@ -1,9 +1,10 @@
-import { Student, Classroom } from '@pickup/shared'
+import { Classroom, School, Student, User } from '@pickup/shared'
 import { EntitySchema } from 'typeorm'
-import { BaseColumnSchemaPart } from '../database/database-common'
+import { BaseColumnSchemaPart, PuIdSchema } from '../database/database-common'
 
 export type ClassroomSchema = Classroom & {
-    students: Student[]
+    school: School
+    teacher: User
 }
 
 export const ClassroomEntity = new EntitySchema<ClassroomSchema>({
@@ -13,12 +14,39 @@ export const ClassroomEntity = new EntitySchema<ClassroomSchema>({
         name: {
             type: String,
         },
+        schoolId: {
+            ...PuIdSchema,
+        },
+        teacherId: {
+            ...PuIdSchema,
+        },
     },
+    indices: [
+        {
+            name: 'idx_classroom_teacher_id',
+            columns: ['teacherId'],
+            unique: false,
+        },
+    ],
     relations: {
-        students: {
-            type: 'one-to-many',
-            target: 'student',
-            inverseSide: 'classroom',
+        teacher: {
+            type: 'many-to-one',
+            target: 'user',
+            joinColumn: {
+                name: 'teacherId',
+                foreignKeyConstraintName: 'fk_classroom_teacher_id',
+            },
+        },
+        school: {
+            type: 'many-to-one',
+            target: 'school',
+            cascade: true,
+            onDelete: 'RESTRICT',
+            onUpdate: 'RESTRICT',
+            joinColumn: {
+                name: 'schoolId',
+                foreignKeyConstraintName: 'fk_classroom_school_id',
+            },
         },
     },
 })

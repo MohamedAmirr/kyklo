@@ -8,7 +8,7 @@ export type AuthenticationServiceHooks = {
 }
 
 export const studentAuthenticationServiceHooks: AuthenticationServiceHooks = {
-    async signIn({ user }) {
+    async signIn({ user }: SignInParams): Promise<SignInResult> {
         const studentRepository = databaseConnection().getRepository(StudentEntity)
         const student = await studentRepository.findOne({
             where: { userId: user.id },
@@ -22,13 +22,18 @@ export const studentAuthenticationServiceHooks: AuthenticationServiceHooks = {
         const token = await accessTokenManager.generateToken({
             id: user.id,
             type: PrincipalType.USER,
-            role: UserType.STUDENT,
-            schoolId: user.schoolId,
+            school: {
+                id: user.schoolId,
+            },
+            classroomId: student.classroom.id,
+            tokenVersion: user.tokenVersion,
         })
         return {
             user,
             token,
-            schoolId: user.schoolId,
+            school: {
+                id: user.schoolId,
+            },
             classroomId: student.classroom.id,
         }
     },
@@ -41,5 +46,8 @@ type SignInParams = {
 type SignInResult = {
     user: User
     token: string
-    schoolId: string
+    school: {
+        id: string
+    }
+    classroomId: string
 }

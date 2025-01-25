@@ -6,26 +6,21 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { AllowOnlyLoggedInUserOnlyGuard } from "@/app/components/allow-logged-in-user-only-guard";
-import { PageTitle } from "@/app/components/page-title";
-import { RedirectPage } from "@/app/routes/redirect";
-import { VerifyEmail } from "@/features/authentication/components/verify-email";
+import { AllowOnlyLoggedInUserOnlyGuard } from '@/app/components/allow-logged-in-user-only-guard';
+import { PageTitle } from '@/app/components/page-title';
+import { RedirectPage } from '@/app/routes/redirect';
+import { VerifyEmail } from '@/features/authentication/components/verify-email';
 
-import { DashboardContainer } from "../components/dashboard-container";
-import MaterialsPageLayout from "../routes/materials/layout";
-import NotFoundPage from "../routes/404-page";
-import AuthenticatePage from "../routes/authenticate";
-import { ChangePasswordPage } from "../routes/change-password";
-import { ResetPasswordPage } from "../routes/forget-password";
-import HomePage from "../routes/home";
-import { SignInPage } from "../routes/sign-in";
-import { SignUpPage } from "../routes/sign-up";
+import { DashboardContainer } from '../components/dashboard-container';
+import MaterialsPageLayout from '../routes/materials/layout';
+import NotFoundPage from '../routes/404-page';
+import AuthenticatePage from '../routes/authenticate';
+import { ChangePasswordPage } from '../routes/change-password';
+import { ResetPasswordPage } from '../routes/forget-password';
+import HomePage from '../routes/home';
+import { SignInPage } from '../routes/sign-in';
 
-import { ProjectRouterWrapper } from "./classroom-route-wrapper";
-import EventsPage from "../routes/events";
-import EventDetails from "../routes/events/event-details";
-import EventPageLayout from "../routes/events/layout";
-import CreateEventPage from "../routes/events/create-event";
+import { ProjectRouterWrapper } from './classroom-route-wrapper';
 
 const SettingsRerouter = () => {
   const { hash } = useLocation();
@@ -41,41 +36,13 @@ const routes = [
   {
     path: "/home",
     element: (
-      <DashboardContainer>
-        <PageTitle title="Home">
-          <HomePage />
-        </PageTitle>
-      </DashboardContainer>
-    ),
-  },
-  {
-    path: "/events/list/:page",
-    element: (
-      <DashboardContainer>
-        <PageTitle title="Events">
-          <EventPageLayout />
-        </PageTitle>
-      </DashboardContainer>
-    ),
-  },
-  {
-    path: "/events/:id",
-    element: (
-      <DashboardContainer>
-        <PageTitle title="Event Details">
-          <EventDetails />
-        </PageTitle>
-      </DashboardContainer>
-    ),
-  },
-  {
-    path: "/events/create",
-    element: (
-      <DashboardContainer>
-        <PageTitle title="Create Event">
-          <CreateEventPage />
-        </PageTitle>
-      </DashboardContainer>
+      <AllowOnlyLoggedInUserOnlyGuard>
+        <DashboardContainer>
+          <PageTitle title="Home">
+            <HomePage />
+          </PageTitle>
+        </DashboardContainer>
+      </AllowOnlyLoggedInUserOnlyGuard>
     ),
   },
   {
@@ -129,14 +96,6 @@ const routes = [
     element: (
       <PageTitle title="Verify Email">
         <VerifyEmail />
-      </PageTitle>
-    ),
-  },
-  {
-    path: "/sign-up",
-    element: (
-      <PageTitle title="Sign Up">
-        <SignUpPage />
       </PageTitle>
     ),
   },
