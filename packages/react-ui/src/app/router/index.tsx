@@ -1,73 +1,74 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 import {
   Navigate,
   RouterProvider,
   createBrowserRouter,
   useLocation,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import { AllowOnlyLoggedInUserOnlyGuard } from '@/app/components/allow-logged-in-user-only-guard';
-import { PageTitle } from '@/app/components/page-title';
-import { RedirectPage } from '@/app/routes/redirect';
-import { VerifyEmail } from '@/features/authentication/components/verify-email';
+import { AllowOnlyLoggedInUserOnlyGuard } from "@/app/components/allow-logged-in-user-only-guard";
+import { PageTitle } from "@/app/components/page-title";
+import { RedirectPage } from "@/app/routes/redirect";
+import { VerifyEmail } from "@/features/authentication/components/verify-email";
 
-import { DashboardContainer } from '../components/dashboard-container';
-import MaterialsPageLayout from '../components/page-layout/materials/layout';
-import NotFoundPage from '../routes/404-page';
-import AuthenticatePage from '../routes/authenticate';
-import { ChangePasswordPage } from '../routes/change-password';
-import { ResetPasswordPage } from '../routes/forget-password';
-import HomePage from '../routes/home';
-import { SignInPage } from '../routes/sign-in';
-import { SignUpPage } from '../routes/sign-up';
+import { DashboardContainer } from "../components/dashboard-container";
+import MaterialsPageLayout from "../routes/materials/layout";
+import NotFoundPage from "../routes/404-page";
+import AuthenticatePage from "../routes/authenticate";
+import { ChangePasswordPage } from "../routes/change-password";
+import { ResetPasswordPage } from "../routes/forget-password";
+import HomePage from "../routes/home";
+import { SignInPage } from "../routes/sign-in";
+import { SignUpPage } from "../routes/sign-up";
 
-import { ProjectRouterWrapper } from './classroom-route-wrapper';
-import EventsPage from '../routes/events';
-import EventDetails from '../routes/events/event-details';
+import { ProjectRouterWrapper } from "./classroom-route-wrapper";
+import EventsPage from "../routes/events";
+import EventDetails from "../routes/events/event-details";
+import EventPageLayout from "../routes/events/layout";
 
 const SettingsRerouter = () => {
-    const {hash} = useLocation();
-    const fragmentWithoutHash = hash.slice(1).toLowerCase();
-    return fragmentWithoutHash ? (
-        <Navigate to={`/settings/${fragmentWithoutHash}`} replace/>
-    ) : (
-        <Navigate to="/settings/general" replace/>
-    );
+  const { hash } = useLocation();
+  const fragmentWithoutHash = hash.slice(1).toLowerCase();
+  return fragmentWithoutHash ? (
+    <Navigate to={`/settings/${fragmentWithoutHash}`} replace />
+  ) : (
+    <Navigate to="/settings/general" replace />
+  );
 };
 
 const routes = [
   {
-    path: '/home',
+    path: "/home",
     element: (
-        <DashboardContainer>
-          <PageTitle title="Home">
-            <HomePage />
-          </PageTitle>
-        </DashboardContainer>
+      <DashboardContainer>
+        <PageTitle title="Home">
+          <HomePage />
+        </PageTitle>
+      </DashboardContainer>
     ),
   },
   {
-    path: '/events/list/:page',
+    path: "/events/list/:page",
     element: (
-        <DashboardContainer>
-            <PageTitle title="Events">
-                <EventsPage/>
-            </PageTitle>
-        </DashboardContainer>
+      <DashboardContainer>
+        <PageTitle title="Events">
+          <EventPageLayout />
+        </PageTitle>
+      </DashboardContainer>
     ),
-},
-{
-    path: '/events/:id',
-    element: (
-        <DashboardContainer>
-            <PageTitle title="Event Details">
-                <EventDetails/>
-            </PageTitle>
-        </DashboardContainer>
-    ),
-},
+  },
   {
-    path: '/materials',
+    path: "/events/:id",
+    element: (
+      <DashboardContainer>
+        <PageTitle title="Event Details">
+          <EventDetails />
+        </PageTitle>
+      </DashboardContainer>
+    ),
+  },
+  {
+    path: "/materials",
     element: (
       <DashboardContainer>
         <MaterialsPageLayout />
@@ -75,11 +76,11 @@ const routes = [
     ),
   },
   {
-    path: '/authenticate',
+    path: "/authenticate",
     element: <AuthenticatePage />,
   },
   ...ProjectRouterWrapper({
-    path: '/settings',
+    path: "/settings",
     element: (
       <DashboardContainer>
         <SettingsRerouter></SettingsRerouter>
@@ -87,7 +88,7 @@ const routes = [
     ),
   }),
   {
-    path: '/forget-password',
+    path: "/forget-password",
     element: (
       <PageTitle title="Forget Password">
         <ResetPasswordPage />
@@ -95,7 +96,7 @@ const routes = [
     ),
   },
   {
-    path: '/reset-password',
+    path: "/reset-password",
     element: (
       <PageTitle title="Reset Password">
         <ChangePasswordPage />
@@ -103,7 +104,7 @@ const routes = [
     ),
   },
   {
-    path: '/sign-in',
+    path: "/sign-in",
     element: (
       <PageTitle title="Sign In">
         <SignInPage />
@@ -111,7 +112,7 @@ const routes = [
     ),
   },
   {
-    path: '/verify-email',
+    path: "/verify-email",
     element: (
       <PageTitle title="Verify Email">
         <VerifyEmail />
@@ -119,7 +120,7 @@ const routes = [
     ),
   },
   {
-    path: '/sign-up',
+    path: "/sign-up",
     element: (
       <PageTitle title="Sign Up">
         <SignUpPage />
@@ -127,7 +128,7 @@ const routes = [
     ),
   },
   {
-    path: '/404',
+    path: "/404",
     element: (
       <PageTitle title="Not Found">
         <NotFoundPage />
@@ -135,11 +136,11 @@ const routes = [
     ),
   },
   {
-    path: '/redirect',
+    path: "/redirect",
     element: <RedirectPage></RedirectPage>,
   },
   {
-    path: '/*',
+    path: "/*",
     element: (
       <PageTitle title="Redirect">
         <Navigate to="/home" replace />
@@ -152,7 +153,7 @@ const PuRouter = () => {
     return createBrowserRouter(routes);
   }, []);
 
-    return <RouterProvider router={router}></RouterProvider>;
+  return <RouterProvider router={router}></RouterProvider>;
 };
 
 export { PuRouter };
