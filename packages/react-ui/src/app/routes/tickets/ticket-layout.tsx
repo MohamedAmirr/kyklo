@@ -1,5 +1,5 @@
 import { t } from 'i18next'
-import { Plus, Puzzle, Settings, SunMoon, Users } from 'lucide-react'
+import { Settings, SunMoon } from 'lucide-react'
 
 import SidebarLayout, {
     SideBarContent,
@@ -8,7 +8,6 @@ import SidebarLayout, {
 
 import { TicketHeader } from './ticket-header'
 import { TicketPage } from '.'
-import { Button } from '@/components/ui/button'
 
 const iconSize = 20
 

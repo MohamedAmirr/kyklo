@@ -46,6 +46,8 @@ export const ticketsService = {
         schoolId,
         cursor,
         limit,
+        status,
+        title,
     }: ListParams): Promise<SeekPage<Ticket>> {
         const decodedCursor = paginationHelper.decodeCursor(cursor)
         const paginator = buildPaginator<Ticket>({
@@ -61,6 +63,14 @@ export const ticketsService = {
         let query = ticketsRepo()
             .createQueryBuilder('ticket')
             .where({ schoolId })
+
+        if (status) {
+            query = query.andWhere('ticket.status IN (:...status)', { status })
+        }
+
+        if (title) {
+            query = query.andWhere('ticket.title ILIKE :title', { title })
+        }
 
         const { data, cursor: newCursor } = await paginator.paginate(query)
         return paginationHelper.createPage<Ticket>(data, newCursor)
@@ -86,6 +96,8 @@ type ListParams = {
     schoolId: SchoolId
     cursor: Cursor | null
     limit: number
+    status: TicketStatus[] | null
+    title: string | null
 }
 
 type CreateParams = {

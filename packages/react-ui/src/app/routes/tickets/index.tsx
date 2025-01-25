@@ -48,17 +48,20 @@ export function TicketPage() {
     const [searchParams] = useSearchParams()
 
     const { data, isLoading } = useQuery({
-        queryKey: ['tickets'],
+        queryKey: ['tickets', searchParams.toString()],
         staleTime: 0,
-        gcTime: 0,
         queryFn: () => {
             const cursor = searchParams.get(CURSOR_QUERY_PARAM) ?? undefined
+            const status = searchParams.getAll('status') as TicketStatus[];
+            const title = searchParams.get('title') ?? undefined;
             const limit = searchParams.get(LIMIT_QUERY_PARAM)
                 ? parseInt(searchParams.get(LIMIT_QUERY_PARAM)!)
                 : 10
             return ticketApi.list({
                 cursor,
                 limit,
+                status,
+                title,
             })
         },
     })
@@ -155,7 +158,7 @@ export function TicketPage() {
         {
             type: 'input',
             title: t('Title'),
-            accessorKey: 'id',
+            accessorKey: 'title',
             options: [],
             icon: CheckIcon,
         } as const,

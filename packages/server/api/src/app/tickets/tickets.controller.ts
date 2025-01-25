@@ -16,6 +16,8 @@ export const ticketsController: FastifyPluginAsyncTypebox = async app => {
             schoolId,
             cursor: request.query.cursor ?? null,
             limit: request.query.limit ?? DEFAULT_PAGING_LIMIT,
+            status: request.query.status ?? null,
+            title: request.query.title ?? null,
         })
     })
 

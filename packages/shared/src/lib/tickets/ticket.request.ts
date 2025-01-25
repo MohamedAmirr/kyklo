@@ -4,6 +4,8 @@ import { TicketStatus } from './ticket'
 export const ListTicketsRequestQuery = Type.Object({
     limit: Type.Optional(Type.Number()),
     cursor: Type.Optional(Type.String()),
+    status: Type.Optional(Type.Array(Type.Enum(TicketStatus))),
+    title: Type.Optional(Type.String()),
 })
 export type ListTicketsRequestQuery = Static<typeof ListTicketsRequestQuery>
 
