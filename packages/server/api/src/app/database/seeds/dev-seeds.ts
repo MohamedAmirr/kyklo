@@ -129,10 +129,12 @@ const seedDevUser = async (): Promise<void> => {
             name: 'Other',
             type: CategoryType.COMPLAINT,
             schoolId: school.id,
-        }
-    ];
+        },
+    ]
 
-    await Promise.all(categories.map(category => categoryService.create(category)));
+    await Promise.all(
+        categories.map(category => categoryService.create(category))
+    )
 
     logger.info(
         { name: 'seedDevStudentUser' },

@@ -20,11 +20,7 @@ export const categoryService = {
     async getOneOrThrow({ id }: { id: CategoryId }): Promise<Category> {
         return categoriesRepo().findOneByOrFail({ id })
     },
-    async create({
-        name,
-        type,
-        schoolId,
-    }: CreateParams): Promise<Category> {
+    async create({ name, type, schoolId }: CreateParams): Promise<Category> {
         const category = categoriesRepo().create({
             id: puId(),
             name,
@@ -47,11 +43,7 @@ export const categoryService = {
 
         return categories
     },
-    async update({
-        id,
-        schoolId,
-        name,
-    }: UpdateParams): Promise<Category> {
+    async update({ id, schoolId, name }: UpdateParams): Promise<Category> {
         await categoriesRepo().update(
             { id, schoolId },
             {

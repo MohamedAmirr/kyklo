@@ -8,8 +8,6 @@ import {
     Category,
 } from '@pickup/shared'
 
-
-
 export type ComplaintSchema = Complaint & {
     category: Category
     reporter: User

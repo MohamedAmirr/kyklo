@@ -71,20 +71,33 @@ export const complaintsService = {
             .where({ schoolId })
 
         if (status) {
-            query = query.andWhere('complaint.status IN (:...status)', { status })
+            query = query.andWhere('complaint.status IN (:...status)', {
+                status,
+            })
         }
 
         if (title) {
-            query = query.andWhere('complaint.title ILIKE :title', { title: `%${title}%` })
+            query = query.andWhere('complaint.title ILIKE :title', {
+                title: `%${title}%`,
+            })
         }
 
         const { data, cursor: newCursor } = await paginator.paginate(query)
-        const complaints = await Promise.all(data.map(async complaint => {
-            const category = await categoryService.getOneOrThrow({ id: complaint.categoryId })
-            const user = await userService.getMetaInfo({ id: complaint.reporterId })
-            return { ...complaint, category, user }
-        }))
-        return paginationHelper.createPage<ComplaintEnriched>(complaints, newCursor)
+        const complaints = await Promise.all(
+            data.map(async complaint => {
+                const category = await categoryService.getOneOrThrow({
+                    id: complaint.categoryId,
+                })
+                const user = await userService.getMetaInfo({
+                    id: complaint.reporterId,
+                })
+                return { ...complaint, category, user }
+            })
+        )
+        return paginationHelper.createPage<ComplaintEnriched>(
+            complaints,
+            newCursor
+        )
     },
     async update({
         id,

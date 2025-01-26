@@ -35,7 +35,9 @@ type CreateComplaintDialogProps = {
     categories: Category[]
 }
 
-export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps) {
+export function CreateComplaintDialog({
+    categories,
+}: CreateComplaintDialogProps) {
     const [openDialog, setOpenDialog] = useState(false)
     const { t } = useTranslation()
     const form = useForm<{
@@ -50,7 +52,8 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
         },
     })
     const { mutate } = useMutation({
-        mutationFn: (data: CreateComplaintRequestBody) => complaintApi.create(data),
+        mutationFn: (data: CreateComplaintRequestBody) =>
+            complaintApi.create(data),
         onSuccess: () => {
             toast({
                 title: t('Success'),
@@ -67,7 +70,7 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        
+
         const formData = form.getValues()
         let hasError = false
 
@@ -80,7 +83,9 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
             hasError = true
         }
         if (!formData.description.trim()) {
-            form.setError('description', { message: t('Description is required') })
+            form.setError('description', {
+                message: t('Description is required'),
+            })
             hasError = true
         }
 
@@ -102,10 +107,7 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                     <DialogTitle>{t('Create New Complaint')}</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                    <form
-                        onSubmit={onSubmit}
-                        className="flex flex-col gap-2"
-                    >
+                    <form onSubmit={onSubmit} className="flex flex-col gap-2">
                         <FormField
                             name={'title'}
                             control={form.control}
@@ -125,7 +127,10 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                                     />
                                     {form.formState.errors.title && (
                                         <p className="text-sm text-red-500">
-                                            {form.formState.errors.title.message}
+                                            {
+                                                form.formState.errors.title
+                                                    .message
+                                            }
                                         </p>
                                     )}
                                 </FormItem>
@@ -136,9 +141,11 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <Label htmlFor="categoryId">{t('Category')}</Label>
+                                    <Label htmlFor="categoryId">
+                                        {t('Category')}
+                                    </Label>
                                     <Select
-                                        onValueChange={(value) => {
+                                        onValueChange={value => {
                                             field.onChange(value)
                                             form.clearErrors('categoryId')
                                         }}
@@ -169,7 +176,10 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                                     </Select>
                                     {form.formState.errors.categoryId && (
                                         <p className="text-sm text-red-500">
-                                            {form.formState.errors.categoryId.message}
+                                            {
+                                                form.formState.errors.categoryId
+                                                    .message
+                                            }
                                         </p>
                                     )}
                                 </FormItem>
@@ -180,7 +190,9 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <Label htmlFor="description">{t('Description')}</Label>
+                                    <Label htmlFor="description">
+                                        {t('Description')}
+                                    </Label>
                                     <Textarea
                                         {...field}
                                         id="description"
@@ -193,7 +205,10 @@ export function CreateComplaintDialog({ categories }: CreateComplaintDialogProps
                                     />
                                     {form.formState.errors.description && (
                                         <p className="text-sm text-red-500">
-                                            {form.formState.errors.description.message}
+                                            {
+                                                form.formState.errors
+                                                    .description.message
+                                            }
                                         </p>
                                     )}
                                 </FormItem>

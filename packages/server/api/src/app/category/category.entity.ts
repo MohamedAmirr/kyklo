@@ -1,8 +1,8 @@
-import { CategoryType, Complaint, School } from "@pickup/shared"
+import { CategoryType, Complaint, School } from '@pickup/shared'
 
-import { Category } from "@pickup/shared"
-import { EntitySchema } from "typeorm"
-import { BaseColumnSchemaPart } from "../database/database-common"
+import { Category } from '@pickup/shared'
+import { EntitySchema } from 'typeorm'
+import { BaseColumnSchemaPart } from '../database/database-common'
 
 export type CategorySchema = Category & {
     complaints: Complaint[]

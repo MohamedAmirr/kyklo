@@ -15,7 +15,10 @@ export const categoryApi = {
     create(data: CreateCategoryRequestBody): Promise<ApiResponse<Category>> {
         return api.post('/v1/categories', data)
     },
-    update(id: string, data: UpdateCategoryRequestBody): Promise<ApiResponse<Category>> {
+    update(
+        id: string,
+        data: UpdateCategoryRequestBody
+    ): Promise<ApiResponse<Category>> {
         return api.post(`/v1/categories/${id}`, data)
     },
 }

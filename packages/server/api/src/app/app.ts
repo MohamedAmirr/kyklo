@@ -80,7 +80,7 @@ export const setupApp = async (
     await app.register(eventModule)
     await app.register(userModule)
     await app.register(categoryModule)
-    
+
     app.get(
         '/redirect',
         async (

@@ -1,4 +1,9 @@
-import { CategoryType, Complaint, ComplaintEnriched, ComplaintStatus } from '@pickup/shared'
+import {
+    CategoryType,
+    Complaint,
+    ComplaintEnriched,
+    ComplaintStatus,
+} from '@pickup/shared'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { t } from 'i18next'
@@ -31,8 +36,8 @@ export function ComplaintPage() {
         staleTime: 0,
         queryFn: () => {
             const cursor = searchParams.get(CURSOR_QUERY_PARAM) ?? undefined
-            const status = searchParams.getAll('status') as ComplaintStatus[];
-            const title = searchParams.get('title') ?? undefined;
+            const status = searchParams.getAll('status') as ComplaintStatus[]
+            const title = searchParams.get('title') ?? undefined
             const limit = searchParams.get(LIMIT_QUERY_PARAM)
                 ? parseInt(searchParams.get(LIMIT_QUERY_PARAM)!)
                 : 10
@@ -55,7 +60,10 @@ export function ComplaintPage() {
         {
             accessorKey: 'id',
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title={t('Complaint Id')} />
+                <DataTableColumnHeader
+                    column={column}
+                    title={t('Complaint Id')}
+                />
             ),
             cell: ({ row }) => (
                 <div className="text-left font-medium min-w-[150px]">
@@ -127,7 +135,9 @@ export function ComplaintPage() {
             {
                 render: () => {
                     return (
-                        <CreateComplaintDialog categories={categories?.data || []} />
+                        <CreateComplaintDialog
+                            categories={categories?.data || []}
+                        />
                     )
                 },
             },

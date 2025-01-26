@@ -7,17 +7,23 @@ export const ListComplaintsRequestQuery = Type.Object({
     status: Type.Optional(Type.Array(Type.Enum(ComplaintStatus))),
     title: Type.Optional(Type.String()),
 })
-export type ListComplaintsRequestQuery = Static<typeof ListComplaintsRequestQuery>
+export type ListComplaintsRequestQuery = Static<
+    typeof ListComplaintsRequestQuery
+>
 
 export const CreateComplaintRequestBody = Type.Object({
     title: Type.String(),
     categoryId: Type.String(),
     description: Type.String(),
 })
-export type CreateComplaintRequestBody = Static<typeof CreateComplaintRequestBody>
+export type CreateComplaintRequestBody = Static<
+    typeof CreateComplaintRequestBody
+>
 
 export const UpdateComplaintRequestBody = Type.Object({
     categoryId: Type.Optional(Type.String()),
     status: Type.Optional(Type.Enum(ComplaintStatus)),
 })
-export type UpdateComplaintRequestBody = Static<typeof UpdateComplaintRequestBody>
+export type UpdateComplaintRequestBody = Static<
+    typeof UpdateComplaintRequestBody
+>

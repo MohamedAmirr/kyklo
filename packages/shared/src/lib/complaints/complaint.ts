@@ -19,9 +19,12 @@ export const Complaint = Type.Object({
 })
 export type Complaint = Static<typeof Complaint>
 
-export const ComplaintEnriched = Type.Composite([Complaint, Type.Object({
-    user: UserMeta,
-    category: Category,
-})])
+export const ComplaintEnriched = Type.Composite([
+    Complaint,
+    Type.Object({
+        user: UserMeta,
+        category: Category,
+    }),
+])
 
 export type ComplaintEnriched = Static<typeof ComplaintEnriched>
