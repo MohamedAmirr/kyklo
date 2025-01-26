@@ -4,7 +4,7 @@ import {
     ComplaintEnriched,
     ComplaintStatus,
 } from '@pickup/shared'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { t } from 'i18next'
 import { CheckIcon, User } from 'lucide-react'
@@ -18,16 +18,19 @@ import {
     LIMIT_QUERY_PARAM,
     RowDataWithActions,
 } from '@/components/ui/data-table'
-import TicketDetails from '@/components/ui/ticket-details'
-import { formatUtils } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
-import { CreateComplaintDialog } from './create-complaint-dialog'
-import { complaintApi } from '@/lib/complaint-api'
+import TicketDetails from '@/components/ui/ticket-details'
 import { categoryApi } from '@/lib/category-api'
+import { complaintApi } from '@/lib/complaint-api'
+import { formatUtils } from '@/lib/utils'
+
+import { CreateComplaintDialog } from './create-complaint-dialog'
 
 export function ComplaintPage() {
     const [openSelectedTicket, setOpenSelectedTicket] = useState(false)
-    const [selectedRow, setSelectedRow] = useState<Complaint | null>(null)
+    const [selectedRow, setSelectedRow] = useState<ComplaintEnriched | null>(
+        null
+    )
 
     const [searchParams] = useSearchParams()
 
@@ -145,7 +148,7 @@ export function ComplaintPage() {
         [categories]
     )
 
-    const handleRowOnClick = (row: Complaint) => {
+    const handleRowOnClick = (row: ComplaintEnriched) => {
         setSelectedRow(row)
         setOpenSelectedTicket(true)
     }
@@ -186,10 +189,9 @@ export function ComplaintPage() {
                 <TicketDetails
                     open={openSelectedTicket}
                     handleClose={() => setOpenSelectedTicket(false)}
-                    customerName={selectedRow.reporterId}
-                    customerRole={''}
-                    ticketId={selectedRow.id}
-                    category={selectedRow.categoryId}
+                    userDetails={selectedRow.user}
+                    ticketNumber={selectedRow.number}
+                    category={selectedRow.category.name}
                     status={selectedRow.status}
                 />
             )}
