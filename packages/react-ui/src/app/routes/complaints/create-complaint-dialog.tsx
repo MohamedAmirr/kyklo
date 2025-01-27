@@ -1,3 +1,10 @@
+import { Category, CreateComplaintRequestBody } from '@pickup/shared'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Plus } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+
 import { Button } from '@/components/ui/button'
 import {
     DialogClose,
@@ -6,20 +13,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    Dialog,
 } from '@/components/ui/dialog'
-import { Dialog } from '@/components/ui/dialog'
-import { FormField, FormItem } from '@/components/ui/form'
-import { Form } from '@/components/ui/form'
+import { FormField, FormItem, Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { toast } from '@/components/ui/use-toast'
-import { complaintApi } from '@/lib/complaint-api'
-import { useMutation } from '@tanstack/react-query'
-import { Category, CreateComplaintRequestBody } from '@pickup/shared'
 import {
     Select,
     SelectContent,
@@ -29,7 +27,9 @@ import {
     SelectLabel,
     SelectItem,
 } from '@/components/ui/select'
-import { Plus } from 'lucide-react'
+import { Textarea } from '@/components/ui/textarea'
+import { toast } from '@/components/ui/use-toast'
+import { complaintApi } from '@/lib/complaint-api'
 
 type CreateComplaintDialogProps = {
     categories: Category[]
@@ -39,6 +39,7 @@ export function CreateComplaintDialog({
     categories,
 }: CreateComplaintDialogProps) {
     const [openDialog, setOpenDialog] = useState(false)
+    const queryClient = useQueryClient()
     const { t } = useTranslation()
     const form = useForm<{
         title: string
@@ -60,6 +61,8 @@ export function CreateComplaintDialog({
                 description: t('Complaint Created Successfully'),
                 duration: 3000,
             })
+            queryClient.invalidateQueries({ queryKey: ['complaints'] })
+            form.reset()
             setOpenDialog(false)
         },
         onError: error => {

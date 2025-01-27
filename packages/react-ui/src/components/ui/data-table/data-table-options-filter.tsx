@@ -10,6 +10,7 @@ import { DataTableSelectPopover } from './data-table-select-popover'
 
 interface DataTableFacetedFilterProps<TData, TValue> {
     type: 'select' | 'input' | 'date'
+    placeholder?: string
     column?: Column<TData, TValue>
     title?: string
     options: readonly {
@@ -17,13 +18,16 @@ interface DataTableFacetedFilterProps<TData, TValue> {
         value: string
         icon?: React.ComponentType<{ className?: string }>
     }[]
+    icon?: React.ComponentType<{ className?: string }>
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
     type,
+    placeholder,
     column,
     title,
     options,
+    icon,
 }: DataTableFacetedFilterProps<TData, TValue>) {
     const facets = column?.getFacetedUniqueValues()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -90,12 +94,14 @@ export function DataTableFacetedFilter<TData, TValue>({
 
     switch (type) {
         case 'input': {
-            const filterValue = (column?.getFilterValue() || '') as string
+            const searchQuery = searchParams.get(column?.id as string) || ''
             return (
                 <DataTableInputPopover
                     title={title}
-                    filterValue={filterValue}
+                    placeholder={placeholder}
+                    filterValue={searchQuery}
                     handleFilterChange={handleFilterChange}
+                    icon={icon}
                 />
             )
         }
@@ -105,10 +111,12 @@ export function DataTableFacetedFilter<TData, TValue>({
             return (
                 <DataTableSelectPopover
                     title={title}
+                    placeholder={placeholder}
                     selectedValues={selectedValues}
                     options={options}
                     handleFilterChange={handleFilterChange}
                     facets={facets}
+                    icon={icon}
                 />
             )
         }

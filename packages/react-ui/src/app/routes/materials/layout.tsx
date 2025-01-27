@@ -5,11 +5,11 @@ import SidebarLayout, {
     SideBarContent,
     SidebarItem,
 } from '@/app/components/sidebar-layout'
-
-import MaterialsPage from '.'
+import { Button } from '@/components/ui/button'
 
 import { PageHeader } from './materials-header'
-import { Button } from '@/components/ui/button'
+
+import MaterialsPage from '.'
 
 const iconSize = 20
 

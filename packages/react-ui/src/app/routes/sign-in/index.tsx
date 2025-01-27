@@ -1,6 +1,7 @@
+import { Navigate } from 'react-router-dom'
+
 import { FullLogo } from '@/components/ui/full-logo'
 import { AuthFormTemplate } from '@/features/authentication/components/auth-form-template'
-import { Navigate } from 'react-router-dom'
 import { authenticationSession } from '@/lib/authentication-session'
 
 const SignInPage: React.FC = () => {

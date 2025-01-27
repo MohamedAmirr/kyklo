@@ -11,7 +11,7 @@ export const Complaint = Type.Object({
     ...BaseModelSchema,
     title: Type.String(),
     status: Type.Enum(ComplaintStatus),
-    number: Type.Number(),
+    referenceNumber: Type.String(),
     categoryId: Type.String(),
     reporterId: Type.String(),
     description: Type.String(),
