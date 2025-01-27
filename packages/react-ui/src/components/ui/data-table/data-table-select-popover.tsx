@@ -97,7 +97,7 @@ const DataTableSelectPopover = ({
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0" align="start">
                 <Command>
-                    <CommandInput placeholder={placeholder} />
+                    <CommandInput placeholder={placeholder || title} />
                     <CommandList>
                         <CommandEmpty>No results found.</CommandEmpty>
 
