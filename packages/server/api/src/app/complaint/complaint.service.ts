@@ -33,12 +33,12 @@ export const complaintsService = {
         schoolId,
         reporterId,
     }: CreateParams): Promise<Complaint> {
-        const number = (await complaintsRepo().count()) + 1
+        const referenceNumber = (await complaintsRepo().count()) + 1
         const complaint = complaintsRepo().create({
             id: puId(),
             title,
             description,
-            number,
+            referenceNumber: `#${referenceNumber}`,
             categoryId,
             schoolId,
             reporterId,

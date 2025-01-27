@@ -7,6 +7,7 @@ import SidebarLayout, {
 } from '@/app/components/sidebar-layout'
 
 import { ComplaintHeader } from './complaint-header'
+
 import { ComplaintPage } from '.'
 
 const iconSize = 20

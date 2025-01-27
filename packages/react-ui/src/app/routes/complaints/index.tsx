@@ -70,7 +70,7 @@ export function ComplaintPage() {
             ),
             cell: ({ row }) => (
                 <div className="text-left font-medium min-w-[150px]">
-                    #{row.original.number}
+                    {row.original.referenceNumber}
                 </div>
             ),
         },
@@ -192,7 +192,7 @@ export function ComplaintPage() {
                     open={openSelectedTicket}
                     handleClose={() => setOpenSelectedTicket(false)}
                     userDetails={selectedRow.user}
-                    ticketNumber={selectedRow.number}
+                    referenceNumber={selectedRow.referenceNumber}
                     category={selectedRow.category.name}
                     status={selectedRow.status}
                 />

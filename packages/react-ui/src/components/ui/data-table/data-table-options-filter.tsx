@@ -94,9 +94,7 @@ export function DataTableFacetedFilter<TData, TValue>({
 
     switch (type) {
         case 'input': {
-            const searchQuery = searchParams.get(column?.id as string) as
-                | string
-                | ''
+            const searchQuery = searchParams.get(column?.id as string) || ''
             return (
                 <DataTableInputPopover
                     title={title}

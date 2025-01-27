@@ -28,8 +28,8 @@ export const ComplaintsEntity = new EntitySchema<ComplaintSchema>({
             default: ComplaintStatus.OPEN,
             nullable: false,
         },
-        number: {
-            type: Number,
+        referenceNumber: {
+            type: String,
             nullable: false,
         },
         categoryId: {

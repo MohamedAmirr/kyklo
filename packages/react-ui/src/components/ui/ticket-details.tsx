@@ -16,11 +16,11 @@ import { cn } from '@/lib/utils'
 
 import { Separator } from './seperator'
 
-type Props = {
+type TicketDetailsProps = {
     open: boolean
     handleClose: () => void
     userDetails: UserMeta
-    ticketNumber: number
+    referenceNumber: string
     category: string
     status: ComplaintStatus
 }
@@ -29,37 +29,28 @@ export const TicketDetails = ({
     open,
     handleClose,
     userDetails,
-    ticketNumber,
+    referenceNumber,
     category,
     status,
-}: Props) => {
+}: TicketDetailsProps) => {
     const TicketDetail = React.memo(
-        ({ label, value }: { label: string; value: string | number }) => (
+        ({ label, value }: { label: string; value: string }) => (
             <div className="flex flex-col justify-center items-start gap-1">
                 <h2 className="text-gray-400 text-lg font-semibold">
                     {t(label)}
                 </h2>
-                {typeof value === 'string' &&
-                (value.toLowerCase() === 'open' ||
-                    value.toLowerCase() === 'closed') ? (
-                    <h2
-                        className={cn(
-                            `text-lg capitalize px-2 rounded-3xl`,
-                            value.toLowerCase() === 'open'
-                                ? 'bg-success-100 text-success-300'
-                                : value.toLowerCase() === 'closed'
-                                ? 'bg-destructive-100 text-destructive-300'
-                                : ''
-                        )}
-                    >
-                        {t(value)}
-                    </h2>
-                ) : (
-                    <h2 className="text-lg">
-                        {label === 'Complaint ID' ? '#' : ''}
-                        {t(value as string)}
-                    </h2>
-                )}
+                <h2
+                    className={cn(
+                        `text-lg capitalize px-2 rounded-3xl`,
+                        value.toLowerCase() === 'open'
+                            ? 'bg-success-100 text-success-300'
+                            : value.toLowerCase() === 'closed'
+                            ? 'bg-destructive-100 text-destructive-300'
+                            : ''
+                    )}
+                >
+                    {t(value)}
+                </h2>
             </div>
         )
     )
@@ -115,7 +106,7 @@ export const TicketDetails = ({
                     >
                         <TicketDetail
                             label={t('Complaint ID')}
-                            value={ticketNumber}
+                            value={referenceNumber}
                         />
                         <Separator
                             orientation="vertical"
@@ -136,5 +127,5 @@ export const TicketDetails = ({
         </Sheet>
     )
 }
-
+TicketDetails.displayName = 'TicketDetails'
 export default TicketDetails
