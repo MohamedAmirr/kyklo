@@ -8,23 +8,24 @@ import {
 
 import { AllowOnlyLoggedInUserOnlyGuard } from '@/app/components/allow-logged-in-user-only-guard'
 import { PageTitle } from '@/app/components/page-title'
+import ClassroomPage from '@/app/routes/classroom'
 import { RedirectPage } from '@/app/routes/redirect'
 import { VerifyEmail } from '@/features/authentication/components/verify-email'
 
 import { DashboardContainer } from '../components/dashboard-container'
-import MaterialsPageLayout from '../routes/materials/layout'
 import NotFoundPage from '../routes/404-page'
 import AuthenticatePage from '../routes/authenticate'
 import { ChangePasswordPage } from '../routes/change-password'
+import ComplaintLayout from '../routes/complaints/complaint-layout'
+import AddEventPage from '../routes/events/create-event'
+import EventDetails from '../routes/events/event-details'
+import EventPageLayout from '../routes/events/layout'
 import { ResetPasswordPage } from '../routes/forget-password'
 import HomePage from '../routes/home'
+import MaterialsPageLayout from '../routes/materials/layout'
 import { SignInPage } from '../routes/sign-in'
 
 import { ProjectRouterWrapper } from './classroom-route-wrapper'
-import EventDetails from '../routes/events/event-details'
-import EventPageLayout from '../routes/events/layout'
-import ComplaintLayout from '../routes/complaints/complaint-layout'
-import AddEventPage from '../routes/events/create-event'
 
 const SettingsRerouter = () => {
     const { hash } = useLocation()
@@ -95,6 +96,16 @@ const routes = [
             <DashboardContainer>
                 <PageTitle title="Complaints">
                     <ComplaintLayout />
+                </PageTitle>
+            </DashboardContainer>
+        ),
+    },
+    {
+        path: '/classroom',
+        element: (
+            <DashboardContainer>
+                <PageTitle title="Classrooms">
+                    <ClassroomPage />
                 </PageTitle>
             </DashboardContainer>
         ),

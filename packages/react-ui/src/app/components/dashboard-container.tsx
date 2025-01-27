@@ -6,6 +6,7 @@ import {
     Home,
     MailWarning,
     Wrench,
+    Shapes,
 } from 'lucide-react'
 import { Navigate } from 'react-router-dom'
 
@@ -44,6 +45,11 @@ export function DashboardContainer({ children }: DashboardContainerProps) {
             to: '/complaints',
             label: t('Complaints'),
             icon: MailWarning,
+        },
+        {
+            to: '/classroom',
+            label: t('Classrooms'),
+            icon: Shapes,
         },
         {
             to: '/settings',
