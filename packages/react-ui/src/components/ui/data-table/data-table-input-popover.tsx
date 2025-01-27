@@ -10,14 +10,18 @@ import { Separator } from '../seperator'
 
 type DataTableInputPopoverProps = {
     title?: string
+    placeholder?: string
     filterValue: string
     handleFilterChange: (filterValue: string) => void
+    icon?: React.ComponentType<{ className?: string }>
 }
 
 const DataTableInputPopover = ({
     title,
+    placeholder,
     filterValue,
     handleFilterChange,
+    icon: IconComponent,
 }: DataTableInputPopoverProps) => {
     const [searchQuery, setSearchQuery] = useState(filterValue)
     const [debouncedQuery] = useDebounce(searchQuery, 300)
@@ -34,9 +38,13 @@ const DataTableInputPopover = ({
                     size="sm"
                     className="h-8 border-dashed"
                 >
-                    <PlusCircledIcon className="mr-2 size-4" />
+                    {IconComponent ? (
+                        <IconComponent className="w-4 h-4 mr-1" />
+                    ) : (
+                        <PlusCircledIcon className="mr-2 size-4" />
+                    )}
                     {title}
-                    {filterValue.length > 0 && (
+                    {filterValue && filterValue.length > 0 && (
                         <>
                             <Separator
                                 orientation="vertical"
@@ -55,7 +63,7 @@ const DataTableInputPopover = ({
             <PopoverContent className="w-[200px] p-0" align="start">
                 <Input
                     type="text"
-                    placeholder="Name"
+                    placeholder={placeholder || 'Name'}
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
                 />

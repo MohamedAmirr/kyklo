@@ -51,6 +51,7 @@ export const LIMIT_QUERY_PARAM = 'limit'
 export type DataTableFilter<Keys extends string> = {
     type: 'select' | 'input' | 'date'
     title: string
+    placeholder?: string
     accessorKey: Keys
     icon: React.ComponentType<{ className?: string }>
     options: readonly {
@@ -242,9 +243,11 @@ export function DataTable<
                                 <DataTableFacetedFilter
                                     key={filter.accessorKey}
                                     type={filter.type}
+                                    placeholder={filter.placeholder}
                                     column={table.getColumn(filter.accessorKey)}
                                     title={filter.title}
                                     options={filter.options}
+                                    icon={filter.icon}
                                 />
                             ))}
                     </div>

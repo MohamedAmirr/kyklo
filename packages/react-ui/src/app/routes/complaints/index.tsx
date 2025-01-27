@@ -7,7 +7,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { t } from 'i18next'
-import { CheckIcon, User } from 'lucide-react'
+import { CheckIcon, SearchIcon, User } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
@@ -158,19 +158,21 @@ export function ComplaintPage() {
             type: 'input',
             title: t('Title'),
             accessorKey: 'title',
-            options: [],
-            icon: CheckIcon,
+            placeholder: t('Search by title'),
+            options: [
+                { label: t('Title'), value: searchParams.get('title') || '' },
+            ],
+            icon: SearchIcon,
         } as const,
         {
             type: 'select',
             title: t('Status'),
+            placeholder: t('Filter by status'),
             accessorKey: 'status',
-            options: Object.values(ComplaintStatus).map(status => {
-                return {
-                    label: formatUtils.convertEnumToHumanReadable(status),
-                    value: status,
-                }
-            }),
+            options: Object.values(ComplaintStatus).map(status => ({
+                label: formatUtils.convertEnumToHumanReadable(status),
+                value: status,
+            })),
             icon: CheckIcon,
         } as const,
     ]

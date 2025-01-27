@@ -20,6 +20,7 @@ import { Separator } from '../seperator'
 
 type DataTableSelectPopoverProps = {
     title?: string
+    placeholder?: string
     selectedValues: Set<string>
     options: readonly {
         label: string
@@ -28,14 +29,17 @@ type DataTableSelectPopoverProps = {
     }[]
     facets?: Map<any, number>
     handleFilterChange: (filterValue: string[]) => void
+    icon?: React.ComponentType<{ className?: string }>
 }
 
 const DataTableSelectPopover = ({
     title,
+    placeholder,
     selectedValues,
     options,
     handleFilterChange,
     facets,
+    icon: IconComponent,
 }: DataTableSelectPopoverProps) => {
     return (
         <Popover>
@@ -45,7 +49,11 @@ const DataTableSelectPopover = ({
                     size="sm"
                     className="h-8 border-dashed"
                 >
-                    <PlusCircledIcon className="mr-2 size-4" />
+                    {IconComponent ? (
+                        <IconComponent className="w-4 h-4 mr-1" />
+                    ) : (
+                        <PlusCircledIcon className="mr-2 size-4" />
+                    )}
                     {title}
                     {selectedValues?.size > 0 && (
                         <>
@@ -89,7 +97,7 @@ const DataTableSelectPopover = ({
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0" align="start">
                 <Command>
-                    <CommandInput placeholder={title} />
+                    <CommandInput placeholder={placeholder} />
                     <CommandList>
                         <CommandEmpty>No results found.</CommandEmpty>
 
