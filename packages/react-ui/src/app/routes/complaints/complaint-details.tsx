@@ -14,9 +14,21 @@ import {
 } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 
-import { Separator } from './seperator'
+import { Separator } from '../../../components/ui/seperator'
 
-type TicketDetailsProps = {
+enum ComplaintDetailType {
+    REFERENCE_NUMBER = 'referenceNumber',
+    CATEGORY = 'category',
+    STATUS = 'status',
+}
+
+type ComplaintDetailProps = {
+    label: string
+    value: string
+    type: ComplaintDetailType
+}
+
+type ComplaintDetailsProps = {
     open: boolean
     handleClose: () => void
     userDetails: UserMeta
@@ -25,32 +37,44 @@ type TicketDetailsProps = {
     status: ComplaintStatus
 }
 
-export const TicketDetails = ({
+export const ComplaintDetails = ({
     open,
     handleClose,
     userDetails,
     referenceNumber,
     category,
     status,
-}: TicketDetailsProps) => {
-    const TicketDetail = React.memo(
-        ({ label, value }: { label: string; value: string }) => (
+}: ComplaintDetailsProps) => {
+    const ComplaintDetail = React.memo(
+        ({ label, type, value }: ComplaintDetailProps) => (
             <div className="flex flex-col justify-center items-start gap-1">
                 <h2 className="text-gray-400 text-lg font-semibold">
                     {t(label)}
                 </h2>
-                <h2
-                    className={cn(
-                        `text-lg capitalize px-2 rounded-3xl`,
-                        value.toLowerCase() === 'open'
-                            ? 'bg-success-100 text-success-300'
-                            : value.toLowerCase() === 'closed'
-                            ? 'bg-destructive-100 text-destructive-300'
-                            : ''
-                    )}
-                >
-                    {t(value)}
-                </h2>
+                {type === ComplaintDetailType.REFERENCE_NUMBER && (
+                    <h2 className="text-lg capitalize px-2 rounded-3xl">
+                        {t(value)}
+                    </h2>
+                )}
+
+                {type === ComplaintDetailType.CATEGORY && (
+                    <h2 className="text-lg capitalize px-2 rounded-3xl">
+                        {t(value)}
+                    </h2>
+                )}
+
+                {type === ComplaintDetailType.STATUS && (
+                    <h2
+                        className={cn(
+                            `text-lg capitalize px-2 rounded-3xl`,
+                            status === ComplaintStatus.OPEN
+                                ? 'bg-success-100 text-success-300'
+                                : 'bg-destructive-100 text-destructive-300'
+                        )}
+                    >
+                        {t(value)}
+                    </h2>
+                )}
             </div>
         )
     )
@@ -104,21 +128,27 @@ export const TicketDetails = ({
                             'flex flex-row sm:flex-row sm:justify-evenly justify-evenly border-2 w-full h-24 rounded-xl p-1'
                         }
                     >
-                        <TicketDetail
+                        <ComplaintDetail
                             label={t('Complaint ID')}
+                            type={ComplaintDetailType.REFERENCE_NUMBER}
                             value={referenceNumber}
                         />
                         <Separator
                             orientation="vertical"
                             className="mx-2 h-12 self-center"
                         />
-                        <TicketDetail label={t('Category')} value={category} />
+                        <ComplaintDetail
+                            label={t('Category')}
+                            type={ComplaintDetailType.CATEGORY}
+                            value={category}
+                        />
                         <Separator
                             orientation="vertical"
                             className="mx-2 h-12 self-center"
                         />
-                        <TicketDetail
+                        <ComplaintDetail
                             label={t('Ticket Status')}
+                            type={ComplaintDetailType.STATUS}
                             value={status}
                         />
                     </div>
@@ -127,5 +157,5 @@ export const TicketDetails = ({
         </Sheet>
     )
 }
-TicketDetails.displayName = 'TicketDetails'
-export default TicketDetails
+ComplaintDetails.displayName = 'ComplaintDetails'
+export default ComplaintDetails

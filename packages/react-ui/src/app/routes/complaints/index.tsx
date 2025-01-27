@@ -19,12 +19,12 @@ import {
     RowDataWithActions,
 } from '@/components/ui/data-table'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
-import TicketDetails from '@/components/ui/ticket-details'
 import { categoryApi } from '@/lib/category-api'
 import { complaintApi } from '@/lib/complaint-api'
 import { formatUtils } from '@/lib/utils'
 
 import { CreateComplaintDialog } from './create-complaint-dialog'
+import { ComplaintDetails } from './complaint-details'
 
 export function ComplaintPage() {
     const [openSelectedTicket, setOpenSelectedTicket] = useState(false)
@@ -188,7 +188,7 @@ export function ComplaintPage() {
                 onRowClick={handleRowOnClick}
             />
             {selectedRow && (
-                <TicketDetails
+                <ComplaintDetails
                     open={openSelectedTicket}
                     handleClose={() => setOpenSelectedTicket(false)}
                     userDetails={selectedRow.user}
