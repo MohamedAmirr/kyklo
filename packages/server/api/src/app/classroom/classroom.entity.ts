@@ -1,10 +1,11 @@
-import { Classroom, School, Student, User } from '@pickup/shared'
+import { Classroom, School, SchoolGrade, Student, User } from '@pickup/shared'
 import { EntitySchema } from 'typeorm'
 import { BaseColumnSchemaPart, PuIdSchema } from '../database/database-common'
 
 export type ClassroomSchema = Classroom & {
     school: School
     teacher: User
+    schoolGrade: SchoolGrade
 }
 
 export const ClassroomEntity = new EntitySchema<ClassroomSchema>({
@@ -18,6 +19,9 @@ export const ClassroomEntity = new EntitySchema<ClassroomSchema>({
             ...PuIdSchema,
         },
         teacherId: {
+            ...PuIdSchema,
+        },
+        schoolGradeId: {
             ...PuIdSchema,
         },
     },
@@ -46,6 +50,14 @@ export const ClassroomEntity = new EntitySchema<ClassroomSchema>({
             joinColumn: {
                 name: 'schoolId',
                 foreignKeyConstraintName: 'fk_classroom_school_id',
+            },
+        },
+        schoolGrade: {
+            type: 'many-to-one',
+            target: 'school_grade',
+            joinColumn: {
+                name: 'schoolGradeId',
+                referencedColumnName: 'id',
             },
         },
     },

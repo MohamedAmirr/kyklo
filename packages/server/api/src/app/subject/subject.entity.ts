@@ -1,10 +1,11 @@
 import { EntitySchema } from 'typeorm'
-import { Department, School, Subject } from '@pickup/shared'
+import { Department, School, SchoolGrade, Subject } from '@pickup/shared'
 import { BaseColumnSchemaPart, PuIdSchema } from '../database/database-common'
 
 export type SubjectSchema = Subject & {
     department: Department
     school: School
+    schoolGrade: SchoolGrade
 }
 
 export const SubjectEntity = new EntitySchema<SubjectSchema>({
@@ -19,6 +20,9 @@ export const SubjectEntity = new EntitySchema<SubjectSchema>({
             ...PuIdSchema,
         },
         schoolId: {
+            ...PuIdSchema,
+        },
+        schoolGradeId: {
             ...PuIdSchema,
         },
         creditHours: {
@@ -41,6 +45,14 @@ export const SubjectEntity = new EntitySchema<SubjectSchema>({
             inverseSide: 'subjects',
             joinColumn: {
                 name: 'schoolId',
+                referencedColumnName: 'id',
+            },
+        },
+        schoolGrade: {
+            type: 'many-to-one',
+            target: 'school_grade',
+            joinColumn: {
+                name: 'schoolGradeId',
                 referencedColumnName: 'id',
             },
         },

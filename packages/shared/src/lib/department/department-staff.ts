@@ -1,10 +1,10 @@
 import { Static, Type } from '@sinclair/typebox'
-import { BaseModelSchema } from '@pickup/shared'
+import { BaseModelSchema, PuId } from '@pickup/shared'
 
 export const DepartmentStaff = Type.Object({
     ...BaseModelSchema,
     departmentId: Type.String(),
-    staffId: Type.String(),
+    staffId: PuId,
     isHead: Type.Boolean(),
 })
 
