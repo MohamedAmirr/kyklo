@@ -28,6 +28,10 @@ import {
     DepartmentStaffEntity,
 } from '../department/department.entity'
 import { SubjectEntity } from '../subject/subject.entity'
+import {
+    SchoolGradeEntity,
+    SchoolStageEntity,
+} from '../SchoolGrade/school-grade.entity'
 
 function getEntities(): EntitySchema<unknown>[] {
     const edition = system.getEdition()
@@ -45,6 +49,8 @@ function getEntities(): EntitySchema<unknown>[] {
         DepartmentEntity,
         DepartmentStaffEntity,
         SubjectEntity,
+        SchoolGradeEntity,
+        SchoolStageEntity,
     ]
 
     switch (edition) {

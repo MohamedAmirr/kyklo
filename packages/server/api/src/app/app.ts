@@ -26,6 +26,23 @@ import { complaintsModule } from './complaint/complaint.module'
 import { categoryModule } from './category/category.module'
 import { subjectModule } from './subject/subject.module'
 import { departmentModule } from './department/department.module'
+import { SchoolGradeModule } from './SchoolGrade/school-grade.module'
+
+const modules = [
+    openapiModule,
+    complaintsModule,
+    flagModule,
+    authenticationModule,
+    classroomModule,
+    classroomMemberModule,
+    studentModule,
+    eventModule,
+    userModule,
+    categoryModule,
+    departmentModule,
+    subjectModule,
+    SchoolGradeModule,
+]
 
 export const setupApp = async (
     app: FastifyInstance
@@ -72,19 +89,6 @@ export const setupApp = async (
 
     app.addHook('preHandler', securityHandlerChain)
 
-    await app.register(openapiModule)
-    await app.register(complaintsModule)
-    await app.register(flagModule)
-    await app.register(authenticationModule)
-    await app.register(classroomModule)
-    await app.register(classroomMemberModule)
-    await app.register(studentModule)
-    await app.register(eventModule)
-    await app.register(userModule)
-    await app.register(categoryModule)
-    await app.register(departmentModule)
-    await app.register(subjectModule)
-
     app.get(
         '/redirect',
         async (
@@ -127,6 +131,10 @@ export const setupApp = async (
     app.addHook('onClose', async () => {
         logger.info('Shutting down')
     })
+
+    for (const module of modules) {
+        await app.register(module)
+    }
 
     return app
 }
