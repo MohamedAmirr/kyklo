@@ -1,6 +1,6 @@
 import { EntitySchema } from 'typeorm'
 import { Department, School, Subject } from '@pickup/shared'
-import { BaseColumnSchemaPart } from '../database/database-common'
+import { BaseColumnSchemaPart, PuIdSchema } from '../database/database-common'
 
 export type SubjectSchema = Subject & {
     department: Department
@@ -16,12 +16,10 @@ export const SubjectEntity = new EntitySchema<SubjectSchema>({
             nullable: false,
         },
         departmentId: {
-            type: String,
-            nullable: false,
+            ...PuIdSchema,
         },
         schoolId: {
-            type: String,
-            nullable: false,
+            ...PuIdSchema,
         },
         creditHours: {
             type: Number,

@@ -1,5 +1,5 @@
 import { EntitySchema } from 'typeorm'
-import { BaseColumnSchemaPart } from '../database/database-common'
+import { BaseColumnSchemaPart, PuIdSchema } from '../database/database-common'
 import { Department, DepartmentStaff, School, User } from '@pickup/shared'
 
 export type DepartmentSchema = Department & {
@@ -16,8 +16,7 @@ export const DepartmentEntity = new EntitySchema<DepartmentSchema>({
             nullable: false,
         },
         schoolId: {
-            type: String,
-            nullable: false,
+            ...PuIdSchema,
         },
     },
     relations: {
@@ -46,8 +45,7 @@ export const DepartmentStaffEntity = new EntitySchema<DepartmentStaffSchema>({
             nullable: false,
         },
         staffId: {
-            type: String,
-            nullable: false,
+            ...PuIdSchema,
         },
         isHead: {
             type: Boolean,
