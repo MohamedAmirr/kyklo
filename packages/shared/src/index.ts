@@ -20,6 +20,7 @@ export * from './lib/event'
 export * from './lib/category'
 export * from './lib/complaints'
 export * from './lib/classroom-members'
+export * from './lib/department'
 // Look at https://github.com/sinclairzx81/typebox/issues/350
 import { TypeSystemPolicy } from '@sinclair/typebox/system'
 TypeSystemPolicy.ExactOptionalPropertyTypes = false
