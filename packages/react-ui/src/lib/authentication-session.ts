@@ -1,5 +1,6 @@
 import { ApiResponse, AuthenticationResponse, isNil } from '@pickup/shared'
 import { jwtDecode } from 'jwt-decode'
+
 import { authenticationApi } from './authentication-api'
 
 const tokenKey = 'token'

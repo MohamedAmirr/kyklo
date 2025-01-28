@@ -1,5 +1,6 @@
-import { api } from '@/lib/api'
 import { Event } from '@pickup/shared'
+
+import { api } from '@/lib/api'
 
 export const eventApi = {
     signIn(request: string) {

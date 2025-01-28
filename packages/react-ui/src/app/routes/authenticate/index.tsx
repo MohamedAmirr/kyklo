@@ -1,6 +1,7 @@
-import { authenticationSession } from '@/lib/authentication-session'
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+
+import { authenticationSession } from '@/lib/authentication-session'
 
 const AuthenticatePage = () => {
     const navigate = useNavigate()

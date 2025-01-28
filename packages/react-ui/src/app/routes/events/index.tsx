@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import { Button } from '@/components/ui/button'
 import {
     Card,
@@ -8,7 +10,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
-import { useNavigate } from 'react-router-dom'
 
 interface Event {
     id: number

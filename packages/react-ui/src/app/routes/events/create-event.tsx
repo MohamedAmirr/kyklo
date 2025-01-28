@@ -1,5 +1,12 @@
+import { format } from 'date-fns'
+import { CalendarIcon } from 'lucide-react'
+import * as React from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
     Popover,
@@ -17,13 +24,6 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
-import { CalendarIcon } from 'lucide-react'
-import * as React from 'react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
-import { format } from 'date-fns'
-import { Input } from '@/components/ui/input'
 
 export default function AddEventPage() {
     const navigate = useNavigate()

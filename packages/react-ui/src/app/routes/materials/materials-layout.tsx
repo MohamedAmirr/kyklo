@@ -6,9 +6,9 @@ import SidebarLayout, {
     SidebarItem,
 } from '@/app/components/sidebar-layout'
 
-import MaterialsPage from '.'
-
 import { PageHeader } from './materials-header'
+
+import MaterialsPage from '.'
 
 const iconSize = 20
 

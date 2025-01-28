@@ -4,10 +4,10 @@ import {
     ComplaintEnriched,
     ComplaintStatus,
 } from '@pickup/shared'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { t } from 'i18next'
-import { CheckIcon, User } from 'lucide-react'
+import { CheckIcon, SearchIcon, User } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
@@ -18,16 +18,19 @@ import {
     LIMIT_QUERY_PARAM,
     RowDataWithActions,
 } from '@/components/ui/data-table'
-import TicketDetails from '@/components/ui/ticket-details'
-import { formatUtils } from '@/lib/utils'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
-import { CreateComplaintDialog } from './create-complaint-dialog'
-import { complaintApi } from '@/lib/complaint-api'
 import { categoryApi } from '@/lib/category-api'
+import { complaintApi } from '@/lib/complaint-api'
+import { formatUtils } from '@/lib/utils'
+
+import { CreateComplaintDialog } from './create-complaint-dialog'
+import { ComplaintDetails } from './complaint-details'
 
 export function ComplaintPage() {
     const [openSelectedTicket, setOpenSelectedTicket] = useState(false)
-    const [selectedRow, setSelectedRow] = useState<Complaint | null>(null)
+    const [selectedRow, setSelectedRow] = useState<ComplaintEnriched | null>(
+        null
+    )
 
     const [searchParams] = useSearchParams()
 
@@ -67,7 +70,7 @@ export function ComplaintPage() {
             ),
             cell: ({ row }) => (
                 <div className="text-left font-medium min-w-[150px]">
-                    #{row.original.number}
+                    {row.original.referenceNumber}
                 </div>
             ),
         },
@@ -145,7 +148,7 @@ export function ComplaintPage() {
         [categories]
     )
 
-    const handleRowOnClick = (row: Complaint) => {
+    const handleRowOnClick = (row: ComplaintEnriched) => {
         setSelectedRow(row)
         setOpenSelectedTicket(true)
     }
@@ -155,19 +158,21 @@ export function ComplaintPage() {
             type: 'input',
             title: t('Title'),
             accessorKey: 'title',
-            options: [],
-            icon: CheckIcon,
+            placeholder: t('Search by title'),
+            options: [
+                { label: t('Title'), value: searchParams.get('title') || '' },
+            ],
+            icon: SearchIcon,
         } as const,
         {
             type: 'select',
             title: t('Status'),
+            placeholder: t('Filter by status'),
             accessorKey: 'status',
-            options: Object.values(ComplaintStatus).map(status => {
-                return {
-                    label: formatUtils.convertEnumToHumanReadable(status),
-                    value: status,
-                }
-            }),
+            options: Object.values(ComplaintStatus).map(status => ({
+                label: formatUtils.convertEnumToHumanReadable(status),
+                value: status,
+            })),
             icon: CheckIcon,
         } as const,
     ]
@@ -183,13 +188,12 @@ export function ComplaintPage() {
                 onRowClick={handleRowOnClick}
             />
             {selectedRow && (
-                <TicketDetails
+                <ComplaintDetails
                     open={openSelectedTicket}
                     handleClose={() => setOpenSelectedTicket(false)}
-                    customerName={selectedRow.reporterId}
-                    customerRole={''}
-                    ticketId={selectedRow.id}
-                    category={selectedRow.categoryId}
+                    userDetails={selectedRow.user}
+                    referenceNumber={selectedRow.referenceNumber}
+                    category={selectedRow.category.name}
                     status={selectedRow.status}
                 />
             )}

@@ -1,3 +1,4 @@
+import { ComplaintStatus, UserMeta } from '@pickup/shared'
 import { t } from 'i18next'
 import { X, CircleHelp } from 'lucide-react'
 import React from 'react'
@@ -13,50 +14,66 @@ import {
 } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 
-import { Separator } from './seperator'
-import { ComplaintStatus } from '@pickup/shared'
+import { Separator } from '../../../components/ui/seperator'
 
-type Props = {
+enum ComplaintDetailType {
+    REFERENCE_NUMBER = 'referenceNumber',
+    CATEGORY = 'category',
+    STATUS = 'status',
+}
+
+type ComplaintDetailProps = {
+    label: string
+    value: string
+    type: ComplaintDetailType
+}
+
+type ComplaintDetailsProps = {
     open: boolean
     handleClose: () => void
-    customerName: string
-    customerRole: string
-    ticketId: string
+    userDetails: UserMeta
+    referenceNumber: string
     category: string
     status: ComplaintStatus
 }
 
-export const TicketDetails = ({
+export const ComplaintDetails = ({
     open,
     handleClose,
-    customerName,
-    customerRole,
-    ticketId,
+    userDetails,
+    referenceNumber,
     category,
     status,
-}: Props) => {
-    const TicketDetail = React.memo(
-        ({ label, value }: { label: string; value: string }) => (
+}: ComplaintDetailsProps) => {
+    const ComplaintDetail = React.memo(
+        ({ label, type, value }: ComplaintDetailProps) => (
             <div className="flex flex-col justify-center items-start gap-1">
                 <h2 className="text-gray-400 text-lg font-semibold">
                     {t(label)}
                 </h2>
-                {value.toLowerCase() === 'open' ||
-                value.toLowerCase() === 'closed' ? (
+                {type === ComplaintDetailType.REFERENCE_NUMBER && (
+                    <h2 className="text-lg capitalize px-2 rounded-3xl">
+                        {t(value)}
+                    </h2>
+                )}
+
+                {type === ComplaintDetailType.CATEGORY && (
+                    <h2 className="text-lg capitalize px-2 rounded-3xl">
+                        {t(value)}
+                    </h2>
+                )}
+
+                {type === ComplaintDetailType.STATUS && (
                     <h2
                         className={cn(
                             `text-lg capitalize px-2 rounded-3xl`,
-                            value.toLowerCase() === 'open'
+                            status === ComplaintStatus.OPEN
                                 ? 'bg-success-100 text-success-300'
-                                : value.toLowerCase() === 'closed'
-                                ? 'bg-destructive-100 text-destructive-300'
-                                : ''
+                                : 'bg-destructive-100 text-destructive-300'
                         )}
                     >
                         {t(value)}
                     </h2>
-                ) : (
-                    <h2 className="text-lg">{t(value)}</h2>
                 )}
             </div>
         )
@@ -89,15 +106,20 @@ export const TicketDetails = ({
                 <div className={'flex flex-col  gap-6'}>
                     <div className="flex items-center gap-4">
                         <Avatar className={'w-20 h-20'}>
+                            {/*TODO: we need to add profile image*/}
                             <AvatarImage
                                 alt={'Profile Image'}
                                 src={profileImg}
                             />
                         </Avatar>
                         <div>
-                            <h3 className="text-lg">{customerName}</h3>
+                            <h3 className="text-lg">
+                                {userDetails.firstName +
+                                    ' ' +
+                                    userDetails.lastName}
+                            </h3>
                             <p className="text-sm text-gray-500">
-                                {customerRole}
+                                {userDetails.type}
                             </p>
                         </div>
                     </div>
@@ -106,18 +128,27 @@ export const TicketDetails = ({
                             'flex flex-row sm:flex-row sm:justify-evenly justify-evenly border-2 w-full h-24 rounded-xl p-1'
                         }
                     >
-                        <TicketDetail label={t('Ticket ID')} value={ticketId} />
+                        <ComplaintDetail
+                            label={t('Complaint ID')}
+                            type={ComplaintDetailType.REFERENCE_NUMBER}
+                            value={referenceNumber}
+                        />
                         <Separator
                             orientation="vertical"
                             className="mx-2 h-12 self-center"
                         />
-                        <TicketDetail label={t('Category')} value={category} />
+                        <ComplaintDetail
+                            label={t('Category')}
+                            type={ComplaintDetailType.CATEGORY}
+                            value={category}
+                        />
                         <Separator
                             orientation="vertical"
                             className="mx-2 h-12 self-center"
                         />
-                        <TicketDetail
+                        <ComplaintDetail
                             label={t('Ticket Status')}
+                            type={ComplaintDetailType.STATUS}
                             value={status}
                         />
                     </div>
@@ -126,5 +157,5 @@ export const TicketDetails = ({
         </Sheet>
     )
 }
-
-export default TicketDetails
+ComplaintDetails.displayName = 'ComplaintDetails'
+export default ComplaintDetails

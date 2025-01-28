@@ -1,9 +1,11 @@
 import { Calendar, Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom' // Import useNavigate
 
-import EventsPage from '.'
 import { Button } from '@/components/ui/button'
+
 import { PageHeader } from '../materials/materials-header'
+
+import EventsPage from '.'
 
 const iconSize = 20
 
