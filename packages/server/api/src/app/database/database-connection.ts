@@ -27,6 +27,7 @@ import {
     DepartmentEntity,
     DepartmentStaffEntity,
 } from '../department/department.entity'
+import { SubjectEntity } from '../subject/subject.entity'
 
 function getEntities(): EntitySchema<unknown>[] {
     const edition = system.getEdition()
@@ -43,6 +44,7 @@ function getEntities(): EntitySchema<unknown>[] {
         ComplaintsEntity,
         DepartmentEntity,
         DepartmentStaffEntity,
+        SubjectEntity,
     ]
 
     switch (edition) {

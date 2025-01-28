@@ -24,6 +24,8 @@ import { userModule } from './user/user.module'
 import { classroomMemberModule } from './classroom-members/classroom-member.module'
 import { complaintsModule } from './complaint/complaint.module'
 import { categoryModule } from './category/category.module'
+import { subjectModule } from './subject/subject.module'
+import { departmentModule } from './department/department.module'
 
 export const setupApp = async (
     app: FastifyInstance
@@ -80,6 +82,8 @@ export const setupApp = async (
     await app.register(eventModule)
     await app.register(userModule)
     await app.register(categoryModule)
+    await app.register(departmentModule)
+    await app.register(subjectModule)
 
     app.get(
         '/redirect',
