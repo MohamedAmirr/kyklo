@@ -55,7 +55,7 @@ export const ComplaintsEntity = new EntitySchema<ComplaintSchema>({
             target: 'category',
             inverseSide: 'complaints',
             joinColumn: {
-                name: 'categoryId',
+                name: 'category_id',
                 foreignKeyConstraintName: 'fk_complaint_category_id',
             },
         },
@@ -64,7 +64,7 @@ export const ComplaintsEntity = new EntitySchema<ComplaintSchema>({
             target: 'user',
             inverseSide: 'complaints',
             joinColumn: {
-                name: 'reporterId',
+                name: 'reporter_id',
                 foreignKeyConstraintName: 'fk_complaint_reporter_id',
             },
         },
@@ -73,7 +73,7 @@ export const ComplaintsEntity = new EntitySchema<ComplaintSchema>({
             target: 'school',
             inverseSide: 'complaints',
             joinColumn: {
-                name: 'schoolId',
+                name: 'school_id',
                 foreignKeyConstraintName: 'fk_complaint_school_id',
             },
         },

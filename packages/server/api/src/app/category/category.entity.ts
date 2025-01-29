@@ -38,7 +38,7 @@ export const CategoriesEntity = new EntitySchema<CategorySchema>({
             target: 'school',
             inverseSide: 'categories',
             joinColumn: {
-                name: 'schoolId',
+                name: 'school_id',
                 foreignKeyConstraintName: 'fk_category_school_id',
             },
         },

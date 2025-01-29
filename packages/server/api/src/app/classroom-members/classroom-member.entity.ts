@@ -29,7 +29,7 @@ export const ClassroomMemberEntity = new EntitySchema<ClassroomMemberSchema>({
             cascade: true,
             onDelete: 'CASCADE',
             joinColumn: {
-                name: 'classroomId',
+                name: 'classroom_id',
                 foreignKeyConstraintName: 'fk_classroom_member_classroom_id',
             },
         },
@@ -39,7 +39,7 @@ export const ClassroomMemberEntity = new EntitySchema<ClassroomMemberSchema>({
             cascade: true,
             onDelete: 'CASCADE',
             joinColumn: {
-                name: 'userId',
+                name: 'user_id',
                 foreignKeyConstraintName: 'fk_classroom_member_user_id',
             },
         },

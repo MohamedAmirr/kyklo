@@ -33,14 +33,14 @@ export const SchoolGradeEntity = new EntitySchema<SchoolGradeSchema>({
             target: 'school',
             inverseSide: 'school_grades',
             joinColumn: {
-                name: 'schoolId',
+                name: 'school_id',
             },
         },
         schoolStage: {
             type: 'many-to-one',
             target: 'school_stage',
             joinColumn: {
-                name: 'schoolStageId',
+                name: 'school_stage_id',
             },
         },
     },

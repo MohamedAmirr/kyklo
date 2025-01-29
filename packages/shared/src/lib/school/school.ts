@@ -1,23 +1,8 @@
 import { Static, Type } from '@sinclair/typebox'
-import { BaseModelSchema } from '../common/base-model'
+import { BaseModelSchema } from '../common'
 import { PuId } from '../common/id-generator'
 
 export type SchoolId = PuId
-
-export enum SchoolGrades {
-    FIRST = 'FIRST',
-    SECOND = 'SECOND',
-    THIRD = 'THIRD',
-    FOURTH = 'FOURTH',
-    FIFTH = 'FIFTH',
-    SIXTH = 'SIXTH',
-    SEVENTH = 'SEVENTH',
-    EIGHTH = 'EIGHTH',
-    NINTH = 'NINTH',
-    TENTH = 'TENTH',
-    ELEVENTH = 'ELEVENTH',
-    TWELFTH = 'TWELFTH',
-}
 
 export enum SchoolSemesters {
     FIRST = 'FIRST',

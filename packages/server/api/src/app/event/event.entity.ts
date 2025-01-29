@@ -46,11 +46,11 @@ export const EventEntity = new EntitySchema<EventSchema>({
             joinTable: {
                 name: 'event_supervisors',
                 joinColumn: {
-                    name: 'eventId',
+                    name: 'event_id',
                     referencedColumnName: 'id',
                 },
                 inverseJoinColumn: {
-                    name: 'userId',
+                    name: 'user_id',
                     referencedColumnName: 'id',
                 },
             },

@@ -35,7 +35,7 @@ export const SubjectEntity = new EntitySchema<SubjectSchema>({
             target: 'department',
             inverseSide: 'subjects',
             joinColumn: {
-                name: 'departmentId',
+                name: 'department_id',
                 referencedColumnName: 'id',
             },
         },
@@ -44,7 +44,7 @@ export const SubjectEntity = new EntitySchema<SubjectSchema>({
             target: 'school',
             inverseSide: 'subjects',
             joinColumn: {
-                name: 'schoolId',
+                name: 'school_id',
                 referencedColumnName: 'id',
             },
         },
@@ -52,7 +52,7 @@ export const SubjectEntity = new EntitySchema<SubjectSchema>({
             type: 'many-to-one',
             target: 'school_grade',
             joinColumn: {
-                name: 'schoolGradeId',
+                name: 'school_grade_id',
                 referencedColumnName: 'id',
             },
         },

@@ -3,6 +3,7 @@ import { AppSystemProp, SharedSystemProp, system } from '@pickup/server-shared'
 import { isNil, PuEdition, PuEnvironment } from '@pickup/shared'
 import { DataSource, MigrationInterface } from 'typeorm'
 import { commonProperties } from './database-connection'
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 
 const getSslConfig = (): boolean | TlsOptions => {
     const useSsl = system.get(AppSystemProp.POSTGRES_USE_SSL)
@@ -58,6 +59,7 @@ export const createPostgresDataSource = (): DataSource => {
             type: 'postgres',
             url,
             ssl: getSslConfig(),
+            namingStrategy: new SnakeNamingStrategy(),
             ...migrationConfig,
             ...commonProperties,
         })
@@ -78,6 +80,7 @@ export const createPostgresDataSource = (): DataSource => {
         password,
         database,
         ssl: getSslConfig(),
+        namingStrategy: new SnakeNamingStrategy(),
         ...migrationConfig,
         ...commonProperties,
     })

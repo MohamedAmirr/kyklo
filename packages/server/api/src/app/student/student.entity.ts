@@ -1,19 +1,17 @@
-import { Classroom, Student, User } from '@pickup/shared'
+import { Classroom, SchoolGrade, Student, User } from '@pickup/shared'
 import { EntitySchema } from 'typeorm'
-import { BaseColumnSchemaPart } from '../database/database-common'
+import { BaseColumnSchemaPart, PuIdSchema } from '../database/database-common'
 
 export type StudentSchema = Student & {
     classroom: Classroom
     user: User
+    schoolGrade: SchoolGrade
 }
 
 export const StudentEntity = new EntitySchema<StudentSchema>({
     name: 'student',
     columns: {
         ...BaseColumnSchemaPart,
-        grade: {
-            type: String,
-        },
         semester: {
             type: String,
         },
@@ -23,6 +21,9 @@ export const StudentEntity = new EntitySchema<StudentSchema>({
         userId: {
             type: String,
         },
+        schoolGradeId: {
+            ...PuIdSchema,
+        },
     },
     relations: {
         classroom: {
@@ -30,7 +31,7 @@ export const StudentEntity = new EntitySchema<StudentSchema>({
             target: 'classroom',
             inverseSide: 'students',
             joinColumn: {
-                name: 'classroomId',
+                name: 'classroom_id',
             },
         },
         user: {
@@ -38,7 +39,15 @@ export const StudentEntity = new EntitySchema<StudentSchema>({
             target: 'user',
             inverseSide: 'student',
             joinColumn: {
-                name: 'userId',
+                name: 'user_id',
+            },
+        },
+        schoolGrade: {
+            type: 'many-to-one',
+            target: 'school_grade',
+            inverseSide: 'students',
+            joinColumn: {
+                name: 'school_grade_id',
             },
         },
     },

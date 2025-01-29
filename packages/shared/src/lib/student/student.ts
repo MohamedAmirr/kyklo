@@ -1,13 +1,13 @@
 import { Static, Type } from '@sinclair/typebox'
-import { BaseModelSchema } from '../common/base-model'
+import { BaseModelSchema } from '../common'
 import { PuId } from '../common/id-generator'
-import { SchoolGrades, SchoolSemesters } from '../school'
+import { SchoolSemesters } from '../school'
 
 export type StudentId = PuId
 
 export const Student = Type.Object({
     ...BaseModelSchema,
-    grade: Type.Enum(SchoolGrades),
+    schoolGradeId: PuId,
     semester: Type.Enum(SchoolSemesters),
     classroomId: Type.String(),
     userId: Type.String(),

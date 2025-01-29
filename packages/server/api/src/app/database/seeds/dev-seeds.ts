@@ -1,21 +1,16 @@
 import { logger, SharedSystemProp, system } from '@pickup/server-shared'
-import {
-    CategoryType,
-    PuEnvironment,
-    puId,
-    SchoolGrades,
-    SchoolSemesters,
-    UserType,
-} from '@pickup/shared'
+import { PuEnvironment } from '@pickup/shared'
 import { databaseConnection } from '../database-connection'
 import { FlagEntity } from '../../flags/flag.entity'
-import { SchoolEntity } from '../../school/school.entity'
-import { userService } from '../../user/user.service'
-import { StudentEntity } from '../../student/student.entity'
-import { ClassroomEntity } from '../../classroom/classroom.entity'
-import { ClassroomMemberEntity } from '../../classroom-members/classroom-member.entity'
-import { seedDevComplaints } from '../../complaint/complaint.seeder'
-import { categoryService } from '../../category/category.service'
+import { seedDevComplaints } from '../../complaint/seeders/complaint.seeder'
+import { seedDevSchoolGrades } from '../../SchoolGrade/seeders/school-grade.seeder'
+import { seedDevSchool } from '../../school/seeders/school.seeder'
+import { seedDevDepartments } from '../../department/seeders/department.seeder'
+import { seedDevSubjects } from '../../subject/seeders/subject.seeder'
+import { seedDevUsers } from '../../user/seeders/user.seeder'
+import { seedDevClassrooms } from '../../classroom/seeders/classroom.seeder'
+import { seedDevStudents } from '../../student/seeders/student.seeder'
+import { seedDevCategories } from '../../category/seeders/category.seeder'
 
 const DEV_DATA_SEEDED_FLAG = 'DEV_DATA_SEEDED'
 
@@ -39,113 +34,6 @@ const setDevDataSeededFlag = async (): Promise<void> => {
     })
 }
 
-const seedDevUser = async (): Promise<void> => {
-    const USER_DEV_EMAIL = 'user@pu.com'
-    const USER_DEV_PASSWORD = '12345678'
-    const TEACHER_DEV_EMAIL = 'teacher@pu.com'
-    const TEACHER_DEV_PASSWORD = '12345678'
-
-    const schoolRepo = databaseConnection().getRepository(SchoolEntity)
-    const studentRepo = databaseConnection().getRepository(StudentEntity)
-    const classroomRepo = databaseConnection().getRepository(ClassroomEntity)
-    const classroomMemberRepo = databaseConnection().getRepository(
-        ClassroomMemberEntity
-    )
-
-    const school = schoolRepo.create({
-        id: puId(),
-        name: 'Dev School',
-    })
-    await schoolRepo.save(school)
-
-    const teacher = await userService.create({
-        email: TEACHER_DEV_EMAIL,
-        password: TEACHER_DEV_PASSWORD,
-        firstName: 'Teacher',
-        lastName: 'User',
-        schoolId: school.id,
-        type: UserType.STAFF,
-    })
-
-    const user = await userService.create({
-        email: USER_DEV_EMAIL,
-        password: USER_DEV_PASSWORD,
-        firstName: 'Dev',
-        lastName: 'User',
-        schoolId: school.id,
-        type: UserType.STUDENT,
-    })
-
-    const classroom = classroomRepo.create({
-        id: puId(),
-        name: 'Dev Classroom',
-        teacherId: teacher.id,
-        schoolId: school.id,
-    })
-    await classroomRepo.save(classroom)
-
-    const student = studentRepo.create({
-        id: puId(),
-        grade: SchoolGrades.FIRST,
-        semester: SchoolSemesters.FIRST,
-        classroomId: classroom.id,
-        userId: user.id,
-    })
-    await studentRepo.save(student)
-
-    const classroomMemberStudent = classroomMemberRepo.create({
-        id: puId(),
-        userId: user.id,
-        classroomId: classroom.id,
-        schoolId: school.id,
-    })
-    await classroomMemberRepo.save(classroomMemberStudent)
-
-    const classroomMemberTeacher = classroomMemberRepo.create({
-        id: puId(),
-        userId: teacher.id,
-        classroomId: classroom.id,
-        schoolId: school.id,
-    })
-    await classroomMemberRepo.save(classroomMemberTeacher)
-
-    const categories = [
-        {
-            name: 'Homework Issues',
-            type: CategoryType.COMPLAINT,
-            schoolId: school.id,
-        },
-        {
-            name: 'Classroom Problems',
-            type: CategoryType.COMPLAINT,
-            schoolId: school.id,
-        },
-        {
-            name: 'Bullying',
-            type: CategoryType.COMPLAINT,
-            schoolId: school.id,
-        },
-        {
-            name: 'Other',
-            type: CategoryType.COMPLAINT,
-            schoolId: school.id,
-        },
-    ]
-
-    await Promise.all(
-        categories.map(category => categoryService.create(category))
-    )
-
-    logger.info(
-        { name: 'seedDevStudentUser' },
-        `email=${USER_DEV_EMAIL} pass=${USER_DEV_PASSWORD}`
-    )
-    logger.info(
-        { name: 'seedDevTeacherUser' },
-        `email=${TEACHER_DEV_EMAIL} pass=${TEACHER_DEV_PASSWORD}`
-    )
-}
-
 export const seedDevData = async (): Promise<void> => {
     if (currentEnvIsNotDev()) {
         logger.info(
@@ -160,7 +48,14 @@ export const seedDevData = async (): Promise<void> => {
         return
     }
 
-    await seedDevUser()
+    await seedDevSchool()
+    await seedDevUsers()
+    await seedDevSchoolGrades()
+    await seedDevDepartments()
+    await seedDevSubjects()
+    await seedDevClassrooms()
+    await seedDevStudents()
+    await seedDevCategories()
     await seedDevComplaints()
     await setDevDataSeededFlag()
 }

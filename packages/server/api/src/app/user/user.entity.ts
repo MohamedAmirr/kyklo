@@ -50,7 +50,7 @@ export const UserEntity = new EntitySchema<UserSchema>({
             target: 'school',
             inverseSide: 'users',
             joinColumn: {
-                name: 'schoolId',
+                name: 'school_id',
             },
         },
         supervisedEvents: {

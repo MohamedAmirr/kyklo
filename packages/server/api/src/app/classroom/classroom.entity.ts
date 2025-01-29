@@ -37,7 +37,7 @@ export const ClassroomEntity = new EntitySchema<ClassroomSchema>({
             type: 'many-to-one',
             target: 'user',
             joinColumn: {
-                name: 'teacherId',
+                name: 'teacher_id',
                 foreignKeyConstraintName: 'fk_classroom_teacher_id',
             },
         },
@@ -48,7 +48,7 @@ export const ClassroomEntity = new EntitySchema<ClassroomSchema>({
             onDelete: 'RESTRICT',
             onUpdate: 'RESTRICT',
             joinColumn: {
-                name: 'schoolId',
+                name: 'school_id',
                 foreignKeyConstraintName: 'fk_classroom_school_id',
             },
         },
@@ -56,7 +56,7 @@ export const ClassroomEntity = new EntitySchema<ClassroomSchema>({
             type: 'many-to-one',
             target: 'school_grade',
             joinColumn: {
-                name: 'schoolGradeId',
+                name: 'school_grade_id',
                 referencedColumnName: 'id',
             },
         },

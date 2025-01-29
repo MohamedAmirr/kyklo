@@ -25,7 +25,7 @@ export const DepartmentEntity = new EntitySchema<DepartmentSchema>({
             target: 'school',
             inverseSide: 'departments',
             joinColumn: {
-                name: 'schoolId',
+                name: 'school_id',
             },
         },
     },
@@ -65,7 +65,7 @@ export const DepartmentStaffEntity = new EntitySchema<DepartmentStaffSchema>({
             target: 'department',
             inverseSide: 'staff',
             joinColumn: {
-                name: 'departmentId',
+                name: 'department_id',
                 foreignKeyConstraintName: 'fk_department_staff_department_id',
             },
         },
@@ -74,7 +74,7 @@ export const DepartmentStaffEntity = new EntitySchema<DepartmentStaffSchema>({
             target: 'user',
             inverseSide: 'departments',
             joinColumn: {
-                name: 'staffId',
+                name: 'staff_id',
                 foreignKeyConstraintName: 'fk_department_staff_staff_id',
             },
         },
