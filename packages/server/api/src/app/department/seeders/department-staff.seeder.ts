@@ -6,7 +6,7 @@ import { getRandomEntity } from '../../helper/random-entity'
 import { UserEntity } from '../../user/user.entity'
 
 async function seedDepartmentStaff() {
-    const randomSchool = await getRandomEntity(SchoolEntity, 'department')
+    const randomSchool = await getRandomEntity(SchoolEntity, 'department staff')
     const randomDepartment = await getRandomEntity(
         DepartmentEntity,
         'department staff',
@@ -34,6 +34,6 @@ export async function seedDevDepartmentStaff() {
         await seedDepartmentStaff()
         console.log('✅ Department staff seeded successfully!')
     } catch (error) {
-        console.error('🚨 Error during department seeding:', error)
+        console.error('🚨 Error during department staff seeding:', error)
     }
 }
