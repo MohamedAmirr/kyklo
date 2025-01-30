@@ -3,7 +3,7 @@ import { databaseConnection } from '../../database/database-connection'
 import { SchoolEntity } from '../../school/school.entity'
 import { SubjectEntity } from '../subject.entity'
 import { DepartmentEntity } from '../../department/department.entity'
-import { SchoolGradeEntity } from '../../SchoolGrade/school-grade.entity'
+import { SchoolGradeEntity } from '../../school-grade/school-grade.entity'
 import { getRandomEntity } from '../../helper/random-entity'
 
 async function seedSubjects() {

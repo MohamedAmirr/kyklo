@@ -2,6 +2,8 @@ import { Static, Type } from '@sinclair/typebox'
 import { BaseModelSchema } from '../common'
 import { PuId } from '../common/id-generator'
 
+export type SubjectId = PuId
+
 export const Subject = Type.Object({
     ...BaseModelSchema,
     name: Type.String(),

@@ -21,12 +21,12 @@ import { setupGlobalErrorHandler } from './core/response/exception-handler'
 import addGlobalResponseFormat from './core/response/response-hook'
 import { eventModule } from './event/event.module'
 import { userModule } from './user/user.module'
-import { classroomMemberModule } from './classroom-members/classroom-member.module'
+import { teachingAssignmentModule } from './teaching-assignment/teaching-assignment.module'
 import { complaintsModule } from './complaint/complaint.module'
 import { categoryModule } from './category/category.module'
 import { subjectModule } from './subject/subject.module'
 import { departmentModule } from './department/department.module'
-import { SchoolGradeModule } from './SchoolGrade/school-grade.module'
+import { SchoolGradeModule } from './school-grade/school-grade.module'
 
 const modules = [
     openapiModule,
@@ -34,7 +34,7 @@ const modules = [
     flagModule,
     authenticationModule,
     classroomModule,
-    classroomMemberModule,
+    teachingAssignmentModule,
     studentModule,
     eventModule,
     userModule,

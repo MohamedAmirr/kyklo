@@ -11,7 +11,7 @@ import { repoFactory } from '../core/db/repo-factory'
 import { ClassroomEntity } from './classroom.entity'
 import { FindOptionsWhere } from 'typeorm'
 import { userService } from '../user/user.service'
-import { classroomMemberService } from '../classroom-members/classroom-member-service'
+import { teachingAssignmentService } from '../teaching-assignment/teaching-assignment.service'
 
 export const classroomRepo = repoFactory(ClassroomEntity)
 
@@ -46,10 +46,12 @@ export const classroomService = {
     async getAllForUser(params: GetAllForUserParams): Promise<Classroom[]> {
         assertNotNullOrUndefined(params.schoolId, 'schoolId is undefined')
         const filters: FindOptionsWhere<Classroom>[] = []
-        const classroomIds = await classroomMemberService.getIdsOfClassrooms({
-            schoolId: params.schoolId,
-            userId: params.userId,
-        })
+        const classroomIds = await teachingAssignmentService.getIdsOfClassrooms(
+            {
+                schoolId: params.schoolId,
+                userId: params.userId,
+            }
+        )
         filters.push({
             teacherId: params.userId,
             schoolId: params.schoolId,

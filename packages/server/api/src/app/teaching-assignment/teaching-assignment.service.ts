@@ -1,57 +1,62 @@
-import { puId, SchoolId, SeekPage, UserId } from '@pickup/shared'
+import { puId, SchoolId, SeekPage, SubjectId, UserId } from '@pickup/shared'
 import dayjs from 'dayjs'
 import { FastifyBaseLogger } from 'fastify'
 import { Equal } from 'typeorm'
 import {
     ClassroomId,
-    ClassroomMember,
-    ClassroomMemberWithUser,
+    TeachingAssignment,
+    TeachingAssignmentWithUser,
 } from '@pickup/shared'
-import { ClassroomMemberEntity } from './classroom-member.entity'
+import { TeachingAssignmentEntity } from './teaching-assignment.entity'
 import { repoFactory } from '../core/db/repo-factory'
 import { classroomService } from '../classroom/classroom.service'
 import { userService } from '../user/user.service'
 
-const repo = repoFactory(ClassroomMemberEntity)
+const repo = repoFactory(TeachingAssignmentEntity)
 
-export const classroomMemberService = {
+export const teachingAssignmentService = {
     async upsert({
         userId,
         classroomId,
-    }: UpsertParams): Promise<ClassroomMember> {
+        subjectId,
+    }: UpsertParams): Promise<TeachingAssignment> {
         const { schoolId } = await classroomService.getOneOrThrow(classroomId)
-        const existingClassroomMember = await repo().findOneBy({
+        const existingTeachingAssignment = await repo().findOneBy({
             classroomId,
+            subjectId,
             userId,
         })
-        const classroomMemberId = existingClassroomMember?.id ?? puId()
+        const teachingAssignmentId = existingTeachingAssignment?.id ?? puId()
 
-        const classroomMember: NewClassroomMember = {
-            id: classroomMemberId,
+        const teachingAssignment: NewTeachingAssignment = {
+            id: teachingAssignmentId,
             updated: dayjs().toISOString(),
             userId,
             classroomId,
+            subjectId,
             schoolId,
         }
 
-        await repo().upsert(classroomMember, ['classroomId', 'userId'])
+        await repo().upsert(teachingAssignment, ['classroomId', 'userId'])
 
         return repo().findOneOrFail({
             where: {
-                id: classroomMemberId,
+                id: teachingAssignmentId,
             },
         })
     },
-    async list(classroomId: ClassroomId): Promise<ClassroomMemberWithUser[]> {
+    async list(
+        classroomId: ClassroomId
+    ): Promise<TeachingAssignmentWithUser[]> {
         const queryBuilder = repo()
-            .createQueryBuilder('classroom_member')
+            .createQueryBuilder('teaching_assignment')
             .where({ classroomId })
 
         const data = await queryBuilder.getMany()
 
         const enrichedData = await Promise.all(
             data.map(
-                async member => await enrichClassroomMemberWithUser(member)
+                async member => await enrichTeachingAssignmentWithUser(member)
             )
         )
 
@@ -78,18 +83,19 @@ type GetIdsOfClassroomsParams = {
 type UpsertParams = {
     userId: string
     classroomId: ClassroomId
+    subjectId: SubjectId
 }
 
-type NewClassroomMember = Omit<ClassroomMember, 'created'>
+type NewTeachingAssignment = Omit<TeachingAssignment, 'created'>
 
-async function enrichClassroomMemberWithUser(
-    classroomMember: ClassroomMember
-): Promise<ClassroomMemberWithUser> {
+async function enrichTeachingAssignmentWithUser(
+    teachingAssignment: TeachingAssignment
+): Promise<TeachingAssignmentWithUser> {
     const user = await userService.getOneOrFail({
-        id: classroomMember.userId,
+        id: teachingAssignment.userId,
     })
     return {
-        ...classroomMember,
+        ...teachingAssignment,
         user: {
             schoolId: user.schoolId,
             status: user.status,
