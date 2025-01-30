@@ -11,6 +11,7 @@ import { seedDevUsers } from '../../user/seeders/user.seeder'
 import { seedDevClassrooms } from '../../classroom/seeders/classroom.seeder'
 import { seedDevStudents } from '../../student/seeders/student.seeder'
 import { seedDevCategories } from '../../category/seeders/category.seeder'
+import { seedDevDepartmentStaff } from '../../department/seeders/department-staff.seeder'
 
 const DEV_DATA_SEEDED_FLAG = 'DEV_DATA_SEEDED'
 
@@ -52,6 +53,7 @@ export const seedDevData = async (): Promise<void> => {
     await seedDevUsers()
     await seedDevSchoolGrades()
     await seedDevDepartments()
+    await seedDevDepartmentStaff()
     await seedDevSubjects()
     await seedDevClassrooms()
     await seedDevStudents()

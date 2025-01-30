@@ -50,6 +50,7 @@ export const DepartmentStaffEntity = new EntitySchema<DepartmentStaffSchema>({
         isHead: {
             type: Boolean,
             nullable: false,
+            default: false,
         },
     },
     indices: [
